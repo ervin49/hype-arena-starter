@@ -17,6 +17,7 @@ A candidate carries several wordings; the first that validates is kept.
 Confidences are heuristics from the evidence, not calibrated probabilities.
 """
 import json
+import os
 from collections import Counter, defaultdict
 from datetime import date
 
@@ -24,8 +25,12 @@ from arena.render import render_value
 from arena.validate import Validator, attribute_words
 from arena.values import canonical_amount, comparable, compatible, date_interval, norm_name, values_equal
 
-MAX_CLAIMS_PER_FACT = 6
-MAX_CLAIMS_PER_EVENT = 60  # an event date reported after the event is strong evidence
+CALIBRATION = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                           "reports", "claims_calibration.json")
+MIN_GROUP_PRECISION = 0.98   # a group must be this right at every backtest cut-off to be kept
+UNMEASURED_CONFIDENCE = 0.8  # a group the backtest cannot judge (relation): kept, never trusted high
+MAX_CLAIMS_PER_FACT = 10  # x3 in the second pass; kept groups backtest at 100%, pool ~1,300
+MAX_CLAIMS_PER_EVENT = 100  # an event date reported after the event is strong evidence
 ACRONYMS = {"ceo": "CEO", "cto": "CTO", "sla": "SLA", "cli": "CLI", "eu": "EU", "soc2": "SOC 2",
             "sdk": "SDK", "ide": "IDE", "ai": "AI", "nps": "NPS", "arr": "ARR", "api": "API"}
 DATE_NOUNS = {"date": "", "launched": "launch", "joined": "start", "founded": "founding",
@@ -138,9 +143,12 @@ class Evidence:
         return out
 
 
-def _claim(t, form, texts, confidence, rows, facts):
-    return {"id": None, "type": t, "texts": [x for x in texts if x], "form": form, "label": "true",
-            "confidence": round(confidence, 3), "evidence_ids": list(dict.fromkeys(rows)), "facts": facts}
+def _claim(t, group, form, texts, score, rows, facts):
+    """score: the evidence heuristic, used to rank claims inside a group.
+    confidence: set from the group's backtest (reports/claims_calibration.json) in select_claims."""
+    return {"id": None, "type": t, "group": group, "texts": [x for x in texts if x], "form": form,
+            "label": "true", "score": round(score, 3), "confidence": round(score, 3),
+            "evidence_ids": list(dict.fromkeys(rows)), "facts": facts}
 
 
 def _facts(ev, out):
@@ -158,7 +166,9 @@ def _facts(ev, out):
             if v is None:
                 continue
             texts = [f"{s} — {w}: {v}.", f"{s}: {v}."]
-        out.append(_claim("fact", {"subject": s, "attribute": a, "value": value}, texts, conf - 0.02, rows, [key]))
+        group = ("fact.date" if value["kind"] == "date" else
+                 "fact.unchanged" if len(ev.timelines[key]) == 1 else "fact.changed")
+        out.append(_claim("fact", group, {"subject": s, "attribute": a, "value": value}, texts, conf - 0.02, rows, [key]))
 
 
 def _changes(ev, out):
@@ -183,7 +193,7 @@ def _changes(ev, out):
                 conf = 0.95 if x.n >= 2 and y.n >= 2 else 0.88 if max(x.n, y.n) >= 2 else 0.8
                 form = {"subject": s, "attribute": a, "from": x.value, "to": y.value}
                 texts = [f"{s} {words(a)} went from {fx} to {fy}.", f"{s} went from {fx} to {fy}."]
-                out.append(_claim("change", form, texts, conf, x.rows[-2:] + y.rows[:2], [key]))
+                out.append(_claim("change", "change", form, texts, conf, x.rows[-2:] + y.rows[:2], [key]))
 
 
 def _at_events(ev, out):
@@ -209,7 +219,7 @@ def _at_events(ev, out):
                 texts = [f"{s} {words(a)} was {v} at the time of {event}.",
                          f"{s} {words(a)} stood at {v} during {event}.",
                          f"{s} had {v} at the time of {event}."]
-                out.append(_claim("at_event", form, texts, min(conf, econf), seg.rows[:3] + erows[:1], [key, ("@event", event)]))
+                out.append(_claim("at_event", "at_event", form, texts, min(conf, econf), seg.rows[:3] + erows[:1], [key, ("@event", event)]))
                 break
 
 
@@ -246,7 +256,7 @@ def _compares(ev, out):
                     texts = [f"{lefts[0]} {phrase} {rights[0]}.", f"{lefts[1]} {phrase} {rights[1]}."]
                     form = {"left": {"subject": l[0], "attribute": l[1]},
                             "right": {"subject": r[0], "attribute": r[1]}, "op": o}
-                    out.append(_claim("compare", form, texts, min(cl, cr) - 0.01, rl[:2] + rr[:2], [l, r]))
+                    out.append(_claim("compare", "compare.date", form, texts, min(cl, cr) - 0.01, rl[:2] + rr[:2], [l, r]))
                     break  # one direction per pair; the other is the same claim mirrored
                 continue
             if k1[1] != k2[1] or k1[0] == k2[0] or not comparable(v1, v2):
@@ -273,7 +283,7 @@ def _compares(ev, out):
             form = {"left": {"subject": k1[0], "attribute": k1[1]},
                     "right": {"subject": k2[0], "attribute": k2[1]}, "op": op}
             conf = min(c1, c2) - (0.05 if op == "eq" else 0.03)
-            out.append(_claim("compare", form, texts, conf, r1[-2:] + r2[-2:], [k1, k2]))
+            out.append(_claim("compare", "compare.amount", form, texts, conf, r1[-2:] + r2[-2:], [k1, k2]))
 
 
 def _relations(ev, out):
@@ -303,7 +313,7 @@ def _relations(ev, out):
                 form = {"subject": s, "link": link, "target": target, "attribute": a, "value": value}
                 texts = [f"The {words(link)} of {s} — {words(a)}: {v}.",
                          f"{s}'s {words(link)} — {words(a)}: {v}."]
-                out.append(_claim("relation", form, texts, min(conf, 0.92), seg.rows[:2] + rows[:2], [(s, link), (t, a)]))
+                out.append(_claim("relation", "relation", form, texts, min(conf, 0.92), seg.rows[:2] + rows[:2], [(s, link), (t, a)]))
 
 
 def generate_candidates(practice_rows, lexicon, as_of):
@@ -314,23 +324,52 @@ def generate_candidates(practice_rows, lexicon, as_of):
     return out
 
 
-def select_claims(practice_rows, lexicon, as_of, input_texts, n=1000):
-    """The n best candidates whose text validates, each fact in at most a few claims."""
+def load_calibration(path=CALIBRATION):
+    """{group: {"keep": bool, "confidence": float}} from the backtest, or None without the file."""
+    if not os.path.exists(path):
+        return None
+    with open(path, encoding="utf-8") as f:
+        return {g["group"]: g for g in json.load(f)["groups"]}
+
+
+def calibrate(candidates, calibration):
+    """Drop the groups the backtest rejects; set each claim's confidence from its group."""
+    if calibration is None:
+        return candidates
+    out = []
+    for c in candidates:
+        g = calibration.get(c["group"])
+        if g is None or not g["keep"]:
+            continue
+        out.append({**c, "confidence": g["confidence"]})
+    return out
+
+
+def select_claims(practice_rows, lexicon, as_of, input_texts, n=1000, calibration="default"):
+    """The n best candidates whose text validates, each fact in at most a few claims.
+
+    calibration: "default" reads reports/claims_calibration.json (as the image ships it),
+    None keeps every group with its heuristic score (what the backtest measures), or a dict.
+    """
+    if calibration == "default":
+        calibration = load_calibration()
     validator = Validator(practice_rows, lexicon, input_texts)
-    candidates = generate_candidates(practice_rows, lexicon, as_of)
-    # Interleave types at equal confidence: rank inside its type breaks ties.
+    raw = generate_candidates(practice_rows, lexicon, as_of)
+    candidates = calibrate(raw, calibration)
+    # Highest confidence first; inside a confidence, the strongest evidence; types interleaved.
     by_type = defaultdict(list)
     for c in candidates:
         by_type[c["type"]].append(c)
     order = []
     for t, cs in by_type.items():
-        cs.sort(key=lambda c: -c["confidence"])
+        cs.sort(key=lambda c: (-c["confidence"], -c["score"]))
         order += [(-c["confidence"], i, t, c) for i, c in enumerate(cs)]
     order.sort(key=lambda x: x[:3])
 
-    report = Counter(candidates=len(candidates))
-    for c in candidates:
+    report = Counter(candidates=len(raw))
+    for c in raw:
         report[f"candidates.{c['type']}"] += 1
+    report["dropped_by_calibration"] = len(raw) - len(candidates)
     chosen, forms, texts, per_fact = [], set(), set(), Counter()
     for limit in (MAX_CLAIMS_PER_FACT, MAX_CLAIMS_PER_FACT * 3):
         for _, _, t, c in order:
@@ -340,7 +379,7 @@ def select_claims(practice_rows, lexicon, as_of, input_texts, n=1000):
             if key in forms or any(per_fact[f] >= (MAX_CLAIMS_PER_EVENT if f[0] == "@event" else limit) for f in c["facts"]):
                 continue
             for text in c["texts"]:
-                claim = {k: v for k, v in c.items() if k not in ("texts", "facts")}
+                claim = {k: v for k, v in c.items() if k not in ("texts", "facts", "score")}
                 claim.update(id=f"gh-{len(chosen) + 1:04d}", text=text)
                 result = validator.validate(claim)
                 if result["valid"] and text.lower() not in texts:

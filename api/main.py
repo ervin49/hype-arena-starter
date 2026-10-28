@@ -6,8 +6,10 @@ every answer. It is never a fallback: without it, a missing engine is a 503.
 
     uvicorn api.main:app --port 8000
 """
+import json
 import os
 import re
+import threading
 import traceback
 from contextlib import asynccontextmanager
 from typing import Literal
@@ -79,6 +81,18 @@ def _load(state, engine, demo):
         state.error = f"engine unavailable: {type(e).__name__}: {e}"
 
 
+METRICS = {"labels": os.path.join(HERE, "eval", "calibration_labels.json"),
+           "claims": os.path.join(HERE, "reports", "claims_calibration.json")}
+
+
+def _read_json(path):
+    """A measurement file as written by its owner, or None when it does not exist yet."""
+    if not os.path.exists(path):
+        return None
+    with open(path, encoding="utf-8") as f:
+        return json.load(f)
+
+
 def _evidence(ids, sources):
     """The practice rows behind a verdict or a claim, for display."""
     return [sources[i] for i in ids if i in sources]
@@ -109,23 +123,33 @@ def create_app(engine=None, demo=None):
             raise HTTPException(503, state.error or "engine not loaded")
         return state.pipeline
 
+    engine_lock = threading.Lock()  # the batch updates the engine's shared state
+
     def predict_rows(rows):
+        """As the batch runner labels: the whole upload at once (page context), else row by row."""
         p = pipeline()
-        out = []
-        for row in rows:
-            if row["label"]:
-                continue
+        with engine_lock:
             try:
-                pred = p.predict(row)
-                pred["evidence"] = _evidence(pred.get("evidence_ids") or [], state.sources)
-                out.append(pred)
-            except Exception as e:
+                batch = p.label_all(rows)
+            except Exception:
                 traceback.print_exc()
-                out.append({"id": row["id"], "label": "unsure", "confidence": None, "evidence_ids": [],
-                            "reason": "The engine failed on this row.", "error": f"{type(e).__name__}: {e}",
-                            "evidence": [],
-                            "extraction": {"facts": [], "complete": False, "issues": ["engine error"]}})
-        return out
+                batch = None
+            if batch is not None:
+                for pred in batch:
+                    pred["evidence"] = _evidence(pred.get("evidence_ids") or [], state.sources)
+                return batch
+            return [one(p, row) for row in rows if not row["label"]]
+
+    def one(p, row):
+        try:
+            pred = p.predict(row)
+            pred["evidence"] = _evidence(pred.get("evidence_ids") or [], state.sources)
+            return pred
+        except Exception as e:
+            traceback.print_exc()
+            return {"id": row["id"], "label": "unsure", "confidence": None, "evidence_ids": [],
+                    "reason": "The engine failed on this row.", "error": f"{type(e).__name__}: {e}",
+                    "evidence": [], "extraction": {"facts": [], "complete": False, "issues": ["engine error"]}}
 
     def check_unique(rows):
         seen = set()
@@ -146,6 +170,12 @@ def create_app(engine=None, demo=None):
         if state.claims is None:
             raise HTTPException(503, state.claims_error or "claims not built")
         return {**state.claims, "demo_mode": state.demo}
+
+    @app.get("/metrics")
+    def metrics():
+        """Measured calibration: labels (A, eval/calibration_labels.json) and claims
+        (C, reports/claims_calibration.json). A file not written yet is null; nothing is invented."""
+        return {name: _read_json(path) for name, path in METRICS.items()}
 
     @app.post("/predict")
     def predict(request: PredictRequest):

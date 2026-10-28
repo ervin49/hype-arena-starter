@@ -1,0 +1,245 @@
+{
+ "cutoffs": [
+  "2026-05-01",
+  "2026-07-01",
+  "2026-09-01"
+ ],
+ "as_of_after_days": 14,
+ "window_days": 45,
+ "min_group_precision": 0.98,
+ "confidence": "Wilson lower bound (95%), pooled",
+ "groups": [
+  {
+   "group": "at_event",
+   "judged": 522,
+   "right": 522,
+   "precision": 1.0,
+   "keep": true,
+   "confidence": 0.99,
+   "note": "kept",
+   "cutoffs": {
+    "2026-05-01": {
+     "right": 51,
+     "wrong": 0,
+     "unknown": 0,
+     "precision": 1.0
+    },
+    "2026-07-01": {
+     "right": 149,
+     "wrong": 0,
+     "unknown": 0,
+     "precision": 1.0
+    },
+    "2026-09-01": {
+     "right": 322,
+     "wrong": 0,
+     "unknown": 0,
+     "precision": 1.0
+    }
+   }
+  },
+  {
+   "group": "change",
+   "judged": 350,
+   "right": 350,
+   "precision": 1.0,
+   "keep": true,
+   "confidence": 0.989,
+   "note": "kept",
+   "cutoffs": {
+    "2026-05-01": {
+     "right": 54,
+     "wrong": 0,
+     "unknown": 0,
+     "precision": 1.0
+    },
+    "2026-07-01": {
+     "right": 112,
+     "wrong": 0,
+     "unknown": 0,
+     "precision": 1.0
+    },
+    "2026-09-01": {
+     "right": 184,
+     "wrong": 0,
+     "unknown": 0,
+     "precision": 1.0
+    }
+   }
+  },
+  {
+   "group": "compare.amount",
+   "judged": 29,
+   "right": 28,
+   "precision": 0.966,
+   "keep": false,
+   "confidence": 0.828,
+   "note": "dropped: 97% right overall, 100% at its worst cut-off",
+   "cutoffs": {
+    "2026-05-01": {
+     "right": 3,
+     "wrong": 1,
+     "unknown": 47,
+     "precision": 0.75
+    },
+    "2026-07-01": {
+     "right": 15,
+     "wrong": 0,
+     "unknown": 36,
+     "precision": 1.0
+    },
+    "2026-09-01": {
+     "right": 10,
+     "wrong": 0,
+     "unknown": 42,
+     "precision": 1.0
+    }
+   }
+  },
+  {
+   "group": "compare.date",
+   "judged": 1229,
+   "right": 1229,
+   "precision": 1.0,
+   "keep": true,
+   "confidence": 0.99,
+   "note": "kept",
+   "cutoffs": {
+    "2026-05-01": {
+     "right": 321,
+     "wrong": 0,
+     "unknown": 26,
+     "precision": 1.0
+    },
+    "2026-07-01": {
+     "right": 455,
+     "wrong": 0,
+     "unknown": 0,
+     "precision": 1.0
+    },
+    "2026-09-01": {
+     "right": 453,
+     "wrong": 0,
+     "unknown": 30,
+     "precision": 1.0
+    }
+   }
+  },
+  {
+   "group": "fact.changed",
+   "judged": 51,
+   "right": 36,
+   "precision": 0.706,
+   "keep": false,
+   "confidence": 0.57,
+   "note": "dropped: 71% right overall, 64% at its worst cut-off",
+   "cutoffs": {
+    "2026-05-01": {
+     "right": 5,
+     "wrong": 4,
+     "unknown": 18,
+     "precision": 0.556
+    },
+    "2026-07-01": {
+     "right": 7,
+     "wrong": 4,
+     "unknown": 21,
+     "precision": 0.636
+    },
+    "2026-09-01": {
+     "right": 24,
+     "wrong": 7,
+     "unknown": 21,
+     "precision": 0.774
+    }
+   }
+  },
+  {
+   "group": "fact.date",
+   "judged": 67,
+   "right": 67,
+   "precision": 1.0,
+   "keep": true,
+   "confidence": 0.946,
+   "note": "kept",
+   "cutoffs": {
+    "2026-05-01": {
+     "right": 26,
+     "wrong": 0,
+     "unknown": 1,
+     "precision": 1.0
+    },
+    "2026-07-01": {
+     "right": 20,
+     "wrong": 0,
+     "unknown": 0,
+     "precision": 1.0
+    },
+    "2026-09-01": {
+     "right": 21,
+     "wrong": 0,
+     "unknown": 0,
+     "precision": 1.0
+    }
+   }
+  },
+  {
+   "group": "fact.unchanged",
+   "judged": 113,
+   "right": 59,
+   "precision": 0.522,
+   "keep": false,
+   "confidence": 0.5,
+   "note": "dropped: 52% right overall, 42% at its worst cut-off",
+   "cutoffs": {
+    "2026-05-01": {
+     "right": 17,
+     "wrong": 17,
+     "unknown": 88,
+     "precision": 0.5
+    },
+    "2026-07-01": {
+     "right": 25,
+     "wrong": 14,
+     "unknown": 72,
+     "precision": 0.641
+    },
+    "2026-09-01": {
+     "right": 17,
+     "wrong": 23,
+     "unknown": 82,
+     "precision": 0.425
+    }
+   }
+  },
+  {
+   "group": "relation",
+   "judged": 0,
+   "right": 0,
+   "precision": null,
+   "keep": true,
+   "confidence": 0.8,
+   "note": "not measured: too few claims judged",
+   "cutoffs": {
+    "2026-05-01": {
+     "right": 0,
+     "wrong": 0,
+     "unknown": 6,
+     "precision": null
+    },
+    "2026-07-01": {
+     "right": 0,
+     "wrong": 0,
+     "unknown": 6,
+     "precision": null
+    },
+    "2026-09-01": {
+     "right": 0,
+     "wrong": 0,
+     "unknown": 7,
+     "precision": null
+    }
+   }
+  }
+ ]
+}

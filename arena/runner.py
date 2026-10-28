@@ -27,12 +27,13 @@ def log(*args):
 
 
 def import_engine():
-    """A's public functions (contract v1). No fallback: a failed import is raised."""
-    from arena.classify import classify
+    """A's public functions (contract v1, plus label_rows for the batch). No fallback:
+    a failed import is raised."""
+    from arena.classify import classify, label_rows
     from arena.extract import build_extractor, extract
     from arena.truth import build_kb, check_fact
-    return SimpleNamespace(build_kb=build_kb, check_fact=check_fact,
-                           build_extractor=build_extractor, extract=extract, classify=classify)
+    return SimpleNamespace(build_kb=build_kb, check_fact=check_fact, build_extractor=build_extractor,
+                           extract=extract, classify=classify, label_rows=label_rows)
 
 
 class Pipeline:
@@ -41,6 +42,7 @@ class Pipeline:
     def __init__(self, practice_rows, lexicon, engine=None):
         self.engine = engine or import_engine()
         self.lexicon = lexicon
+        self.practice = practice_rows
         self.kb = self.engine.build_kb(practice_rows, lexicon)
         self.extractor = self.engine.build_extractor(practice_rows, lexicon)
 
@@ -53,6 +55,14 @@ class Pipeline:
         prediction["id"] = row["id"]
         prediction["extraction"] = extraction
         return prediction
+
+    def label_all(self, rows):
+        """The whole input at once, in file order, as A's label_rows reads it: page context
+        and corroboration across rows. None when the engine has no batch function."""
+        batch = getattr(self.engine, "label_rows", None)
+        if batch is None:
+            return None
+        return batch(rows, self.practice, self.lexicon, kb=self.kb, extractor=self.extractor)
 
 
 def known_practice(practice, universe_rows):
@@ -108,16 +118,32 @@ def run(universe_dir, output_dir, practice_path, engine=None, deadline=None, cla
         traceback.print_exc()
         return 1
 
+    def keep(p):
+        predictions[p["id"]] = {"id": p["id"], "label": p.get("label") or "unsure", "confidence": p.get("confidence")}
+
     errors, done, last_write = 0, 0, time.time()
+    # The batch first: it sees the whole input. If it fails, the same engine row by row.
     try:
-        for row in unlabelled:
+        batch = pipeline.label_all(rows) if deadline is None or time.time() < deadline else None
+        if batch is not None:
+            for p in batch:
+                if p.get("id") in predictions:
+                    keep(p)
+            done = len(unlabelled)
+            log(f"batch: {len(batch)} rows labelled with page context and corroboration")
+    except Stop:
+        log("SIGTERM during the batch: the first table stands")
+        return 0
+    except Exception:
+        log("batch failed; labelling row by row with the same engine")
+        traceback.print_exc()
+    try:
+        for row in unlabelled if done == 0 else []:
             if deadline is not None and time.time() > deadline:
                 log("deadline near: stopping classification")
                 break
             try:
-                p = pipeline.predict(row)
-                predictions[row["id"]] = {"id": row["id"], "label": p.get("label") or "unsure",
-                                          "confidence": p.get("confidence")}
+                keep({**pipeline.predict(row), "id": row["id"]})
             except Exception:
                 errors += 1
                 if errors <= 5:
