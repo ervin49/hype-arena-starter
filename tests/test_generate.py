@@ -117,3 +117,25 @@ def test_calibration_rules():
     assert groups["good"]["keep"] and groups["good"]["confidence"] <= 1.0
     assert not groups["bad"]["keep"]
     assert groups["rare"]["keep"] and groups["rare"]["confidence"] == bt.UNMEASURED_CONFIDENCE
+    assert groups["good"]["confidence"] <= bt.UNVERIFIED_CAP  # no strict judge: capped
+
+
+def test_the_strict_judge_lowers_or_drops():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("bt", os.path.join(ROOT, "scripts", "backtest_claims.py"))
+    bt = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(bt)
+    full = {c: {} for c in bt.CUTOFFS}
+    full[bt.CUTOFFS[0]] = {"checked": {"right": 400, "wrong": 0, "unknown": 0}, "refuted": {"right": 400, "wrong": 0, "unknown": 0}}
+    strict = {c: {} for c in bt.CUTOFFS}
+    strict[bt.CUTOFFS[0]] = {"checked": {"right": 50, "wrong": 0, "unknown": 350}, "refuted": {"right": 40, "wrong": 10, "unknown": 350}}
+    groups = {g["group"]: g for g in bt.calibration(full, strict)}
+    assert groups["checked"]["keep"] and groups["checked"]["confidence"] == round(bt.wilson_lower(50, 50), 3)
+    assert not groups["refuted"]["keep"]
+
+
+def test_shipped_confidence_is_never_above_the_strict_evidence():
+    from arena.generate import load_calibration
+    for g in load_calibration().values():
+        if g["keep"] and g["n"] >= 20:
+            assert g["confidence"] <= (0.99 if g["strict_n"] >= 20 else 0.95), g

@@ -9,10 +9,15 @@ after the cut-off) and judged against every practice row, the later ones include
 - at_event: the values reported last before and first after the event's date;
 - relation: not judged (too few claims, and the link's validity is not observable).
 
-A claim with no later evidence is "unknown" and does not count. Writes
-reports/claims_calibration.json, which arena.generate reads: a group is kept when it is at
-least MIN_GROUP_PRECISION right at every cut-off where it was judged on 10+ claims, and its
-confidence is the Wilson lower bound (95%) of its pooled precision, never above what we measured.
+A claim with no later evidence is "unknown" and does not count.
+
+That judge is partly circular: the rows a claim was built from also judge it. So a second,
+strict judge sees only the rows dated on or after the cut-off, which the generator never saw.
+
+Writes reports/claims_calibration.json, which arena.generate reads. A group is kept when it is at
+least MIN_GROUP_PRECISION right at every cut-off where it was judged on 10+ claims, by both judges.
+Its confidence is the lower of the two Wilson lower bounds (95%) of the pooled precision; when the
+strict judge cannot judge the group, it is at most UNVERIFIED_CAP.
 
     .venv/bin/python scripts/backtest_claims.py
 """
@@ -36,6 +41,7 @@ AS_OF_AFTER_DAYS = 14
 WINDOW_DAYS = 45
 MIN_JUDGED = 20       # fewer judged claims than this: the group is "not measured"
 MIN_PER_CUTOFF = 10   # a cut-off counts against a group only with this many judged claims
+UNVERIFIED_CAP = 0.95  # the most a group gets that only the circular judge could check
 
 
 def wilson_lower(right, n, z=1.96):
@@ -46,8 +52,11 @@ def wilson_lower(right, n, z=1.96):
 
 
 class Judge:
-    def __init__(self, rows, lexicon, as_of):
+    """strict: rows holds only the rows the generator did not see; what they cannot show is unknown."""
+
+    def __init__(self, rows, lexicon, as_of, strict=False):
         self.full = Evidence(rows, lexicon, "2026-10-29")
+        self.strict = strict
         self.as_of = as_of
         self.end = (date.fromisoformat(as_of) + timedelta(days=WINDOW_DAYS)).isoformat()
         self.events = self.full.event_dates()
@@ -75,7 +84,9 @@ class Judge:
                 if not a or not b:
                     return None
                 (a0, a1), (b0, b1) = date_interval(a[0]["value"]), date_interval(b[0]["value"])
-                return a1 < b0 if f["op"] == "lt" else b1 < a0
+                if a1 < b0 or b1 < a0:
+                    return a1 < b0 if f["op"] == "lt" else b1 < a0
+                return False if a0 == a1 == b0 == b1 else None  # a month against a day in it: cannot tell
             la, ra = self.near(left), self.near(right)
             if not la or not ra:
                 return None
@@ -87,6 +98,8 @@ class Judge:
             segs = self.full.timelines.get((f["subject"], f["attribute"]), [])
             i = [k for k, s in enumerate(segs) if compatible(s.value, f["from"])]
             j = [k for k, s in enumerate(segs) if compatible(s.value, f["to"])]
+            if self.strict and not (i and j):
+                return None
             return bool(i and j and min(i) < max(j))
         if t == "at_event":
             ev = self.events.get(f["event"])
@@ -103,60 +116,83 @@ class Judge:
 
 
 def backtest(rows, lexicon):
+    """({cut: {group: tally}} by the full judge, the same by the strict judge)."""
     texts = [r["text"] for r in rows]
-    per_cut = {}
+    per_cut, strict_cut = {}, {}
     for cut in CUTOFFS:
         as_of = (date.fromisoformat(cut) + timedelta(days=AS_OF_AFTER_DAYS)).isoformat()
         train = [r for r in rows if r["date"] < cut]
         claims, _ = select_claims(train, lexicon, as_of, texts, 5000, calibration=None)
-        judge = Judge(rows, lexicon, as_of)
-        tally = defaultdict(lambda: {"right": 0, "wrong": 0, "unknown": 0})
-        for c in claims:
-            v = judge(c)
-            tally[c["group"]]["right" if v else "wrong" if v is False else "unknown"] += 1
-        per_cut[cut] = tally
-    return per_cut
+        later = [r for r in rows if r["date"] >= cut]
+        for out, judge in ((per_cut, Judge(rows, lexicon, as_of)), (strict_cut, Judge(later, lexicon, as_of, strict=True))):
+            tally = defaultdict(lambda: {"right": 0, "wrong": 0, "unknown": 0})
+            for c in claims:
+                v = judge(c)
+                tally[c["group"]]["right" if v else "wrong" if v is False else "unknown"] += 1
+            out[cut] = tally
+    return per_cut, strict_cut
 
 
-def calibration(per_cut):
+def _measure(per_cut, g):
+    """The group's tallies per cut-off, pooled: (cuts, right, judged, precision, worst cut-off precision)."""
+    cuts = {cut: dict(per_cut.get(cut, {}).get(g, {"right": 0, "wrong": 0, "unknown": 0})) for cut in CUTOFFS}
+    right = sum(c["right"] for c in cuts.values())
+    judged = right + sum(c["wrong"] for c in cuts.values())
+    for c in cuts.values():
+        n = c["right"] + c["wrong"]
+        c["precision"] = round(c["right"] / n, 3) if n else None
+    precision = right / judged if judged else None
+    worst = min((c["precision"] for c in cuts.values()
+                 if c["precision"] is not None and c["right"] + c["wrong"] >= MIN_PER_CUTOFF), default=precision)
+    return cuts, right, judged, precision, worst
+
+
+def calibration(per_cut, strict_cut=None):
+    strict_cut = strict_cut or {}
     groups = sorted({g for t in per_cut.values() for g in t})
     out = []
     for g in groups:
-        cuts = {cut: dict(per_cut[cut].get(g, {"right": 0, "wrong": 0, "unknown": 0})) for cut in CUTOFFS}
-        right = sum(c["right"] for c in cuts.values())
-        judged = right + sum(c["wrong"] for c in cuts.values())
-        for c in cuts.values():
-            n = c["right"] + c["wrong"]
-            c["precision"] = round(c["right"] / n, 3) if n else None
+        cuts, right, judged, precision, worst = _measure(per_cut, g)
+        s_cuts, s_right, s_judged, s_precision, s_worst = _measure(strict_cut, g)
         if judged < MIN_JUDGED:
             keep, conf, note = True, UNMEASURED_CONFIDENCE, "not measured: too few claims judged"
+        elif precision < MIN_GROUP_PRECISION or worst < MIN_GROUP_PRECISION:
+            keep, conf = False, round(max(0.5, wilson_lower(right, judged)), 3)
+            note = f"dropped: {precision:.0%} right overall, {worst:.0%} at its worst cut-off"
+        elif s_judged >= MIN_JUDGED and (s_precision < MIN_GROUP_PRECISION or s_worst < MIN_GROUP_PRECISION):
+            keep, conf = False, round(max(0.5, wilson_lower(s_right, s_judged)), 3)
+            note = f"dropped: {s_precision:.0%} right on later rows only"
+        elif s_judged >= MIN_JUDGED:
+            keep = True
+            conf = round(max(0.5, min(0.99, wilson_lower(right, judged), wilson_lower(s_right, s_judged))), 3)
+            note = f"kept: {s_right}/{s_judged} right on later rows only"
         else:
-            precision = right / judged
-            worst = min((c["precision"] for c in cuts.values()
-                         if c["precision"] is not None and c["right"] + c["wrong"] >= MIN_PER_CUTOFF), default=precision)
-            keep = precision >= MIN_GROUP_PRECISION and worst >= MIN_GROUP_PRECISION
-            conf = round(min(0.99, max(0.5, wilson_lower(right, judged))), 3)
-            note = "kept" if keep else f"dropped: {precision:.0%} right overall, {worst:.0%} at its worst cut-off"
+            keep = True
+            conf = round(min(UNVERIFIED_CAP, max(0.5, wilson_lower(right, judged))), 3)
+            note = f"kept, capped at {UNVERIFIED_CAP}: later rows alone cannot check it"
         out.append({"group": g, "n": judged, "right": right,
-                    "precision": round(right / judged, 3) if judged else None,
-                    "keep": keep, "confidence": conf, "note": note, "cutoffs": cuts})
+                    "precision": round(precision, 3) if judged else None,
+                    "strict_n": s_judged, "strict_right": s_right,
+                    "strict_precision": round(s_precision, 3) if s_judged else None,
+                    "keep": keep, "confidence": conf, "note": note, "cutoffs": cuts, "strict_cutoffs": s_cuts})
     return out
 
 
 def main():
     rows = read_rows(os.path.join(ROOT, "data", "practice.csv"), require_form=True)
     lexicon = read_lexicon(os.path.join(ROOT, "data", "lexicon.json"))
-    groups = calibration(backtest(rows, lexicon))
+    groups = calibration(*backtest(rows, lexicon))
     os.makedirs(os.path.dirname(CALIBRATION), exist_ok=True)
     with open(CALIBRATION, "w", encoding="utf-8") as f:
         json.dump({"cutoffs": CUTOFFS, "as_of_after_days": AS_OF_AFTER_DAYS, "window_days": WINDOW_DAYS,
-                   "min_group_precision": MIN_GROUP_PRECISION, "confidence": "Wilson lower bound (95%), pooled",
+                   "min_group_precision": MIN_GROUP_PRECISION, "unverified_cap": UNVERIFIED_CAP,
+                   "confidence": "the lower Wilson lower bound (95%) of the full and the strict judge, pooled",
                    "groups": groups}, f, indent=1)
         f.write("\n")
-    print(f"{'group':16} {'judged':>6} {'right':>6} {'prec':>6} {'conf':>6}  per cut-off            decision")
+    print(f"{'group':16} {'judged':>6} {'right':>6} {'strict':>9} {'conf':>6}  decision")
     for g in groups:
-        per = " ".join(f"{c['precision'] if c['precision'] is not None else '  -  ':>5}" for c in g["cutoffs"].values())
-        print(f"{g['group']:16} {g['n']:6} {g['right']:6} {g['precision'] or 0:6.3f} {g['confidence']:6.3f}  {per:22} {g['note']}")
+        strict = f"{g['strict_right']}/{g['strict_n']}"
+        print(f"{g['group']:16} {g['n']:6} {g['right']:6} {strict:>9} {g['confidence']:6.3f}  {g['note']}")
     print(f"wrote {os.path.relpath(CALIBRATION, ROOT)}")
 
 

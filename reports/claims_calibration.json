@@ -7,16 +7,20 @@
  "as_of_after_days": 14,
  "window_days": 45,
  "min_group_precision": 0.98,
- "confidence": "Wilson lower bound (95%), pooled",
+ "unverified_cap": 0.95,
+ "confidence": "the lower Wilson lower bound (95%) of the full and the strict judge, pooled",
  "groups": [
   {
    "group": "at_event",
    "n": 522,
    "right": 522,
    "precision": 1.0,
+   "strict_n": 0,
+   "strict_right": 0,
+   "strict_precision": null,
    "keep": true,
-   "confidence": 0.99,
-   "note": "kept",
+   "confidence": 0.95,
+   "note": "kept, capped at 0.95: later rows alone cannot check it",
    "cutoffs": {
     "2026-05-01": {
      "right": 51,
@@ -36,6 +40,26 @@
      "unknown": 0,
      "precision": 1.0
     }
+   },
+   "strict_cutoffs": {
+    "2026-05-01": {
+     "right": 0,
+     "wrong": 0,
+     "unknown": 51,
+     "precision": null
+    },
+    "2026-07-01": {
+     "right": 0,
+     "wrong": 0,
+     "unknown": 149,
+     "precision": null
+    },
+    "2026-09-01": {
+     "right": 0,
+     "wrong": 0,
+     "unknown": 322,
+     "precision": null
+    }
    }
   },
   {
@@ -43,9 +67,12 @@
    "n": 350,
    "right": 350,
    "precision": 1.0,
+   "strict_n": 0,
+   "strict_right": 0,
+   "strict_precision": null,
    "keep": true,
-   "confidence": 0.989,
-   "note": "kept",
+   "confidence": 0.95,
+   "note": "kept, capped at 0.95: later rows alone cannot check it",
    "cutoffs": {
     "2026-05-01": {
      "right": 54,
@@ -65,6 +92,26 @@
      "unknown": 0,
      "precision": 1.0
     }
+   },
+   "strict_cutoffs": {
+    "2026-05-01": {
+     "right": 0,
+     "wrong": 0,
+     "unknown": 54,
+     "precision": null
+    },
+    "2026-07-01": {
+     "right": 0,
+     "wrong": 0,
+     "unknown": 112,
+     "precision": null
+    },
+    "2026-09-01": {
+     "right": 0,
+     "wrong": 0,
+     "unknown": 184,
+     "precision": null
+    }
    }
   },
   {
@@ -72,10 +119,33 @@
    "n": 29,
    "right": 28,
    "precision": 0.966,
+   "strict_n": 29,
+   "strict_right": 28,
+   "strict_precision": 0.966,
    "keep": false,
    "confidence": 0.828,
    "note": "dropped: 97% right overall, 100% at its worst cut-off",
    "cutoffs": {
+    "2026-05-01": {
+     "right": 3,
+     "wrong": 1,
+     "unknown": 47,
+     "precision": 0.75
+    },
+    "2026-07-01": {
+     "right": 15,
+     "wrong": 0,
+     "unknown": 36,
+     "precision": 1.0
+    },
+    "2026-09-01": {
+     "right": 10,
+     "wrong": 0,
+     "unknown": 42,
+     "precision": 1.0
+    }
+   },
+   "strict_cutoffs": {
     "2026-05-01": {
      "right": 3,
      "wrong": 1,
@@ -101,9 +171,12 @@
    "n": 1211,
    "right": 1211,
    "precision": 1.0,
+   "strict_n": 127,
+   "strict_right": 127,
+   "strict_precision": 1.0,
    "keep": true,
-   "confidence": 0.99,
-   "note": "kept",
+   "confidence": 0.971,
+   "note": "kept: 127/127 right on later rows only",
    "cutoffs": {
     "2026-05-01": {
      "right": 296,
@@ -123,6 +196,26 @@
      "unknown": 0,
      "precision": 1.0
     }
+   },
+   "strict_cutoffs": {
+    "2026-05-01": {
+     "right": 43,
+     "wrong": 0,
+     "unknown": 278,
+     "precision": 1.0
+    },
+    "2026-07-01": {
+     "right": 42,
+     "wrong": 0,
+     "unknown": 404,
+     "precision": 1.0
+    },
+    "2026-09-01": {
+     "right": 42,
+     "wrong": 0,
+     "unknown": 427,
+     "precision": 1.0
+    }
    }
   },
   {
@@ -130,10 +223,33 @@
    "n": 51,
    "right": 36,
    "precision": 0.706,
+   "strict_n": 51,
+   "strict_right": 36,
+   "strict_precision": 0.706,
    "keep": false,
    "confidence": 0.57,
    "note": "dropped: 71% right overall, 64% at its worst cut-off",
    "cutoffs": {
+    "2026-05-01": {
+     "right": 5,
+     "wrong": 4,
+     "unknown": 18,
+     "precision": 0.556
+    },
+    "2026-07-01": {
+     "right": 7,
+     "wrong": 4,
+     "unknown": 21,
+     "precision": 0.636
+    },
+    "2026-09-01": {
+     "right": 24,
+     "wrong": 7,
+     "unknown": 21,
+     "precision": 0.774
+    }
+   },
+   "strict_cutoffs": {
     "2026-05-01": {
      "right": 5,
      "wrong": 4,
@@ -159,9 +275,12 @@
    "n": 65,
    "right": 65,
    "precision": 1.0,
+   "strict_n": 25,
+   "strict_right": 25,
+   "strict_precision": 1.0,
    "keep": true,
-   "confidence": 0.944,
-   "note": "kept",
+   "confidence": 0.867,
+   "note": "kept: 25/25 right on later rows only",
    "cutoffs": {
     "2026-05-01": {
      "right": 25,
@@ -181,6 +300,26 @@
      "unknown": 0,
      "precision": 1.0
     }
+   },
+   "strict_cutoffs": {
+    "2026-05-01": {
+     "right": 10,
+     "wrong": 0,
+     "unknown": 16,
+     "precision": 1.0
+    },
+    "2026-07-01": {
+     "right": 8,
+     "wrong": 0,
+     "unknown": 14,
+     "precision": 1.0
+    },
+    "2026-09-01": {
+     "right": 7,
+     "wrong": 0,
+     "unknown": 11,
+     "precision": 1.0
+    }
    }
   },
   {
@@ -188,10 +327,33 @@
    "n": 113,
    "right": 59,
    "precision": 0.522,
+   "strict_n": 113,
+   "strict_right": 59,
+   "strict_precision": 0.522,
    "keep": false,
    "confidence": 0.5,
    "note": "dropped: 52% right overall, 42% at its worst cut-off",
    "cutoffs": {
+    "2026-05-01": {
+     "right": 17,
+     "wrong": 17,
+     "unknown": 88,
+     "precision": 0.5
+    },
+    "2026-07-01": {
+     "right": 25,
+     "wrong": 14,
+     "unknown": 72,
+     "precision": 0.641
+    },
+    "2026-09-01": {
+     "right": 17,
+     "wrong": 23,
+     "unknown": 82,
+     "precision": 0.425
+    }
+   },
+   "strict_cutoffs": {
     "2026-05-01": {
      "right": 17,
      "wrong": 17,
@@ -217,10 +379,33 @@
    "n": 0,
    "right": 0,
    "precision": null,
+   "strict_n": 0,
+   "strict_right": 0,
+   "strict_precision": null,
    "keep": true,
    "confidence": 0.8,
    "note": "not measured: too few claims judged",
    "cutoffs": {
+    "2026-05-01": {
+     "right": 0,
+     "wrong": 0,
+     "unknown": 6,
+     "precision": null
+    },
+    "2026-07-01": {
+     "right": 0,
+     "wrong": 0,
+     "unknown": 6,
+     "precision": null
+    },
+    "2026-09-01": {
+     "right": 0,
+     "wrong": 0,
+     "unknown": 7,
+     "precision": null
+    }
+   },
+   "strict_cutoffs": {
     "2026-05-01": {
      "right": 0,
      "wrong": 0,
