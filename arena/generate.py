@@ -360,7 +360,9 @@ def select_claims(practice_rows, lexicon, as_of, input_texts, n=1000, calibratio
     None keeps every group with its heuristic score (what the backtest measures), or a dict.
     check_rows: input rows the engine is confident are true, as practice rows (arena.controls).
     A candidate that does not survive with them added to the evidence is vetoed: chosen only
-    when the others run out.
+    when the others run out, at the lowest confidence (0.5). A group that loses a share v of
+    its candidates this way is contradicted by the input more than the backtest saw, so its
+    confidence becomes c * (1 - v), never below 0.5.
     """
     if calibration == "default":
         calibration = load_calibration()
@@ -372,6 +374,11 @@ def select_claims(practice_rows, lexicon, as_of, input_texts, n=1000, calibratio
         survive = {json.dumps(c["form"], sort_keys=True)
                    for c in calibrate(generate_candidates(practice_rows + list(check_rows), lexicon, as_of), calibration)}
         vetoed = {json.dumps(c["form"], sort_keys=True) for c in candidates} - survive
+    group_size, group_vetoed = Counter(c["group"] for c in candidates), Counter()
+    for c in candidates:
+        if json.dumps(c["form"], sort_keys=True) in vetoed:
+            group_vetoed[c["group"]] += 1
+    keep_share = {g: 1 - group_vetoed[g] / n_g for g, n_g in group_size.items()}
     # Highest confidence first; inside a confidence, the strongest evidence; types interleaved.
     by_type = defaultdict(list)
     for c in candidates:
@@ -388,6 +395,8 @@ def select_claims(practice_rows, lexicon, as_of, input_texts, n=1000, calibratio
     report["dropped_by_calibration"] = len(raw) - len(candidates)
     if check_rows:
         report["vetoed_by_input"] = len(vetoed)
+        for g, k in group_vetoed.items():
+            report[f"vetoed.{g}"] = k
     chosen, forms, texts, per_fact = [], set(), set(), Counter()
     passes = [(limit, False) for limit in (MAX_CLAIMS_PER_FACT, MAX_CLAIMS_PER_FACT * 3)]
     for limit, allow_vetoed in passes + ([(MAX_CLAIMS_PER_FACT * 3, True)] if vetoed else []):
@@ -401,7 +410,9 @@ def select_claims(practice_rows, lexicon, as_of, input_texts, n=1000, calibratio
                 continue
             for text in c["texts"]:
                 claim = {k: v for k, v in c.items() if k not in ("texts", "facts", "score")}
-                claim.update(id=f"gh-{len(chosen) + 1:04d}", text=text)
+                claim.update(id=f"gh-{len(chosen) + 1:04d}", text=text,
+                             confidence=0.5 if key in vetoed else
+                             round(max(0.5, c["confidence"] * keep_share[c["group"]]), 3))
                 result = validator.validate(claim)
                 if result["valid"] and text.lower() not in texts:
                     break

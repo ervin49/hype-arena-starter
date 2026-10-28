@@ -82,3 +82,34 @@ def test_the_run_lowers_an_over_confident_engine(universe):  # noqa: F811
     rows = [r for r in read_output(universe) if not r["type"]]
     assert {r["label"] for r in rows} == {"true"}
     assert all(float(r["confidence"]) < 0.95 for r in rows)  # always "true" is right ~85% of the time
+
+
+def _contradicting_dates(claims, k=6):
+    """Confident-looking input rows that give k of the compared dates another value."""
+    keys = sorted({(c["form"][side]["subject"], c["form"][side]["attribute"])
+                   for c in claims if c["group"] == "compare.date" for side in ("left", "right")})
+    return [{"id": f"u-{i}", "text": "x", "date": "2026-10-20", "label": "true",
+             "form": json.dumps([{"subject": s, "attribute": a, "value": {"kind": "date", "value": "2026-10-01"}}])}
+            for i, (s, a) in enumerate(keys[:k])]
+
+
+def test_a_contradicted_group_loses_confidence():
+    claims, _ = select_claims(PRACTICE, LEXICON, "2026-10-29", TEXTS, 1000)
+    before = {c["group"]: c["confidence"] for c in claims}
+    again, report = select_claims(PRACTICE, LEXICON, "2026-10-29", TEXTS, 1000, check_rows=_contradicting_dates(claims))
+    after = {c["confidence"] for c in again if c["group"] == "compare.date"}
+    assert report["vetoed.compare.date"] > 0 and max(after) < before["compare.date"]
+    assert {c["confidence"] for c in again if c["group"] == "change"} == {before["change"]}  # not contradicted
+
+
+def test_a_vetoed_claim_used_to_fill_the_set_gets_the_minimum():
+    claims, _ = select_claims(PRACTICE, LEXICON, "2026-10-29", TEXTS, 1000)
+    pool, report = select_claims(PRACTICE, LEXICON, "2026-10-29", TEXTS, 5000, check_rows=_contradicting_dates(claims))
+    assert report["vetoed_but_needed"] > 0  # the whole pool is taken, so the vetoed ones too
+    assert sum(c["confidence"] == 0.5 for c in pool) >= report["vetoed_but_needed"]
+
+
+def test_no_veto_changes_no_confidence():
+    a, _ = select_claims(PRACTICE, LEXICON, "2026-10-29", TEXTS, 200)
+    b, report = select_claims(PRACTICE, LEXICON, "2026-10-29", TEXTS, 200, check_rows=[])
+    assert a == b and "vetoed_by_input" not in report

@@ -36,7 +36,7 @@
 | Claims | 1,000: 383 at_event, 317 change, 294 compare (dates), 4 fact (dates), 2 relation |
 | Claim confidence | measured on unseen rows: 294 at 0.971, 700 at 0.95 (capped), 4 at 0.867, 2 at 0.80; mean 0.956 |
 | Full run time | ~11 s on practice with the controls; 131 s on our **synthetic** 20,000-row input (of 30 min) |
-| Tests | 384 Python tests pass (206 of them every example of `claim-forms.md` and `value-forms.md`) (`.venv/bin/pytest -q`); frontend type-checks, lints and builds; all 4 pages and 5 API routes checked live |
+| Tests | 387 Python tests pass (206 of them every example of `claim-forms.md` and `value-forms.md`) (`.venv/bin/pytest -q`); frontend type-checks, lints and builds; all 4 pages and 5 API routes checked live |
 
 ### Claim backtest (`scripts/backtest_claims.py` → `reports/claims_calibration.json`)
 
@@ -67,7 +67,7 @@ The run can't be adjusted after the freeze, so the system checks itself on the r
 |---|---|---|---|
 | Confidence | A control model (`scripts/train_control.py`) never saw 381 practice rows. In the run it labels them in the context of the real input. Confidence becomes 0.5 + k·(c − 0.5), with k fitted per label on that group: it can only go down. | 298 answers, 86.9% right, said 0.83: k = 1 (nothing lowered) | 369 answers, 84% right; `false` over-stated, so k = 0.6; ECE 0.046 → 0.035 |
 | Distribution | The share of `false` on the input against the control group, logged | 10.0% vs 8.4% | 17.0% vs 14.1% |
-| Claims | Input rows labelled `true` at ≥ 0.9 are added as evidence; a candidate they contradict is vetoed and replaced from the reserve | 192 rows, 0 vetoed | 10,682 rows, 150 vetoed, 1,000 claims still filled |
+| Claims | Input rows labelled `true` at ≥ 0.9 are added as evidence; a candidate they contradict is vetoed and replaced from the reserve. A group that loses a share v of its candidates gets confidence c × (1 − v); a vetoed claim used only to fill the 1,000 gets 0.5 | 197 rows, 0 vetoed, confidence unchanged | 10,582 rows, 9 vetoed: at_event 0.95 → 0.932, change 0.95 → 0.947, date compares 0.971 |
 
 **The 20,000-row input is synthetic, made by us:** the 1,897 practice rows plus 18,103 copies of practice sentences with new ids, dates shifted by up to ±60 days and empty labels. We do not have the organisers' 18,000 rows. It tests speed, limits and that the controls react to noise; it says nothing about our accuracy on new text, and its 150 vetoes and factor 0.6 react to our artificial noise, not to the real data.
 
@@ -152,6 +152,7 @@ python3 scripts/check_output.py /tmp/arena/output data/practice.csv /tmp/arena/u
 
 | When | What |
 |---|---|
+| 28 Oct, night | C: claim-confidence control. A group that the input's confident rows contradict loses confidence in proportion (c × (1 − v)); a vetoed claim used only to fill the 1,000 gets 0.5. No change on practice; on the synthetic 20,000-row input, 9 vetoes lower at_event to 0.932 and change to 0.947. 387 tests pass. |
 | 28 Oct, night | C: every example of `claim-forms.md` and `value-forms.md` is now a test (206), read from the files. The validator was fixed to match all of them: a second sentence may say anything, `on the same day as` counts as one phrase, `…, up from …` / `down from` read, and `up`/`down` must match the values. The 1,000 claims are unchanged. `/metrics` serves `shift` (with the always-`true` baseline) and `controls` (`reports/controls.json`, from `scripts/train_control.py`). Shift test rerun for the current engine. 384 tests pass. |
 | 28 Oct, night | C merged B's `fix/overfitting` engine (regularized trees, `l2=10, min_hess=20`) into `dev/c`: better in all three shift-test scenarios (random 87.7 → 88.0%, latest 83.3 → 83.7%, new subjects 79.5 → 80.3%; ECE same or lower) and on the honest hidden rows (329 → 337/380). Its claim formula (Laplace, date compares 0.99) was **not** taken: claim confidence stays the cautious Wilson bound. Control model retrained; control-group ECE 0.039 → 0.031. 178 tests, `check.sh` pass. |
 | 28 Oct, evening | C: run-time controls, as the organisers asked. A held-out control group recalibrates confidence on the real input (it can only lower it), a distribution monitor, and a claim veto from the input rows the engine is sure of. `check.sh` passes; our synthetic 20,000-row input in 131 s; 178 tests pass. |
