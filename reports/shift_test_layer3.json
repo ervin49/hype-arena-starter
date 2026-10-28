@@ -1,0 +1,236 @@
+[
+ {
+  "scenario": "random pages",
+  "known": 1524,
+  "unseen": 373,
+  "always_true": 0.839,
+  "factors": {
+   "true": 1.0,
+   "false": 1.0
+  },
+  "control": {
+   "control_answers": 308,
+   "accuracy": 0.857,
+   "said": 0.829,
+   "ece_before": 0.058,
+   "false_share": 0.058
+  },
+  "control_unknown_share": 0.025,
+  "unseen_before": {
+   "n": 366,
+   "said": 0.826,
+   "right": 0.888,
+   "ece": 0.062,
+   "brier": 0.0926,
+   "unknown_share": 0.057,
+   "lies_caught": 32,
+   "lies": 59
+  },
+  "unseen_after": {
+   "n": 366,
+   "said": 0.826,
+   "right": 0.888,
+   "ece": 0.062,
+   "brier": 0.0926,
+   "unknown_share": 0.057,
+   "lies_caught": 32,
+   "lies": 59
+  },
+  "layer3_no_flip": {
+   "n": 366,
+   "said": 0.884,
+   "right": 0.888,
+   "ece": 0.014,
+   "brier": 0.0896,
+   "unknown_share": 0.057,
+   "lies_caught": 32,
+   "lies": 59
+  },
+  "layer3_flip": {
+   "n": 366,
+   "said": 0.884,
+   "right": 0.891,
+   "ece": 0.016,
+   "brier": 0.0895,
+   "unknown_share": 0.057,
+   "lies_caught": 32,
+   "lies": 59
+  },
+  "layer3_no_flip_control": {
+   "n": 366,
+   "said": 0.876,
+   "right": 0.888,
+   "ece": 0.016,
+   "brier": 0.0896,
+   "unknown_share": 0.057,
+   "lies_caught": 32,
+   "lies": 59
+  },
+  "layer3_flip_control": {
+   "n": 366,
+   "said": 0.876,
+   "right": 0.891,
+   "ece": 0.019,
+   "brier": 0.0895,
+   "unknown_share": 0.057,
+   "lies_caught": 32,
+   "lies": 59
+  }
+ },
+ {
+  "scenario": "latest pages",
+  "known": 1432,
+  "unseen": 465,
+  "always_true": 0.815,
+  "factors": {
+   "true": 1.0,
+   "false": 1.0
+  },
+  "control": {
+   "control_answers": 281,
+   "accuracy": 0.883,
+   "said": 0.831,
+   "ece_before": 0.071,
+   "false_share": 0.103
+  },
+  "control_unknown_share": 0.063,
+  "unseen_before": {
+   "n": 460,
+   "said": 0.826,
+   "right": 0.835,
+   "ece": 0.034,
+   "brier": 0.12,
+   "unknown_share": 0.1,
+   "lies_caught": 26,
+   "lies": 85
+  },
+  "unseen_after": {
+   "n": 460,
+   "said": 0.826,
+   "right": 0.835,
+   "ece": 0.034,
+   "brier": 0.12,
+   "unknown_share": 0.1,
+   "lies_caught": 26,
+   "lies": 85
+  },
+  "layer3_no_flip": {
+   "n": 460,
+   "said": 0.892,
+   "right": 0.835,
+   "ece": 0.063,
+   "brier": 0.124,
+   "unknown_share": 0.1,
+   "lies_caught": 26,
+   "lies": 85
+  },
+  "layer3_flip": {
+   "n": 460,
+   "said": 0.892,
+   "right": 0.83,
+   "ece": 0.068,
+   "brier": 0.1241,
+   "unknown_share": 0.1,
+   "lies_caught": 24,
+   "lies": 85
+  },
+  "layer3_no_flip_control": {
+   "n": 460,
+   "said": 0.884,
+   "right": 0.835,
+   "ece": 0.055,
+   "brier": 0.1232,
+   "unknown_share": 0.1,
+   "lies_caught": 26,
+   "lies": 85
+  },
+  "layer3_flip_control": {
+   "n": 460,
+   "said": 0.884,
+   "right": 0.83,
+   "ece": 0.06,
+   "brier": 0.1233,
+   "unknown_share": 0.1,
+   "lies_caught": 24,
+   "lies": 85
+  }
+ },
+ {
+  "scenario": "held-out subjects",
+  "known": 1515,
+  "unseen": 382,
+  "always_true": 0.825,
+  "factors": {
+   "true": 1.0,
+   "false": 0.52
+  },
+  "control": {
+   "control_answers": 298,
+   "accuracy": 0.869,
+   "said": 0.841,
+   "ece_before": 0.032,
+   "false_share": 0.161
+  },
+  "control_unknown_share": 0.059,
+  "unseen_before": {
+   "n": 366,
+   "said": 0.835,
+   "right": 0.795,
+   "ece": 0.04,
+   "brier": 0.1441,
+   "unknown_share": 0.109,
+   "lies_caught": 14,
+   "lies": 64
+  },
+  "unseen_after": {
+   "n": 366,
+   "said": 0.826,
+   "right": 0.795,
+   "ece": 0.031,
+   "brier": 0.1399,
+   "unknown_share": 0.109,
+   "lies_caught": 14,
+   "lies": 64
+  },
+  "layer3_no_flip": {
+   "n": 366,
+   "said": 0.876,
+   "right": 0.795,
+   "ece": 0.086,
+   "brier": 0.1515,
+   "unknown_share": 0.109,
+   "lies_caught": 14,
+   "lies": 64
+  },
+  "layer3_flip": {
+   "n": 366,
+   "said": 0.878,
+   "right": 0.809,
+   "ece": 0.094,
+   "brier": 0.1503,
+   "unknown_share": 0.109,
+   "lies_caught": 11,
+   "lies": 64
+  },
+  "layer3_no_flip_control": {
+   "n": 366,
+   "said": 0.874,
+   "right": 0.795,
+   "ece": 0.083,
+   "brier": 0.1495,
+   "unknown_share": 0.109,
+   "lies_caught": 14,
+   "lies": 64
+  },
+  "layer3_flip_control": {
+   "n": 366,
+   "said": 0.876,
+   "right": 0.809,
+   "ece": 0.09,
+   "brier": 0.1484,
+   "unknown_share": 0.109,
+   "lies_caught": 11,
+   "lies": 64
+  }
+ }
+]
