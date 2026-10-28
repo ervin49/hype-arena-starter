@@ -69,6 +69,16 @@ class ValueFormsTest(unittest.TestCase):
         self.assertTrue(satisfies({"kind": "quantity", "value": 150, "unit": "customer"}, over))
         self.assertFalse(satisfies({"kind": "quantity", "value": 80, "unit": "customer"}, over))
 
+    def test_choice_is_not_a_range(self):
+        # value-forms.md: two values joined by "or" are a choice, and both read
+        self.assertTrue(reads("Hooly AI Pro costs €59 per month or €590 per year.",
+                              {"kind": "money", "value": 59, "currency": "EUR", "per": "month"}))
+        self.assertTrue(reads("Hooly AI Pro costs €59 per month or €590 per year.",
+                              {"kind": "money", "value": 590, "currency": "EUR", "per": "year"}))
+        self.assertFalse(reads("1 or 2 days", {"kind": "duration", "value": 2, "unit": "day"}))
+        for v in (10, 20):
+            self.assertFalse(reads("10 GB to 20 GB", {"kind": "quantity", "value": v, "unit": "GB"}))
+
     def test_name_is_masked(self):
         # "the 2026 of Hooly I/O 2026 states no year"
         text = "Hooly I/O 2026 had 1,200 attendees."

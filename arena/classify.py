@@ -11,7 +11,7 @@ they have different remedies, though both export as unsure.
 
 import os
 
-from arena.ml.model import LogReg, decide, featurize
+from arena.ml.model import PASS2_PATH, decide, featurize, load_model
 
 # An extraction weaker than this (naive Bayes margin, log scale) does not
 # decide a label on its own.
@@ -21,7 +21,12 @@ MIN_CONFIDENCE = 0.5
 # label firm; the team sets the policy once the scoring is known.
 UNSURE_BELOW = float(os.environ.get("ARENA_UNSURE_BELOW", "0") or 0)
 
-_MODEL = LogReg.load()
+# Self-training: a second pass re-checks every row against the evidence plus
+# what the first pass is confident about (arena/ml/model_pass2.json).
+PSEUDO_TAU = 0.85
+
+_MODEL = load_model()
+_MODEL_PASS2 = load_model(PASS2_PATH)
 
 
 def _fact_text(f):
@@ -44,7 +49,7 @@ def classify(row, extraction, check, model="default"):
         return pred
     checks = pred.pop("_raw_checks")
     probs = model.probs(featurize(row, extraction, checks))
-    label, conf = decide(probs, UNSURE_BELOW)
+    label, conf = decide(probs, UNSURE_BELOW, getattr(model, "calibration", None))
     if label != pred["label"]:
         pred["reason"] = (f"Model: {label} ({probs[label]:.2f}) on the evidence; "
                           f"the rules alone say {pred['label']}. " + pred["reason"])
@@ -97,25 +102,44 @@ def classify_rules(row, extraction, check):
             "checks": detail, "_raw_checks": checks}
 
 
-def label_rows(rows, practice_rows, lexicon, kb=None, extractor=None):
+def label_rows(rows, practice_rows, lexicon, kb=None, extractor=None, self_train=True, models=None):
     """The whole engine on an input: [prediction] for every unlabelled row.
 
     rows: the universe in input order (labelled rows give context and
     corroboration; only unlabelled rows are classified). Each prediction
-    also holds "extraction" for display."""
+    also holds "extraction" for display.
+
+    With self_train and a pass-2 model, a second pass checks each row
+    against the evidence plus the rows the first pass is confident about,
+    leaving out the row's own page. models: (pass 1, pass 2) instead of the
+    saved ones (evaluation)."""
+    model1, model2 = models or (_MODEL, _MODEL_PASS2)
     from arena.extract import build_extractor, extract_batch
-    from arena.truth import build_kb, check_fact
+    from arena.truth import build_kb, check_fact, page_groups
     kb = kb or build_kb(practice_rows, lexicon)
     extractor = extractor or build_extractor(practice_rows, lexicon)
     exs = extract_batch(rows, lexicon, extractor)
     kb.unl.clear()
+    kb.row_src.clear()
     kb.add_statements(rows, exs)
-    check = lambda fact, date: check_fact(fact, date, kb)
+    page = page_groups(rows)
+    todo = [(r, ex) for r, ex in zip(rows, exs) if not (r.get("label") or "").strip()]
     out = []
-    for r, ex in zip(rows, exs):
-        if (r.get("label") or "").strip():
-            continue
-        p = classify(r, ex, check)
+    for r, ex in todo:
+        # neither the row's page nor copies of its sentence count for it
+        own = page[r["id"]]
+        p = classify(r, ex, lambda fact, date: check_fact(fact, date, kb, own), model=model1)
         p["extraction"] = ex
         out.append(p)
-    return out
+    if not (self_train and model2 and out):
+        return out
+    kb2 = kb.with_pseudo([r for r, _ in todo], [ex for _, ex in todo],
+                         [p.get("probs") for p in out], PSEUDO_TAU)
+    out2 = []
+    for (r, ex), first in zip(todo, out):
+        own = page[r["id"]]
+        p = classify(r, ex, lambda fact, date: check_fact(fact, date, kb2, own), model=model2)
+        p["extraction"] = ex
+        p["first_pass"] = {"label": first["label"], "confidence": first["confidence"]}
+        out2.append(p)
+    return out2

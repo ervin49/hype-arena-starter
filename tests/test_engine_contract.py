@@ -76,6 +76,23 @@ class TruthTest(unittest.TestCase):
         self.assertEqual(r["status"], "unknown")
         self.assertIsNone(r["confidence"])
 
+    def test_copies_do_not_confirm_their_own_sentence(self):
+        rows, lex = fixture()
+        kb = build_kb(rows, lex)
+        text = "Acme Widget has 7 users."
+        users = {"subject": "Acme Widget", "attribute": "users",
+                 "value": {"kind": "quantity", "value": 7, "unit": "user"}}
+        stmts = [{"id": "c-1", "text": text, "date": "2026-03-01", "label": ""},
+                 {"id": "c-2", "text": text, "date": "2026-03-05", "label": ""},
+                 {"id": "c-3", "text": "Widget now has 7 users!", "date": "2026-03-09", "label": ""}]
+        kb.add_statements(stmts, [{"facts": [users]}] * 3)
+        f = check_fact(users, "2026-03-01", kb, ("c-1",))["features"]
+        self.assertTrue(f["u_same"])          # c-3 is another sentence: it counts
+        kb2 = build_kb(rows, lex)
+        kb2.add_statements(stmts[:2], [{"facts": [users]}] * 2)
+        f = check_fact(users, "2026-03-01", kb2, ("c-1",))["features"]
+        self.assertFalse(f["u_any"])          # c-2 is a copy of c-1: it does not
+
     def test_partial_date_is_stable(self):
         fact = {"subject": "Acme Widget", "attribute": "launched",
                 "value": {"kind": "date", "value": "2025-03"}}

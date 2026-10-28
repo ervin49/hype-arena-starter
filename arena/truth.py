@@ -18,10 +18,11 @@ it rests on ("evidence_ids").
 """
 
 import json
+import re
 from collections import defaultdict
 from datetime import date as _date
 
-from arena.values import compatible, satisfies, values_equal
+from arena.values import comparable, compatible, satisfies, values_equal
 
 # Heuristic confidences per case, before calibration (eval/ can fit them).
 CASE_CONFIDENCE = {
@@ -60,27 +61,79 @@ class KB:
         self.unsure = defaultdict(list)
         self.row_facts = {}             # row id -> [fact]
         self.unl = defaultdict(list)    # key -> [obs] stated by any row, label unknown
+        self.row_src = {}               # row id -> its source: the normalised text
 
     def add_statements(self, rows, extractions):
         """Facts rows state, whatever their label: corroboration, not proof.
 
         A row's statement never counts for a row of its own date (its page),
-        so it cannot confirm itself; copies on one page count once."""
+        so it cannot confirm itself. Each statement keeps its source, its
+        normalised text: copies of one sentence count as one source, and
+        never confirm the row they copy (see excluded_sources)."""
         for r, ex in zip(rows, extractions):
+            src = source_key(r.get("text"))
+            self.row_src[r["id"]] = src
             for f in ex.get("facts") or []:
                 key = (_canon_subject(f["subject"], self.lexicon), f["attribute"])
-                self.unl[key].append({"row": r["id"], "date": r["date"],
+                self.unl[key].append({"row": r["id"], "date": r["date"], "src": src,
                                       "day": _days(r["date"]), "value": f["value"]})
         for lst in self.unl.values():
             lst.sort(key=lambda o: o["day"])
 
+    def with_pseudo(self, rows, extractions, probs, tau=0.85):
+        """A copy of the base that also observes what a first labelling pass
+        is confident about: a row likely true observes its facts, a one-fact
+        row likely false observes its value as false. The labelled evidence
+        and the statements are shared, not copied. Checks on the copy must
+        exclude the row's own page (page_groups), so no row confirms itself."""
+        kb = KB(self.lexicon)
+        kb.unl, kb.unsure, kb.row_facts, kb.row_src = self.unl, self.unsure, self.row_facts, self.row_src
+        seen = set()
+        for key, lst in self.pos.items():
+            kb.pos[key] = list(lst)
+        for key, lst in self.neg.items():
+            kb.neg[key] = list(lst)
+        for r, ex, p in zip(rows, extractions, probs):
+            facts = (ex or {}).get("facts") or []
+            if not p or not facts:
+                continue
+            if p["true"] >= tau:
+                target = kb.pos
+            elif p["false"] >= tau and len(facts) == 1:
+                target = kb.neg
+            else:
+                continue
+            src = self.row_src.get(r["id"]) or source_key(r.get("text"))
+            for f in facts:
+                key = (_canon_subject(f["subject"], self.lexicon), f["attribute"])
+                once = (key, src, json.dumps(f["value"], sort_keys=True))
+                if once in seen:
+                    continue    # a copy of a sentence already observed
+                seen.add(once)
+                target[key].append({"row": r["id"], "date": r["date"], "day": _days(r["date"]),
+                                    "value": f["value"], "n_facts": len(facts), "pseudo": True,
+                                    "src": src})
+        for lst in list(kb.pos.values()) + list(kb.neg.values()):
+            lst.sort(key=lambda o: o["day"])
+        return kb
+
     def keys(self):
         return set(self.pos) | set(self.neg)
 
+    def excluded_sources(self, exclude_row_ids):
+        """The sources of the excluded rows: their copies are excluded too."""
+        return {self.row_src[i] for i in exclude_row_ids if i in self.row_src}
+
     def observations(self, subject, attribute, exclude_row_ids=()):
+        """Labelled and pseudo observations, without the excluded rows and,
+        for pseudo ones, without copies of the excluded rows' sentences."""
         ex = set(exclude_row_ids)
-        return ([o for o in self.pos.get((subject, attribute), []) if o["row"] not in ex],
-                [o for o in self.neg.get((subject, attribute), []) if o["row"] not in ex])
+        ex_src = self.excluded_sources(ex)
+
+        def keep(o):
+            return o["row"] not in ex and not (o.get("pseudo") and o.get("src") in ex_src)
+        return ([o for o in self.pos.get((subject, attribute), []) if keep(o)],
+                [o for o in self.neg.get((subject, attribute), []) if keep(o)])
 
     def value_at(self, subject, attribute, at_date, exclude_row_ids=()):
         """The value the evidence gives the fact on a date, or None.
@@ -359,22 +412,45 @@ def fact_features(fact, at_date, kb, exclude_row_ids=()):
                     lo, hi = min(a, b), max(a, b)
                     trend += "_between" if lo <= c <= hi else "_outside"
     f["trend"] = trend
+    # Is the value the one nearest in time? (1% of such single-fact rows are false)
+    exact = [(o, m) for o, m in m_pos if not o["value"].get("op") and m is not None]
+    if exact:
+        nearest = min(exact, key=lambda om: abs(om[0]["day"] - d))
+        f["nearest_same"] = nearest[1] is True
+        same = [o for o, m in exact if m is True]
+        other = [o for o, m in exact if m is False]
+        # Near a change: where the date sits between the closest observation
+        # of this value and the closest of another one.
+        if same and other:
+            ds = min(abs(o["day"] - d) for o in same)
+            do = min(abs(o["day"] - d) for o in other)
+            frac = do / max(1, ds + do)
+            f["change_pos"] = "near_other" if frac < 0.34 else "middle" if frac < 0.67 else "near_own"
+    # Hype: a value never seen as true, beyond every value the fact ever had.
+    if c is not None and not f["seen_pos"]:
+        fam =[_num(o["value"]) for o in pos if not o["value"].get("op") and comparable(claim, o["value"])]
+        if fam:
+            f["range_pos"] = "above_max" if c > max(fam) else "below_min" if c < min(fam) else "inside"
+            f["ratio_to_max"] = "x2+" if c > 2 * max(fam) else "x1.3+" if c > 1.3 * max(fam) else "under_x1.3"
     # corroboration: other pages within 60 days, any label
-    same_days, diff_days = set(), set()
+    # independent sources only: one per distinct sentence, never the row's own
+    ex_src = kb.excluded_sources(exclude_row_ids)
+    same_src, diff_src = set(), set()
     for o in kb.unl.get((subject, fact["attribute"]), []):
-        if o["day"] == d or abs(o["day"] - d) > 60 or o["row"] in exclude_row_ids:
+        if (o["day"] == d or abs(o["day"] - d) > 60 or o["row"] in exclude_row_ids
+                or o.get("src") in ex_src):
             continue
         m = _matches(claim, o["value"])
         if m is True:
-            same_days.add(o["day"])
+            same_src.add(o.get("src") or o["row"])
         elif m is False:
-            diff_days.add(o["day"])
-    n = len(same_days) + len(diff_days)
+            diff_src.add(o.get("src") or o["row"])
+    n = len(same_src) + len(diff_src)
     f["u_any"] = n > 0
-    f["u_same"] = bool(same_days)
-    f["u_diff"] = bool(diff_days)
+    f["u_same"] = bool(same_src)
+    f["u_diff"] = bool(diff_src)
     if n:
-        share = len(same_days) / n
+        share = len(same_src) / n
         f["u_share"] = "0" if share == 0 else "low" if share < 0.34 else "mid" if share < 0.67 else "high"
     return f
 
@@ -383,3 +459,19 @@ def check_fact(fact, at_date, kb, exclude_row_ids=()):
     res = _check(fact, at_date, kb, exclude_row_ids)
     res["features"] = fact_features(fact, at_date, kb, exclude_row_ids)
     return res
+
+
+def source_key(text):
+    """A sentence's source key: copies of one sentence share it."""
+    return re.sub(r"\W+", " ", (text or "").lower()).strip()
+
+
+def page_groups(rows):
+    """Row id -> the ids of its page: the run of consecutive rows with its date."""
+    out, page, prev = {}, [], None
+    for r in rows:
+        if r.get("date") != prev:
+            page, prev = [], r.get("date")
+        page.append(r["id"])
+        out[r["id"]] = page
+    return out
