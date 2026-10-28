@@ -1,0 +1,1785 @@
+{
+"l2": 1.0,
+"labels": [
+"true",
+"false",
+"unsure"
+],
+"meta": {
+"oracle": false,
+"rows": 1897,
+"trained_on": "out-of-fold features of data/practice.csv, 5 page-grouped folds"
+},
+"weights": {
+"bias": [
+0.446995,
+-0.016352,
+-0.430642
+],
+"case=after_last_match": [
+0.094007,
+-0.112368,
+0.018361
+],
+"case=after_last_mismatch": [
+-0.036105,
+0.041969,
+-0.005864
+],
+"case=before_first_match": [
+0.011793,
+-0.139347,
+0.127554
+],
+"case=before_first_mismatch": [
+-0.100685,
+0.014598,
+0.086086
+],
+"case=between_change_match_after": [
+0.043812,
+0.019659,
+-0.063471
+],
+"case=between_change_match_before": [
+-0.033749,
+0.072457,
+-0.038708
+],
+"case=between_change_mismatch": [
+0.041784,
+-0.033524,
+-0.00826
+],
+"case=between_equal_match": [
+0.120637,
+-0.065755,
+-0.054882
+],
+"case=between_equal_mismatch": [
+-0.029689,
+0.069004,
+-0.039316
+],
+"case=constraint_satisfied": [
+0.010557,
+-0.008457,
+-0.0021
+],
+"case=constraint_violated": [
+-0.020235,
+0.020982,
+-0.000746
+],
+"case=negative_match": [
+-0.108923,
+0.147148,
+-0.038225
+],
+"case=no_evidence": [
+-0.059383,
+0.037592,
+0.021791
+],
+"case=only_negative": [
+0.054565,
+-0.036616,
+-0.017949
+],
+"case=same_day_match": [
+0.093129,
+-0.066296,
+-0.026833
+],
+"case=same_day_mismatch": [
+0.013743,
+0.002701,
+-0.016444
+],
+"case=stable_match": [
+0.008701,
+-0.077581,
+0.06888
+],
+"case=stable_mismatch": [
+-0.01762,
+0.135604,
+-0.117984
+],
+"case=undecided": [
+0.041403,
+-0.017336,
+-0.024067
+],
+"case\u00d7kind=after_last_match|boolean": [
+-0.015303,
+-0.014095,
+0.029397
+],
+"case\u00d7kind=after_last_match|date": [
+0.003802,
+-0.003261,
+-0.000541
+],
+"case\u00d7kind=after_last_match|duration": [
+0.022438,
+-0.017781,
+-0.004656
+],
+"case\u00d7kind=after_last_match|money": [
+-0.020993,
+0.025539,
+-0.004545
+],
+"case\u00d7kind=after_last_match|name": [
+0.009797,
+-0.006986,
+-0.002812
+],
+"case\u00d7kind=after_last_match|percent": [
+0.02356,
+-0.017691,
+-0.005868
+],
+"case\u00d7kind=after_last_match|quantity": [
+0.059293,
+-0.069325,
+0.010033
+],
+"case\u00d7kind=after_last_match|version": [
+0.011413,
+-0.008767,
+-0.002647
+],
+"case\u00d7kind=after_last_mismatch|boolean": [
+-0.048502,
+0.051611,
+-0.003109
+],
+"case\u00d7kind=after_last_mismatch|date": [
+0.010642,
+-0.008961,
+-0.001681
+],
+"case\u00d7kind=after_last_mismatch|duration": [
+-0.024504,
+0.033074,
+-0.008569
+],
+"case\u00d7kind=after_last_mismatch|money": [
+-0.025424,
+0.034193,
+-0.008769
+],
+"case\u00d7kind=after_last_mismatch|name": [
+0.021817,
+-0.015986,
+-0.005831
+],
+"case\u00d7kind=after_last_mismatch|percent": [
+0.038859,
+-0.025168,
+-0.013691
+],
+"case\u00d7kind=after_last_mismatch|quantity": [
+-0.039325,
+-0.000388,
+0.039714
+],
+"case\u00d7kind=after_last_mismatch|version": [
+0.030333,
+-0.026405,
+-0.003928
+],
+"case\u00d7kind=before_first_match|boolean": [
+-0.018202,
+-0.025395,
+0.043597
+],
+"case\u00d7kind=before_first_match|date": [
+-0.032389,
+-0.001615,
+0.034004
+],
+"case\u00d7kind=before_first_match|duration": [
+0.027359,
+-0.017153,
+-0.010206
+],
+"case\u00d7kind=before_first_match|money": [
+0.025437,
+-0.016419,
+-0.009018
+],
+"case\u00d7kind=before_first_match|name": [
+0.013808,
+-0.008065,
+-0.005742
+],
+"case\u00d7kind=before_first_match|percent": [
+0.021211,
+-0.013805,
+-0.007406
+],
+"case\u00d7kind=before_first_match|quantity": [
+0.004353,
+-0.05277,
+0.048417
+],
+"case\u00d7kind=before_first_match|version": [
+-0.029784,
+-0.004125,
+0.033908
+],
+"case\u00d7kind=before_first_mismatch|boolean": [
+-0.021653,
+0.024129,
+-0.002476
+],
+"case\u00d7kind=before_first_mismatch|date": [
+0.014611,
+-0.009525,
+-0.005086
+],
+"case\u00d7kind=before_first_mismatch|duration": [
+-0.035076,
+0.024928,
+0.010148
+],
+"case\u00d7kind=before_first_mismatch|money": [
+-0.028873,
+-0.028583,
+0.057457
+],
+"case\u00d7kind=before_first_mismatch|name": [
+0.094212,
+-0.079397,
+-0.014815
+],
+"case\u00d7kind=before_first_mismatch|percent": [
+-0.028398,
+-0.020367,
+0.048765
+],
+"case\u00d7kind=before_first_mismatch|quantity": [
+-0.143847,
+0.144347,
+-0.0005
+],
+"case\u00d7kind=before_first_mismatch|version": [
+0.048339,
+-0.040933,
+-0.007406
+],
+"case\u00d7kind=between_change_match_after|boolean": [
+0.016517,
+-0.01237,
+-0.004147
+],
+"case\u00d7kind=between_change_match_after|date": [
+0.003452,
+-0.002354,
+-0.001097
+],
+"case\u00d7kind=between_change_match_after|duration": [
+0.022179,
+-0.018247,
+-0.003932
+],
+"case\u00d7kind=between_change_match_after|money": [
+-0.029715,
+0.031395,
+-0.00168
+],
+"case\u00d7kind=between_change_match_after|name": [
+0.007401,
+-0.0054,
+-0.002001
+],
+"case\u00d7kind=between_change_match_after|percent": [
+0.020199,
+-0.011016,
+-0.009184
+],
+"case\u00d7kind=between_change_match_after|quantity": [
+-0.026241,
+0.061356,
+-0.035115
+],
+"case\u00d7kind=between_change_match_after|version": [
+0.03002,
+-0.023705,
+-0.006315
+],
+"case\u00d7kind=between_change_match_before|boolean": [
+0.03449,
+-0.02749,
+-0.007
+],
+"case\u00d7kind=between_change_match_before|duration": [
+-0.047148,
+0.018798,
+0.02835
+],
+"case\u00d7kind=between_change_match_before|money": [
+-0.010381,
+0.014159,
+-0.003778
+],
+"case\u00d7kind=between_change_match_before|name": [
+0.006999,
+-0.004798,
+-0.002201
+],
+"case\u00d7kind=between_change_match_before|percent": [
+-0.051623,
+0.061413,
+-0.00979
+],
+"case\u00d7kind=between_change_match_before|quantity": [
+0.000397,
+0.039373,
+-0.03977
+],
+"case\u00d7kind=between_change_match_before|version": [
+0.033519,
+-0.028999,
+-0.00452
+],
+"case\u00d7kind=between_change_mismatch|date": [
+0.012385,
+-0.01115,
+-0.001234
+],
+"case\u00d7kind=between_change_mismatch|duration": [
+0.019246,
+-0.007335,
+-0.011911
+],
+"case\u00d7kind=between_change_mismatch|money": [
+0.061792,
+-0.052322,
+-0.00947
+],
+"case\u00d7kind=between_change_mismatch|name": [
+0.006724,
+-0.006193,
+-0.00053
+],
+"case\u00d7kind=between_change_mismatch|percent": [
+-0.018389,
+0.029888,
+-0.0115
+],
+"case\u00d7kind=between_change_mismatch|quantity": [
+-0.048743,
+0.008778,
+0.039965
+],
+"case\u00d7kind=between_change_mismatch|version": [
+0.00877,
+0.00481,
+-0.01358
+],
+"case\u00d7kind=between_equal_match|boolean": [
+-0.026512,
+0.029035,
+-0.002523
+],
+"case\u00d7kind=between_equal_match|duration": [
+0.026069,
+-0.021175,
+-0.004894
+],
+"case\u00d7kind=between_equal_match|money": [
+0.0337,
+-0.027851,
+-0.005849
+],
+"case\u00d7kind=between_equal_match|name": [
+0.012262,
+-0.009844,
+-0.002418
+],
+"case\u00d7kind=between_equal_match|percent": [
+0.031488,
+-0.025096,
+-0.006393
+],
+"case\u00d7kind=between_equal_match|quantity": [
+0.050601,
+-0.023943,
+-0.026659
+],
+"case\u00d7kind=between_equal_match|version": [
+-0.006972,
+0.013118,
+-0.006146
+],
+"case\u00d7kind=between_equal_mismatch|boolean": [
+-0.037742,
+0.042133,
+-0.004391
+],
+"case\u00d7kind=between_equal_mismatch|date": [
+0.015988,
+-0.014743,
+-0.001245
+],
+"case\u00d7kind=between_equal_mismatch|duration": [
+-0.003602,
+0.017604,
+-0.014002
+],
+"case\u00d7kind=between_equal_mismatch|money": [
+0.063747,
+-0.053457,
+-0.01029
+],
+"case\u00d7kind=between_equal_mismatch|name": [
+0.03437,
+-0.030485,
+-0.003885
+],
+"case\u00d7kind=between_equal_mismatch|percent": [
+0.036853,
+-0.027876,
+-0.008977
+],
+"case\u00d7kind=between_equal_mismatch|quantity": [
+-0.105817,
+0.097448,
+0.00837
+],
+"case\u00d7kind=between_equal_mismatch|version": [
+-0.033485,
+0.038381,
+-0.004895
+],
+"case\u00d7kind=constraint_satisfied|date": [
+0.002452,
+-0.00167,
+-0.000783
+],
+"case\u00d7kind=constraint_satisfied|quantity": [
+0.008105,
+-0.006788,
+-0.001317
+],
+"case\u00d7kind=constraint_violated|money": [
+-0.020235,
+0.020982,
+-0.000746
+],
+"case\u00d7kind=negative_match|date": [
+0.007395,
+-0.006633,
+-0.000762
+],
+"case\u00d7kind=negative_match|duration": [
+0.030603,
+-0.02875,
+-0.001853
+],
+"case\u00d7kind=negative_match|money": [
+-0.11667,
+0.126806,
+-0.010136
+],
+"case\u00d7kind=negative_match|percent": [
+-0.112041,
+0.116753,
+-0.004712
+],
+"case\u00d7kind=negative_match|quantity": [
+0.065823,
+-0.04622,
+-0.019603
+],
+"case\u00d7kind=negative_match|version": [
+0.015967,
+-0.014808,
+-0.00116
+],
+"case\u00d7kind=no_evidence|boolean": [
+0.006173,
+-0.003046,
+-0.003127
+],
+"case\u00d7kind=no_evidence|date": [
+0.005215,
+0.008555,
+-0.01377
+],
+"case\u00d7kind=no_evidence|duration": [
+0.003686,
+-0.002027,
+-0.001659
+],
+"case\u00d7kind=no_evidence|money": [
+0.008489,
+-0.00438,
+-0.004109
+],
+"case\u00d7kind=no_evidence|percent": [
+0.009902,
+-0.005103,
+-0.0048
+],
+"case\u00d7kind=no_evidence|quantity": [
+-0.092849,
+0.043592,
+0.049257
+],
+"case\u00d7kind=only_negative|boolean": [
+0.00896,
+-0.006112,
+-0.002848
+],
+"case\u00d7kind=only_negative|date": [
+0.006999,
+-0.004309,
+-0.002691
+],
+"case\u00d7kind=only_negative|money": [
+0.002,
+-0.001048,
+-0.000952
+],
+"case\u00d7kind=only_negative|quantity": [
+0.036605,
+-0.025147,
+-0.011458
+],
+"case\u00d7kind=same_day_match|duration": [
+0.014509,
+-0.011869,
+-0.002641
+],
+"case\u00d7kind=same_day_match|money": [
+0.021419,
+-0.016185,
+-0.005234
+],
+"case\u00d7kind=same_day_match|name": [
+0.000939,
+-0.000632,
+-0.000307
+],
+"case\u00d7kind=same_day_match|percent": [
+0.006222,
+-0.005392,
+-0.00083
+],
+"case\u00d7kind=same_day_match|quantity": [
+0.042889,
+-0.026675,
+-0.016214
+],
+"case\u00d7kind=same_day_match|version": [
+0.00715,
+-0.005543,
+-0.001607
+],
+"case\u00d7kind=same_day_mismatch|duration": [
+-0.007132,
+0.009853,
+-0.00272
+],
+"case\u00d7kind=same_day_mismatch|money": [
+0.020914,
+-0.017006,
+-0.003907
+],
+"case\u00d7kind=same_day_mismatch|name": [
+-0.004784,
+0.008249,
+-0.003465
+],
+"case\u00d7kind=same_day_mismatch|percent": [
+0.023035,
+-0.018942,
+-0.004093
+],
+"case\u00d7kind=same_day_mismatch|quantity": [
+-0.018291,
+0.020549,
+-0.002258
+],
+"case\u00d7kind=stable_match|boolean": [
+-0.006882,
+-0.017239,
+0.024121
+],
+"case\u00d7kind=stable_match|date": [
+0.080308,
+-0.053857,
+-0.026451
+],
+"case\u00d7kind=stable_match|duration": [
+0.041578,
+-0.027919,
+-0.013659
+],
+"case\u00d7kind=stable_match|money": [
+0.008882,
+-0.031286,
+0.022404
+],
+"case\u00d7kind=stable_match|name": [
+-0.003844,
+0.015226,
+-0.011382
+],
+"case\u00d7kind=stable_match|percent": [
+0.006556,
+-0.004585,
+-0.001971
+],
+"case\u00d7kind=stable_match|quantity": [
+-0.117896,
+0.042079,
+0.075817
+],
+"case\u00d7kind=stable_mismatch|boolean": [
+-0.035465,
+0.045813,
+-0.010348
+],
+"case\u00d7kind=stable_mismatch|date": [
+-0.067654,
+0.08038,
+-0.012726
+],
+"case\u00d7kind=stable_mismatch|duration": [
+-0.048985,
+0.056929,
+-0.007944
+],
+"case\u00d7kind=stable_mismatch|money": [
+0.025959,
+-0.004907,
+-0.021052
+],
+"case\u00d7kind=stable_mismatch|name": [
+-0.03968,
+0.050031,
+-0.010351
+],
+"case\u00d7kind=stable_mismatch|percent": [
+0.011356,
+0.006537,
+-0.017893
+],
+"case\u00d7kind=stable_mismatch|quantity": [
+0.129608,
+-0.093879,
+-0.035729
+],
+"case\u00d7kind=stable_mismatch|version": [
+0.007241,
+-0.005299,
+-0.001942
+],
+"case\u00d7kind=undecided|date": [
+0.00813,
+-0.005211,
+-0.00292
+],
+"case\u00d7kind=undecided|duration": [
+0.009178,
+-0.007565,
+-0.001614
+],
+"case\u00d7kind=undecided|money": [
+0.019124,
+-0.01161,
+-0.007515
+],
+"case\u00d7kind=undecided|quantity": [
+0.00497,
+0.007049,
+-0.012019
+],
+"case\u00d7seen=after_last_match|True|False": [
+0.07477,
+-0.09706,
+0.02229
+],
+"case\u00d7seen=after_last_match|True|True": [
+0.019237,
+-0.015307,
+-0.003929
+],
+"case\u00d7seen=after_last_mismatch|False|False": [
+0.093305,
+-0.097436,
+0.004131
+],
+"case\u00d7seen=after_last_mismatch|False|True": [
+0.011808,
+-0.010067,
+-0.001741
+],
+"case\u00d7seen=after_last_mismatch|True|False": [
+-0.129662,
+0.13665,
+-0.006988
+],
+"case\u00d7seen=after_last_mismatch|True|True": [
+-0.011556,
+0.012823,
+-0.001266
+],
+"case\u00d7seen=before_first_match|True|False": [
+-0.046854,
+-0.101882,
+0.148736
+],
+"case\u00d7seen=before_first_match|True|True": [
+0.058647,
+-0.037465,
+-0.021182
+],
+"case\u00d7seen=before_first_mismatch|False|False": [
+-0.142969,
+0.063523,
+0.079447
+],
+"case\u00d7seen=before_first_mismatch|False|True": [
+0.077813,
+-0.089727,
+0.011914
+],
+"case\u00d7seen=before_first_mismatch|True|False": [
+-0.013875,
+0.016674,
+-0.002799
+],
+"case\u00d7seen=before_first_mismatch|True|True": [
+-0.021653,
+0.024129,
+-0.002476
+],
+"case\u00d7seen=between_change_match_after|True|False": [
+-0.019698,
+0.075161,
+-0.055463
+],
+"case\u00d7seen=between_change_match_after|True|True": [
+0.06351,
+-0.055501,
+-0.008008
+],
+"case\u00d7seen=between_change_match_before|True|False": [
+-0.014722,
+0.077505,
+-0.062783
+],
+"case\u00d7seen=between_change_match_before|True|True": [
+-0.019027,
+-0.005048,
+0.024075
+],
+"case\u00d7seen=between_change_mismatch|False|False": [
+0.198025,
+-0.204487,
+0.006462
+],
+"case\u00d7seen=between_change_mismatch|False|True": [
+0.033979,
+-0.030302,
+-0.003677
+],
+"case\u00d7seen=between_change_mismatch|True|False": [
+-0.168763,
+0.178033,
+-0.00927
+],
+"case\u00d7seen=between_change_mismatch|True|True": [
+-0.021458,
+0.023233,
+-0.001775
+],
+"case\u00d7seen=between_equal_match|True|False": [
+0.033505,
+0.005807,
+-0.039313
+],
+"case\u00d7seen=between_equal_match|True|True": [
+0.087132,
+-0.071563,
+-0.015569
+],
+"case\u00d7seen=between_equal_mismatch|False|False": [
+0.255178,
+-0.237424,
+-0.017754
+],
+"case\u00d7seen=between_equal_mismatch|False|True": [
+-0.086613,
+0.092432,
+-0.005819
+],
+"case\u00d7seen=between_equal_mismatch|True|False": [
+-0.166663,
+0.177431,
+-0.010767
+],
+"case\u00d7seen=between_equal_mismatch|True|True": [
+-0.03159,
+0.036565,
+-0.004975
+],
+"case\u00d7seen=constraint_satisfied|True|False": [
+0.004004,
+-0.002808,
+-0.001196
+],
+"case\u00d7seen=constraint_satisfied|True|True": [
+0.006553,
+-0.005649,
+-0.000904
+],
+"case\u00d7seen=constraint_violated|False|False": [
+-0.020235,
+0.020982,
+-0.000746
+],
+"case\u00d7seen=negative_match|False|True": [
+-0.12925,
+0.1427,
+-0.01345
+],
+"case\u00d7seen=negative_match|True|True": [
+0.020327,
+0.004448,
+-0.024775
+],
+"case\u00d7seen=no_evidence|False|False": [
+-0.059383,
+0.037592,
+0.021791
+],
+"case\u00d7seen=only_negative|False|False": [
+0.041353,
+-0.026722,
+-0.014631
+],
+"case\u00d7seen=only_negative|False|True": [
+0.013212,
+-0.009894,
+-0.003318
+],
+"case\u00d7seen=same_day_match|True|False": [
+0.068189,
+-0.045508,
+-0.022681
+],
+"case\u00d7seen=same_day_match|True|True": [
+0.02494,
+-0.020788,
+-0.004152
+],
+"case\u00d7seen=same_day_mismatch|False|False": [
+0.063955,
+-0.054584,
+-0.009371
+],
+"case\u00d7seen=same_day_mismatch|False|True": [
+-0.041007,
+0.042543,
+-0.001537
+],
+"case\u00d7seen=same_day_mismatch|True|False": [
+0.003727,
+0.001195,
+-0.004922
+],
+"case\u00d7seen=same_day_mismatch|True|True": [
+-0.012933,
+0.013547,
+-0.000614
+],
+"case\u00d7seen=stable_match|True|False": [
+0.008701,
+-0.077581,
+0.06888
+],
+"case\u00d7seen=stable_mismatch|False|False": [
+0.058615,
+0.075351,
+-0.133966
+],
+"case\u00d7seen=stable_mismatch|False|True": [
+-0.076235,
+0.060253,
+0.015982
+],
+"case\u00d7seen=undecided|False|False": [
+0.004482,
+0.007789,
+-0.012271
+],
+"case\u00d7seen=undecided|False|True": [
+0.015714,
+-0.009657,
+-0.006057
+],
+"case\u00d7seen=undecided|True|False": [
+0.018704,
+-0.013388,
+-0.005316
+],
+"case\u00d7seen=undecided|True|True": [
+0.002502,
+-0.002079,
+-0.000423
+],
+"complete=False": [
+0.305109,
+-0.019182,
+-0.285927
+],
+"complete=True": [
+0.127741,
+0.004435,
+-0.132176
+],
+"issue=no fact extracted": [
+0.305109,
+-0.019182,
+-0.285927
+],
+"issue=no subject": [
+0.048392,
+-0.07887,
+0.030478
+],
+"issue=subject from context": [
+0.23502,
+-0.324667,
+0.089647
+],
+"issue=weak attribute match": [
+0.003684,
+0.026473,
+-0.030157
+],
+"min_score=high": [
+0.092434,
+-0.066732,
+-0.025702
+],
+"min_score=low": [
+0.073286,
+-0.014496,
+-0.05879
+],
+"min_score=mid": [
+-0.037979,
+0.085663,
+-0.047684
+],
+"n_contradicted=0": [
+0.385472,
+-0.394048,
+0.008576
+],
+"n_contradicted=1": [
+-0.238352,
+0.381506,
+-0.143154
+],
+"n_contradicted=2": [
+-0.019379,
+0.016976,
+0.002402
+],
+"n_facts=0": [
+0.305109,
+-0.019182,
+-0.285927
+],
+"n_facts=1": [
+0.030966,
+-0.069311,
+0.038345
+],
+"n_facts=2": [
+0.106392,
+0.066901,
+-0.173293
+],
+"n_facts=3": [
+-0.009617,
+0.006845,
+0.002771
+],
+"n_supported=0": [
+-0.132381,
+0.183902,
+-0.051521
+],
+"n_supported=1": [
+0.038607,
+-0.021311,
+-0.017296
+],
+"n_supported=2": [
+0.221515,
+-0.158156,
+-0.063359
+],
+"n_unknown=0": [
+0.105554,
+-0.009769,
+-0.095785
+],
+"n_unknown=1": [
+0.06559,
+-0.03694,
+-0.02865
+],
+"n_unknown=2": [
+-0.043403,
+0.051145,
+-0.007741
+],
+"no_facts": [
+0.305109,
+-0.019182,
+-0.285927
+],
+"trend\u00d7kind=against_between|percent": [
+0.002001,
+-0.001668,
+-0.000333
+],
+"trend\u00d7kind=against_outside|duration": [
+-0.017912,
+0.020629,
+-0.002717
+],
+"trend\u00d7kind=against_outside|percent": [
+-0.008689,
+0.010051,
+-0.001363
+],
+"trend\u00d7kind=against_outside|quantity": [
+-0.10669,
+0.044133,
+0.062557
+],
+"trend\u00d7kind=against|duration": [
+-0.05464,
+0.061067,
+-0.006427
+],
+"trend\u00d7kind=against|money": [
+-0.015635,
+0.020481,
+-0.004846
+],
+"trend\u00d7kind=against|percent": [
+0.1127,
+-0.102377,
+-0.010323
+],
+"trend\u00d7kind=against|quantity": [
+-0.022782,
+0.014433,
+0.008349
+],
+"trend\u00d7kind=down_between|duration": [
+0.037918,
+-0.031671,
+-0.006247
+],
+"trend\u00d7kind=down_between|money": [
+0.011339,
+-0.01023,
+-0.001108
+],
+"trend\u00d7kind=down_between|percent": [
+0.009774,
+-0.008614,
+-0.00116
+],
+"trend\u00d7kind=down_between|quantity": [
+0.007296,
+-0.00572,
+-0.001576
+],
+"trend\u00d7kind=down_outside|duration": [
+0.015894,
+-0.014935,
+-0.000959
+],
+"trend\u00d7kind=down_outside|money": [
+0.025907,
+-0.022216,
+-0.003691
+],
+"trend\u00d7kind=down_outside|percent": [
+-0.016891,
+0.020669,
+-0.003777
+],
+"trend\u00d7kind=down_outside|quantity": [
+-0.025757,
+0.028778,
+-0.003021
+],
+"trend\u00d7kind=down|duration": [
+-0.021723,
+0.029106,
+-0.007383
+],
+"trend\u00d7kind=down|money": [
+0.049544,
+-0.035307,
+-0.014237
+],
+"trend\u00d7kind=down|percent": [
+-0.03529,
+0.039682,
+-0.004392
+],
+"trend\u00d7kind=down|quantity": [
+-0.048275,
+0.067069,
+-0.018794
+],
+"trend\u00d7kind=equal_between|duration": [
+-0.026726,
+-0.000456,
+0.027182
+],
+"trend\u00d7kind=equal_between|money": [
+-0.030617,
+0.035141,
+-0.004524
+],
+"trend\u00d7kind=equal_between|percent": [
+-0.032961,
+0.044261,
+-0.0113
+],
+"trend\u00d7kind=equal_between|quantity": [
+0.049844,
+-0.00586,
+-0.043984
+],
+"trend\u00d7kind=equal|duration": [
+0.096261,
+-0.075861,
+-0.0204
+],
+"trend\u00d7kind=equal|money": [
+0.031045,
+-0.011678,
+-0.019366
+],
+"trend\u00d7kind=equal|percent": [
+0.059506,
+-0.046132,
+-0.013374
+],
+"trend\u00d7kind=equal|quantity": [
+0.048211,
+-0.112278,
+0.064067
+],
+"trend\u00d7kind=na|boolean": [
+-0.14412,
+0.086974,
+0.057146
+],
+"trend\u00d7kind=na|date": [
+0.071335,
+-0.034353,
+-0.036982
+],
+"trend\u00d7kind=na|duration": [
+-0.041026,
+0.055995,
+-0.014969
+],
+"trend\u00d7kind=na|money": [
+-0.017532,
+-0.034716,
+0.052248
+],
+"trend\u00d7kind=na|name": [
+0.16002,
+-0.094281,
+-0.065739
+],
+"trend\u00d7kind=na|percent": [
+-0.007265,
+-0.014656,
+0.021922
+],
+"trend\u00d7kind=na|quantity": [
+-0.013164,
+-0.033605,
+0.046769
+],
+"trend\u00d7kind=na|version": [
+0.122511,
+-0.102274,
+-0.020237
+],
+"trend\u00d7kind=up_between|duration": [
+0.006016,
+-0.004571,
+-0.001445
+],
+"trend\u00d7kind=up_between|money": [
+-0.026123,
+0.028211,
+-0.002088
+],
+"trend\u00d7kind=up_between|percent": [
+0.001992,
+0.004618,
+-0.006609
+],
+"trend\u00d7kind=up_between|quantity": [
+0.045478,
+-0.001148,
+-0.04433
+],
+"trend\u00d7kind=up_outside|duration": [
+0.015226,
+-0.012053,
+-0.003172
+],
+"trend\u00d7kind=up_outside|money": [
+0.03392,
+-0.028419,
+-0.0055
+],
+"trend\u00d7kind=up_outside|percent": [
+-0.086654,
+0.094126,
+-0.007472
+],
+"trend\u00d7kind=up_outside|quantity": [
+0.016984,
+-0.012663,
+-0.004321
+],
+"trend\u00d7kind=up|duration": [
+-0.040315,
+0.049461,
+-0.009146
+],
+"trend\u00d7kind=up|money": [
+0.020034,
+-0.000293,
+-0.019741
+],
+"trend\u00d7kind=up|percent": [
+0.051119,
+-0.039362,
+-0.011757
+],
+"trend\u00d7kind=up|quantity": [
+-0.127753,
+0.118652,
+0.009101
+],
+"trend\u00d7kind=with_between|duration": [
+0.009385,
+-0.008206,
+-0.001179
+],
+"trend\u00d7kind=with_between|percent": [
+0.017569,
+-0.014747,
+-0.002822
+],
+"trend\u00d7kind=with_between|quantity": [
+0.031102,
+-0.023163,
+-0.007939
+],
+"trend\u00d7kind=with_outside|duration": [
+0.007568,
+-0.006933,
+-0.000635
+],
+"trend\u00d7kind=with_outside|quantity": [
+-0.067146,
+0.071028,
+-0.003882
+],
+"trend\u00d7kind=with|duration": [
+0.064471,
+-0.060208,
+-0.004263
+],
+"trend\u00d7kind=with|money": [
+-0.042711,
+0.047044,
+-0.004334
+],
+"trend\u00d7kind=with|percent": [
+-0.04812,
+0.053701,
+-0.005581
+],
+"trend\u00d7kind=with|quantity": [
+0.022286,
+-0.030221,
+0.007934
+],
+"w.gap_after=180": [
+-0.0262,
+-0.105422,
+0.131622
+],
+"w.gap_after=30": [
+0.015115,
+0.059471,
+-0.074586
+],
+"w.gap_after=7": [
+-0.006961,
+0.096046,
+-0.089085
+],
+"w.gap_after=90": [
+0.074906,
+0.142943,
+-0.217849
+],
+"w.gap_after=more": [
+-0.062251,
+-0.046215,
+0.108466
+],
+"w.gap_after=none": [
+0.133132,
+-0.142389,
+0.009257
+],
+"w.gap_before=180": [
+0.106436,
+-0.103627,
+-0.002809
+],
+"w.gap_before=30": [
+-0.013769,
+0.098014,
+-0.084246
+],
+"w.gap_before=7": [
+-0.06626,
+0.187068,
+-0.120808
+],
+"w.gap_before=90": [
+0.069609,
+-0.043022,
+-0.026586
+],
+"w.gap_before=more": [
+0.005403,
+0.042266,
+-0.047669
+],
+"w.gap_before=none": [
+0.026323,
+-0.176265,
+0.149942
+],
+"w.has_op=False": [
+0.168354,
+-0.073334,
+-0.095019
+],
+"w.has_op=True": [
+-0.040612,
+0.077769,
+-0.037157
+],
+"w.kind=boolean": [
+-0.14412,
+0.086974,
+0.057146
+],
+"w.kind=date": [
+0.071335,
+-0.034353,
+-0.036982
+],
+"w.kind=duration": [
+0.050397,
+0.001365,
+-0.051762
+],
+"w.kind=money": [
+0.039172,
+-0.011982,
+-0.02719
+],
+"w.kind=name": [
+0.16002,
+-0.094281,
+-0.065739
+],
+"w.kind=percent": [
+0.018791,
+0.039551,
+-0.058341
+],
+"w.kind=quantity": [
+-0.190365,
+0.119435,
+0.07093
+],
+"w.kind=version": [
+0.122511,
+-0.102274,
+-0.020237
+],
+"w.n_distinct=0": [
+0.012811,
+-0.014373,
+0.001561
+],
+"w.n_distinct=1": [
+-0.015593,
+-0.051592,
+0.067185
+],
+"w.n_distinct=2": [
+-0.028817,
+0.086854,
+-0.058037
+],
+"w.n_distinct=3": [
+0.028515,
+0.07133,
+-0.099846
+],
+"w.n_distinct=4": [
+0.130824,
+-0.087785,
+-0.04304
+],
+"w.n_neg=0": [
+-0.005993,
+0.001911,
+0.004083
+],
+"w.n_neg=1": [
+0.049199,
+-0.077991,
+0.028792
+],
+"w.n_neg=2": [
+0.14292,
+-0.035015,
+-0.107905
+],
+"w.n_neg=3": [
+-0.024925,
+0.080769,
+-0.055844
+],
+"w.n_neg=4": [
+-0.05066,
+0.073265,
+-0.022605
+],
+"w.n_neg=5": [
+0.0172,
+-0.038503,
+0.021303
+],
+"w.n_pos=0": [
+0.012811,
+-0.014373,
+0.001561
+],
+"w.n_pos=1": [
+0.006868,
+-0.079347,
+0.072479
+],
+"w.n_pos=10": [
+0.127443,
+-0.034984,
+-0.092459
+],
+"w.n_pos=2": [
+0.043118,
+0.004485,
+-0.047603
+],
+"w.n_pos=3": [
+-0.057019,
+0.109912,
+-0.052893
+],
+"w.n_pos=4": [
+0.007911,
+0.025975,
+-0.033887
+],
+"w.n_pos=5": [
+-0.041491,
+-0.001801,
+0.043292
+],
+"w.n_pos=6": [
+-0.033776,
+0.047019,
+-0.013243
+],
+"w.n_pos=7": [
+-0.058727,
+0.039838,
+0.018889
+],
+"w.n_pos=8": [
+0.097975,
+-0.062862,
+-0.035113
+],
+"w.n_pos=9": [
+0.022627,
+-0.029428,
+0.006801
+],
+"w.other_same_day=False": [
+0.118855,
+-0.013502,
+-0.105352
+],
+"w.other_same_day=True": [
+0.008887,
+0.017937,
+-0.026824
+],
+"w.rel_diff=large": [
+0.028931,
+-0.012624,
+-0.016308
+],
+"w.rel_diff=mid": [
+-0.110048,
+0.206574,
+-0.096526
+],
+"w.rel_diff=small": [
+-0.116464,
+0.154264,
+-0.0378
+],
+"w.score=high": [
+-0.000997,
+0.05444,
+-0.053443
+],
+"w.score=low": [
+0.090955,
+-0.044109,
+-0.046846
+],
+"w.score=mid": [
+0.037784,
+-0.005896,
+-0.031887
+],
+"w.seen_neg=False": [
+0.14369,
+-0.085189,
+-0.058501
+],
+"w.seen_neg=True": [
+-0.015949,
+0.089624,
+-0.073675
+],
+"w.seen_neg_near=False": [
+0.180153,
+-0.075599,
+-0.104554
+],
+"w.seen_neg_near=True": [
+-0.052412,
+0.080034,
+-0.027622
+],
+"w.seen_pos=False": [
+0.311747,
+-0.227137,
+-0.08461
+],
+"w.seen_pos=True": [
+-0.184006,
+0.231572,
+-0.047566
+],
+"w.seen_pos_after=False": [
+0.033841,
+0.049003,
+-0.082845
+],
+"w.seen_pos_after=True": [
+0.0939,
+-0.044569,
+-0.049331
+],
+"w.seen_pos_before=False": [
+0.061501,
+-0.026222,
+-0.035279
+],
+"w.seen_pos_before=True": [
+0.06624,
+0.030657,
+-0.096897
+],
+"w.seen_pos_same_day=False": [
+0.008176,
+0.089741,
+-0.097917
+],
+"w.seen_pos_same_day=True": [
+0.119565,
+-0.085306,
+-0.034259
+],
+"w.trend=against": [
+0.019643,
+-0.006396,
+-0.013247
+],
+"w.trend=against_between": [
+0.002001,
+-0.001668,
+-0.000333
+],
+"w.trend=against_outside": [
+-0.13329,
+0.074814,
+0.058477
+],
+"w.trend=down": [
+-0.055743,
+0.10055,
+-0.044806
+],
+"w.trend=down_between": [
+0.066326,
+-0.056235,
+-0.010092
+],
+"w.trend=down_outside": [
+-0.000847,
+0.012296,
+-0.011449
+],
+"w.trend=equal": [
+0.235023,
+-0.245949,
+0.010926
+],
+"w.trend=equal_between": [
+-0.04046,
+0.073086,
+-0.032626
+],
+"w.trend=na": [
+0.130759,
+-0.170917,
+0.040157
+],
+"w.trend=up": [
+-0.096916,
+0.128458,
+-0.031542
+],
+"w.trend=up_between": [
+0.027363,
+0.02711,
+-0.054473
+],
+"w.trend=up_outside": [
+-0.020524,
+0.04099,
+-0.020466
+],
+"w.trend=with": [
+-0.004073,
+0.010317,
+-0.006244
+],
+"w.trend=with_between": [
+0.058056,
+-0.046116,
+-0.01194
+],
+"w.trend=with_outside": [
+-0.059578,
+0.064095,
+-0.004517
+],
+"w.u_any=False": [
+0.006905,
+-0.13083,
+0.123926
+],
+"w.u_any=True": [
+0.120837,
+0.135265,
+-0.256102
+],
+"w.u_diff=False": [
+0.149756,
+-0.225904,
+0.076147
+],
+"w.u_diff=True": [
+-0.022015,
+0.230339,
+-0.208324
+],
+"w.u_same=False": [
+-0.189456,
+0.130354,
+0.059102
+],
+"w.u_same=True": [
+0.317197,
+-0.125919,
+-0.191279
+],
+"w.u_share=0": [
+-0.196361,
+0.261184,
+-0.064823
+],
+"w.u_share=high": [
+0.199146,
+-0.16083,
+-0.038316
+],
+"w.u_share=low": [
+-0.200606,
+0.289301,
+-0.088695
+],
+"w.u_share=mid": [
+0.318658,
+-0.25439,
+-0.064268
+]
+}
+}
