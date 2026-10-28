@@ -6,6 +6,7 @@ every answer. It is never a fallback: without it, a missing engine is a 503.
 
     uvicorn api.main:app --port 8000
 """
+import json
 import os
 import re
 import threading
@@ -78,6 +79,18 @@ def _load(state, engine, demo):
     except Exception as e:
         traceback.print_exc()
         state.error = f"engine unavailable: {type(e).__name__}: {e}"
+
+
+METRICS = {"labels": os.path.join(HERE, "eval", "calibration_labels.json"),
+           "claims": os.path.join(HERE, "reports", "claims_calibration.json")}
+
+
+def _read_json(path):
+    """A measurement file as written by its owner, or None when it does not exist yet."""
+    if not os.path.exists(path):
+        return None
+    with open(path, encoding="utf-8") as f:
+        return json.load(f)
 
 
 def _evidence(ids, sources):
@@ -157,6 +170,12 @@ def create_app(engine=None, demo=None):
         if state.claims is None:
             raise HTTPException(503, state.claims_error or "claims not built")
         return {**state.claims, "demo_mode": state.demo}
+
+    @app.get("/metrics")
+    def metrics():
+        """Measured calibration: labels (A, eval/calibration_labels.json) and claims
+        (C, reports/claims_calibration.json). A file not written yet is null; nothing is invented."""
+        return {name: _read_json(path) for name, path in METRICS.items()}
 
     @app.post("/predict")
     def predict(request: PredictRequest):

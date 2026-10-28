@@ -143,3 +143,12 @@ def test_uploads_are_labelled_as_one_batch_like_the_runner():
     assert seen["ids"] == ["demo-2", "known"]  # labelled rows go in as context
     [p] = body["predictions"]
     assert p["reason"] == "batch" and p["evidence"][0]["id"] == "p-1560"
+
+
+def test_metrics_serves_measurements_and_nulls_what_is_missing(api, tmp_path, monkeypatch):
+    import api.main as m
+    body = api.get("/metrics").json()
+    assert set(body) == {"labels", "claims"}
+    assert body["claims"]["groups"] and {g["group"] for g in body["claims"]["groups"]} >= {"change", "at_event"}
+    monkeypatch.setitem(m.METRICS, "labels", str(tmp_path / "missing.json"))
+    assert api.get("/metrics").json()["labels"] is None
