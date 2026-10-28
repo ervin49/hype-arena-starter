@@ -8,8 +8,13 @@ the main model labels the unseen rows, the control model labels the control grou
 arena.controls lowers the confidence as far as the control group shows. We compare what we
 said with how often we were right on the unseen rows, before and after the control.
 
+With --layer3, layer 3, the confidence model (arena/confidence.py), is trained in each scenario on the known
+rows only: on out-of-fold answers of 5 page folds of them, as scripts/train_confidence.py does
+on all practice. It is measured on the unseen rows with and without its flip rule.
+
 Scenarios: random pages (no shift), the latest pages (time shift), the rows of held-out
-subjects (subject shift). Takes about 8 minutes. Writes reports/shift_test.json.
+subjects (subject shift). Takes about 8 minutes, 35 with --layer3. Writes reports/shift_test.json
+(reports/shift_test_layer3.json with --layer3).
 
     .venv/bin/python scripts/shift_test.py
 """
@@ -25,11 +30,11 @@ sys.path.insert(0, os.path.join(ROOT, "eval"))
 from common import load, page_folds, pages  # noqa: E402
 from train_model import train  # noqa: E402
 
-from arena import controls  # noqa: E402
+from arena import confidence, controls  # noqa: E402
 from arena.classify import label_rows  # noqa: E402
 
 UNSEEN_SHARE = 0.2
-OUT = os.path.join(ROOT, "reports", "shift_test.json")
+OUT = os.path.join(ROOT, "reports", "shift_test_layer3.json" if "--layer3" in sys.argv else "shift_test.json")
 
 
 def split_random(rows):
@@ -73,6 +78,43 @@ def summary(ans):
             "unknown_share": round(sum(k == "unknown" for *_, k in ans) / n, 3)}
 
 
+def layer3_on_known(known, lex, run_input, known_ids):
+    """The confidence model trained on out-of-fold answers of the known rows only."""
+    X, y = [], []
+    for k, fold in enumerate(page_folds(known, 5, seed=0)):
+        held = {known[i]["id"] for i in fold}
+        rest = [r for r in known if r["id"] not in held]
+        inp = [{**r, "label": ""} if r["id"] in held else r for r in run_input]
+        print(f"   layer 3 fold {k}: training on {len(rest)}", flush=True)
+        gold = {r["id"]: r["label"] for r in known if r["id"] in held}
+        for p in label_rows(inp, rest, lex, models=train(rest, lex)):
+            g = gold.get(p["id"])
+            if g in ("true", "false") and p.get("label") in ("true", "false"):
+                X.append(confidence.features(p))
+                y.append(1.0 if p["label"] == g else 0.0)
+    return confidence.ConfidenceModel().fit(X, y, l2=confidence.L2)
+
+
+def with_layer3(preds, model, truth, flip, control=None):
+    """Layer 3 on the unseen rows' answers; with control = (control answers, their truth), the
+    run-time control is then fitted on the control group passed through layer 3 too, and applied."""
+    saved = confidence.FLIP_BELOW
+    confidence.FLIP_BELOW = flip
+    try:
+        out = [dict(p) for p in preds]
+        confidence.apply(out, model)
+        if control:
+            ctrl = [dict(p) for p in control[0]]
+            confidence.apply(ctrl, model)
+            factors, _ = controls.measure(ctrl, control[1])
+            controls.apply({p["id"]: p for p in out}, factors)
+    finally:
+        confidence.FLIP_BELOW = saved
+    ans = answers(out, truth)
+    return dict(summary(ans), lies_caught=sum(1 for p in out if truth.get(p["id"]) == "false" and p["label"] == "false"),
+                lies=sum(1 for g in truth.values() if g == "false"))
+
+
 def scenario(name, rows, lex, known_mask):
     known = [r for r, k in zip(rows, known_mask) if k]
     unseen = [r for r, k in zip(rows, known_mask) if not k]
@@ -102,6 +144,25 @@ def scenario(name, rows, lex, known_mask):
               "control_unknown_share": round(sum(p.get("kind") == "unknown" for p in ctrl_preds if p["id"] in group)
                                              / max(1, len(group)), 3),
               "unseen_before": summary(before), "unseen_after": summary(after)}
+    lies = sum(1 for g in truth.values() if g == "false")
+    result["unseen_before"]["lies_caught"] = sum(1 for p in preds if truth.get(p["id"]) == "false" and p["label"] == "false")
+    result["unseen_before"]["lies"] = lies
+    result["unseen_after"]["lies_caught"] = sum(1 for p in after_preds.values()
+                                                if truth.get(p["id"]) == "false" and p["label"] == "false")
+    result["unseen_after"]["lies"] = lies
+    if "--layer3" not in sys.argv:
+        print(json.dumps(result), flush=True)
+        return result
+    print(f"[{name}] layer 3 on the known rows", flush=True)
+    model = layer3_on_known(known, lex, run_input, {r["id"] for r in known})
+    lies = sum(1 for g in truth.values() if g == "false")
+    result["unseen_before"]["lies_caught"] = sum(1 for p in preds if truth.get(p["id"]) == "false" and p["label"] == "false")
+    result["unseen_before"]["lies"] = lies
+    control = ([p for p in ctrl_preds if p["id"] in group], {r["id"]: r["label"] for r in known if r["id"] in group})
+    result["layer3_no_flip"] = with_layer3(preds, model, truth, 0.0)
+    result["layer3_flip"] = with_layer3(preds, model, truth, 0.5)
+    result["layer3_no_flip_control"] = with_layer3(preds, model, truth, 0.0, control)
+    result["layer3_flip_control"] = with_layer3(preds, model, truth, 0.5, control)
     print(json.dumps(result), flush=True)
     return result
 
@@ -118,6 +179,14 @@ def main():
         b, a = r["unseen_before"], r["unseen_after"]
         print(f"{r['scenario']:18} {b['n']:6} {b['right']:6.3f} {r['always_true']:6.3f} {b['said']:6.3f} {a['said']:7.3f} {b['ece']:6.3f} {a['ece']:7.3f} "
               f"{b['brier']:7.4f} {a['brier']:7.4f}  {r['factors']}")
+    if "--layer3" not in sys.argv:
+        print(f"wrote {os.path.relpath(OUT, ROOT)}")
+        return
+    print(f"\n{'scenario':18} {'engine + control':>26} {'+ layer 3 + control':>26} {'+ layer 3 flip + control':>26}"
+          "   (right / lies / ECE)")
+    for r in results:
+        cells = [r["unseen_after"], r["layer3_no_flip_control"], r["layer3_flip_control"]]
+        print(f"{r['scenario']:18} " + " ".join(f"{c['right']:.3f} {c['lies_caught']:3}/{c['lies']:<3} {c['ece']:.3f}".rjust(26) for c in cells))
     print(f"wrote {os.path.relpath(OUT, ROOT)}")
 
 

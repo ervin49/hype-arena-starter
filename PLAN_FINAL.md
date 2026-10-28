@@ -224,3 +224,109 @@ checks pass (pytest, MINUTES=5 scripts/check.sh in Docker, numbers not worse):
 Keep STATUS.md updated after every merge. Don't edit README.md without the team.
 Commits/PR: no Co-Authored-By / Generated with Claude lines.
 ```
+
+---
+
+# Round 3: improvement research
+
+## What we know
+
+- **Measured and not better:** the 5-model ensemble as the answerer (A), synthetic lies (B), the confidence model "layer 3" as it is (C, over-confident when the data shifts). All are documented in STATUS.md, under "Experiments".
+- **Where the errors are** (1,858 honest answers on rows the engine never learned from; `reports/confidence_oof.json`, rebuilt by `scripts/train_confidence.py --rebuild`):
+
+| Engine's situation | Answers | Right |
+|---|---|---|
+| Evidence supports → `true` | 1,044 | 96% |
+| Evidence **contradicts** → `true` / `false` | **612** | ~76%: **~145 of ~210 errors** |
+| Sentence not understood → `true` | 83 | 83% |
+| No evidence → `true` | 66 | 92% |
+
+  Inside "contradicts", `stable_mismatch` (one stable value in our evidence, another in the sentence): **210 rows, 151 actually true.** The contradiction is usually ours.
+
+- **The learner is probably not the limit.** A's model is already boosted trees, and deeper or longer versions and logistic regression were no better. XGBoost is worth one clean test, not a rewrite.
+
+## The harness, the same for everyone
+
+- Out of fold: `eval/train_model.py` (accuracy 0.870, lies 118/277, ECE 0.027), or `scripts/train_confidence.py` (88.7% of 1,858, lies 143/277, ECE 0.044, Brier 0.0887).
+- Shift test: `scripts/shift_test.py` (random 88.8%, latest 83.5%, new subjects 79.5% vs always "true" 82.5%).
+- Only real rows test or calibrate. One change at a time. Kept only if better; otherwise documented as "tried".
+- `MINUTES=5 scripts/check.sh` passes, and the run stays well under 30 minutes, pure Python at run time.
+
+## Prompt for A (round 3)
+
+```
+I'm person A (engine/ML), team "Git Happens". Branch dev/a only; C merges.
+
+STEP 0: sync:
+  git checkout dev/a && git status   # commit any WIP first
+  git fetch origin && git merge origin/integration
+  .venv/bin/python -m pytest -q && git push origin dev/a
+  git rev-list --count dev/a..origin/integration   # must print 0
+
+TASK: fix FALSE CONTRADICTIONS, our biggest error source.
+~145 of our ~210 errors are rows where our evidence contradicts the sentence. In
+`stable_mismatch` (one stable value in the evidence, another in the sentence) 151 of 210
+rows are actually TRUE.
+1. List them: run scripts/train_confidence.py (cache reports/confidence_oof.json; each
+   record has "gold" and the full "prediction" with checks/cases/extraction). For the true
+   rows with a *_mismatch case print: sentence, the fact we read (subject, attribute,
+   value), the evidence value(s) and their row ids/dates.
+2. Classify ~50 by cause: value/unit misread | wrong attribute | wrong subject (context)
+   | the evidence itself is a lie or an older value | a real change we model wrongly | other.
+3. Fix the biggest cause in the extractor/knowledge base/features, one at a time.
+4. Then "not understood" rows (83 answers, 14 errors): extraction coverage.
+MEASURE each change: out of fold (0.870, lies 118/277, ECE <= 0.03), the shift test
+(random 88.8, latest 83.5, new subjects 79.5 -> target > 82.5), check.sh. After a kept
+change: eval/train_model.py, scripts/train_control.py, eval/train_ensemble.py.
+Don't edit runner.py, io.py, generate.py, validate.py, controls.py, confidence.py, api/,
+Dockerfile, README.md, STATUS.md. No Co-Authored-By lines.
+BEFORE REPORTING: git fetch origin && git merge origin/integration && pytest && git push.
+Report: commit, the cause table, numbers before -> after, tried and rejected.
+```
+
+## Prompt for B (round 3)
+
+```
+I'm person B, team "Git Happens". ML research this round. Branch dev/b only; C merges.
+
+STEP 0: sync:
+  git checkout dev/b && git status   # commit any WIP first
+  git fetch origin && git merge origin/integration
+  .venv/bin/python -m pytest -q && git push origin dev/b
+  git rev-list --count dev/b..origin/integration   # must print 0
+
+TASK 1: is the learner the limit? XGBoost / LightGBM on the SAME features.
+- Use the engine's feature vectors (arena/ml/model.py featurize) and the same simulated
+  runs and page folds as eval/train_model.py (your scripts/train_augmented.py harness
+  already does this). Install xgboost/lightgbm in .venv only (eval-time, not the image).
+- Compare with A's Boost on the same folds: accuracy, lies caught, ECE, Brier, log loss,
+  out of fold and on scripts/shift_test.py.
+- Try: defaults; tuned (depth, eta, min_child_weight, subsample, colsample, early stopping
+  on an inner fold); MONOTONIC constraints (more supporting evidence never lowers P(true),
+  more contradicting evidence never raises it).
+- If one clearly wins: export its trees to JSON in arena/ml/model.py's format (or a tiny
+  pure-Python evaluator) so the run stays pure Python. Tell C and A before it ships.
+TASK 2: does the WORDING predict a lie ("Hype or Truth")?
+- Out of fold (page folds), a word + character n-gram naive Bayes or logistic regression on
+  the sentence text only, predicting false vs true. Report AUC and the top words.
+- If AUC is clearly above 0.5, add its out-of-fold probability as one feature to the engine
+  model and measure as above.
+Don't edit arena/ (except a JSON export agreed with A), api/, Dockerfile, README.md,
+STATUS.md. No Co-Authored-By lines.
+BEFORE REPORTING: git fetch origin && git merge origin/integration && pytest && git push.
+Report: commit, numbers before -> after for each try, tried and rejected.
+```
+
+## Prompt for C (round 3)
+
+```
+Layer 3, shift-proof (dev/c):
+1. Train the confidence model on SHIFT-SHAPED folds: whole subjects / time periods held
+   out, not random pages, so it learns how unfamiliar rows behave.
+2. Add A's spread (ensemble disagreement) as a feature, computed honestly (members that
+   never saw the row's fold).
+3. Measure with scripts/shift_test.py --layer3 (with the control): ship only if calibration
+   is no worse than engine + control in EVERY scenario and better on average.
+4. Then the unsure policy, once the organisers answer; merge A's and B's work after checks;
+   keep STATUS.md up to date.
+```
