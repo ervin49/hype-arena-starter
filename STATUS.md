@@ -17,7 +17,7 @@
 | Confidence chart (`/metrics` → `/confidence` page) | B | ✅ real measured numbers, labels and claims |
 | Label calibration (`eval/calibration_labels.json`) | A | ✅ Platt, cross-fitted; ECE 0.027 |
 | Demo script (`frontend/docs/demo-script.md`) | B | ✅ draft |
-| `Dockerfile` + `scripts/check.sh` in Docker | C | ⏸ parked for now — **required for the judges to run anything** |
+| `Dockerfile` + `scripts/check.sh` in Docker | C | ✅ `scripts/check.sh` passes (exit 0, 380/380 labelled, 1,000 claims); 20,000 rows in 63 s; image 47 MB |
 | README: how it works, start guide, predicted score | C | ⏸ not now |
 | Video on the 20 sample rows | all | ⏳ 29 Oct, 09:00 |
 | Pull request to QA-DNA | C | ⏳ 29 Oct, before 11:00 |
@@ -120,12 +120,13 @@ python3 scripts/check_output.py /tmp/arena/output data/practice.csv /tmp/arena/u
 - Claims now avoid values that can go stale (the backtest showed 52–71% right for them) and dates that move (`latest_*`, `next_*`, `planned_*`, `*_since`); the 1,000 are one-time dates, changes and event values.
 - at_event and change claims can't be checked on unseen rows, so their 0.95 is a cap, not a measurement.
 - Up to 30 claims rest on one fact; if a fact in our data is wrong, its claims fail together.
-- Without the Dockerfile there is no submission. It is parked, not dropped.
+- The local `check.sh` label count (340/380) is an upper bound: the image's model was trained on all practice rows. The honest figure is 86.6% out of fold, against 83% for always `true`.
 
 ## Log
 
 | When | What |
 |---|---|
+| 28 Oct, evening | C: `Dockerfile` (python 3.12 slim, `jsonschema` only, `USER 10001`). `scripts/check.sh` passes in Docker. A 20,000-row input (18,103 unlabelled) under the judges' limits (offline, read-only, 2 CPUs, 6 GiB) runs in 63 s; output 0.67 MB. |
 | 28 Oct, evening | C: claim confidence made honest. Moving dates (`latest_release_date` etc.) dropped after a strict check found a stale claim. The backtest now has a strict judge (unseen rows only); confidence is the lower bound of both judges and capped at 0.95 where the strict judge can't check. 993 claims at 0.99 became 294 at 0.971 and 700 at 0.95. 169 tests pass. |
 | 28 Oct, 16:30 | Merged `dev/a` (engine: boosted trees, self-training, label calibration), `dev/b` (confidence page, Next.js 15.5.28, demo script), `dev/c`; no conflicts. 340/380 right, false caught 27/49; 167 tests pass; claim backtest unchanged; C fixed `/metrics` to the agreed shape (`n`, shipped groups only). After pulling, run `npm ci` in `frontend/`. |
 | 28 Oct, 15:55 | `dev/c` (local): claim backtest and measured confidence (993 claims at 0.99; stale `fact` groups dropped); runner and API use A's `label_rows` (331/380 right, false caught 9 → 22); `GET /metrics`. |
