@@ -137,7 +137,7 @@ def calibration(per_cut):
             keep = precision >= MIN_GROUP_PRECISION and worst >= MIN_GROUP_PRECISION
             conf = round(min(0.99, max(0.5, wilson_lower(right, judged))), 3)
             note = "kept" if keep else f"dropped: {precision:.0%} right overall, {worst:.0%} at its worst cut-off"
-        out.append({"group": g, "judged": judged, "right": right,
+        out.append({"group": g, "n": judged, "right": right,
                     "precision": round(right / judged, 3) if judged else None,
                     "keep": keep, "confidence": conf, "note": note, "cutoffs": cuts})
     return out
@@ -156,7 +156,7 @@ def main():
     print(f"{'group':16} {'judged':>6} {'right':>6} {'prec':>6} {'conf':>6}  per cut-off            decision")
     for g in groups:
         per = " ".join(f"{c['precision'] if c['precision'] is not None else '  -  ':>5}" for c in g["cutoffs"].values())
-        print(f"{g['group']:16} {g['judged']:6} {g['right']:6} {g['precision'] or 0:6.3f} {g['confidence']:6.3f}  {per:22} {g['note']}")
+        print(f"{g['group']:16} {g['n']:6} {g['right']:6} {g['precision'] or 0:6.3f} {g['confidence']:6.3f}  {per:22} {g['note']}")
     print(f"wrote {os.path.relpath(CALIBRATION, ROOT)}")
 
 

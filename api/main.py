@@ -175,7 +175,13 @@ def create_app(engine=None, demo=None):
     def metrics():
         """Measured calibration: labels (A, eval/calibration_labels.json) and claims
         (C, reports/claims_calibration.json). A file not written yet is null; nothing is invented."""
-        return {name: _read_json(path) for name, path in METRICS.items()}
+        out = {name: _read_json(path) for name, path in METRICS.items()}
+        if out["claims"]:
+            # Only what output.csv holds and the backtest measured: a dropped group's
+            # confidence is never said, and an unmeasured group has no accuracy to show.
+            out["claims"] = {**out["claims"], "groups": [g for g in out["claims"]["groups"]
+                                                         if g["keep"] and g["n"] and g["precision"] is not None]}
+        return out
 
     @app.post("/predict")
     def predict(request: PredictRequest):

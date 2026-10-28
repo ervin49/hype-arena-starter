@@ -11,7 +11,7 @@
  "groups": [
   {
    "group": "at_event",
-   "judged": 522,
+   "n": 522,
    "right": 522,
    "precision": 1.0,
    "keep": true,
@@ -40,7 +40,7 @@
   },
   {
    "group": "change",
-   "judged": 350,
+   "n": 350,
    "right": 350,
    "precision": 1.0,
    "keep": true,
@@ -69,7 +69,7 @@
   },
   {
    "group": "compare.amount",
-   "judged": 29,
+   "n": 29,
    "right": 28,
    "precision": 0.966,
    "keep": false,
@@ -98,7 +98,7 @@
   },
   {
    "group": "compare.date",
-   "judged": 1229,
+   "n": 1229,
    "right": 1229,
    "precision": 1.0,
    "keep": true,
@@ -127,7 +127,7 @@
   },
   {
    "group": "fact.changed",
-   "judged": 51,
+   "n": 51,
    "right": 36,
    "precision": 0.706,
    "keep": false,
@@ -156,7 +156,7 @@
   },
   {
    "group": "fact.date",
-   "judged": 67,
+   "n": 67,
    "right": 67,
    "precision": 1.0,
    "keep": true,
@@ -185,7 +185,7 @@
   },
   {
    "group": "fact.unchanged",
-   "judged": 113,
+   "n": 113,
    "right": 59,
    "precision": 0.522,
    "keep": false,
@@ -214,7 +214,7 @@
   },
   {
    "group": "relation",
-   "judged": 0,
+   "n": 0,
    "right": 0,
    "precision": null,
    "keep": true,

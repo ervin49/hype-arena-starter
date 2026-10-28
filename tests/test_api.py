@@ -149,6 +149,9 @@ def test_metrics_serves_measurements_and_nulls_what_is_missing(api, tmp_path, mo
     import api.main as m
     body = api.get("/metrics").json()
     assert set(body) == {"labels", "claims"}
-    assert body["claims"]["groups"] and {g["group"] for g in body["claims"]["groups"]} >= {"change", "at_event"}
+    groups = {g["group"]: g for g in body["claims"]["groups"]}
+    assert set(groups) >= {"change", "at_event", "compare.date"}
+    assert "fact.unchanged" not in groups and "relation" not in groups  # dropped, unmeasured
+    assert all({"n", "right", "precision", "confidence"} <= set(g) for g in groups.values())  # PLAN_NEXT.md §5
     monkeypatch.setitem(m.METRICS, "labels", str(tmp_path / "missing.json"))
     assert api.get("/metrics").json()["labels"] is None

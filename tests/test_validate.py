@@ -30,9 +30,7 @@ REL = {"subject": "Hooly", "link": "cto", "target": "Bertram Gilfoil", "attribut
 YES = [
     ("fact", PRICE, "Hooly AI Pro costs €59 per month."),
     ("fact", PRICE, "At €59 per month, Hooly AI Pro is our best seller."),
-    pytest.param("fact", PRICE, "Hooly AI Pro costs €59 per month or €590 per year.", marks=pytest.mark.xfail(
-        reason="arena.values reads `X or Y` as a range; value-forms.md reads it as a choice. Stricter is safe "
-               "for generation (our templates never write `or`); reported to A.", strict=True)),
+    ("fact", PRICE, "Hooly AI Pro costs €59 per month or €590 per year."),
     ("fact", SOC2_NO, "Hooly is not SOC 2 certified."),
     ("fact", SOC2_NO, "Hooly has never been SOC2-certified."),
     ("compare", CMP, "Hooly Workspace costs more than Hooly AI Pro."),
