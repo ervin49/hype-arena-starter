@@ -1,4 +1,4 @@
-import type { ClaimsResponse, PredictCsvResponse } from "./types";
+import type { ClaimsResponse, MetricsResponse, PredictCsvResponse } from "./types";
 
 // Browser-side calls to this app's own /api routes (see src/app/api/).
 // No fallback: a failure is thrown and shown as an error, never as results.
@@ -60,4 +60,16 @@ export async function getClaims(): Promise<ClaimsResponse> {
   const body = await json(res);
   if (!res.ok) throw new EngineError(String(body.error ?? `HTTP ${res.status}`), body.detail as string | undefined);
   return body as unknown as ClaimsResponse;
+}
+
+export async function getMetrics(): Promise<MetricsResponse> {
+  let res: Response;
+  try {
+    res = await fetch("/api/metrics", { cache: "no-store" });
+  } catch (e) {
+    throw new EngineError("The request failed.", e instanceof Error ? e.message : String(e));
+  }
+  const body = await json(res);
+  if (!res.ok) throw new EngineError(String(body.error ?? `HTTP ${res.status}`), body.detail as string | undefined);
+  return body as unknown as MetricsResponse;
 }

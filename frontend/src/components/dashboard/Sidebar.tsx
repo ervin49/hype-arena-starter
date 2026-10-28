@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, ListChecks, Network, Sparkles, Upload } from "lucide-react";
+import { Gauge, LayoutDashboard, ListChecks, Network, Sparkles, Upload } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const ITEMS = [
@@ -11,6 +11,7 @@ const ITEMS = [
   { icon: ListChecks, label: "Results", href: "/#results", page: null },
   { icon: Sparkles, label: "Claims", href: "/claims", page: "/claims" },
   { icon: Network, label: "Architecture", href: "/architecture", page: "/architecture" },
+  { icon: Gauge, label: "Confidence", href: "/confidence", page: "/confidence" },
 ];
 
 const LINK = "grid size-11 place-items-center rounded-2xl transition";

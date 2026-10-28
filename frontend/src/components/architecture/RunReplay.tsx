@@ -5,7 +5,7 @@ import Link from "next/link";
 import { AlertTriangle, CheckCircle2, Circle, FastForward, Loader2, Play, RotateCcw, UploadCloud } from "lucide-react";
 import { useRun, type RunRecord } from "@/components/run/RunProvider";
 import { ArchitectureLegend } from "@/components/dashboard/ArchitectureDiagram";
-import { ARIA_LABEL, EDGES, NODES, NODE_H, STROKE, edgeKey, edgePath, nodeW, type Flow, type NodeId } from "@/lib/architecture";
+import { ARIA_LABEL, EDGES, NODES, NODE_H, VIEW_H, STROKE, edgeKey, edgePath, nodeW, type Flow, type NodeId } from "@/lib/architecture";
 import { getClaims } from "@/lib/api";
 import { hasClaims, nodeBadges, runSteps, skipped, type RunStep } from "@/lib/run-steps";
 import type { ClaimsResponse } from "@/lib/types";
@@ -146,7 +146,7 @@ export function RunReplay() {
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_340px]">
         <div className="card-soft p-5 sm:p-6">
           <div className="overflow-x-auto">
-            <svg viewBox="0 0 1040 400" className="h-auto w-full min-w-[720px]" role="img" aria-label={ARIA_LABEL}>
+            <svg viewBox={`0 0 1040 ${VIEW_H}`} className="h-auto w-full min-w-[720px]" role="img" aria-label={ARIA_LABEL}>
               <defs>
                 {(Object.keys(STROKE) as Flow[]).map((f) => (
                   <marker key={f} id={`run-arrow-${f}`} viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
@@ -257,15 +257,18 @@ export function RunReplay() {
                       strokeDasharray={state === "skipped" ? "4 4" : node.flow === "ui" ? "5 4" : undefined}
                       style={{ filter: "drop-shadow(0 6px 12px var(--node-shadow))", transition: "fill .4s, stroke .4s" }}
                     />
-                    <text x={node.x + 14} y={node.y + 24} fontSize={14} fontWeight={600} fill="var(--heading)">
+                    <text x={node.x + 14} y={node.y + 23} fontSize={14} fontWeight={600} fill="var(--heading)">
                       {node.title}
+                    </text>
+                    <text x={node.x + 14} y={node.y + 42} fontSize={11} fontWeight={600} fill="var(--primary)">
+                      {node.tech}
                     </text>
                     <text
                       x={node.x + 14}
-                      y={node.y + 43}
+                      y={node.y + 60}
                       fontSize={12}
                       fontWeight={sub === badge ? 600 : 400}
-                      fill={sub === badge ? "var(--primary)" : "var(--muted-foreground)"}
+                      fill={sub === badge ? "var(--heading)" : "var(--muted-foreground)"}
                     >
                       {sub}
                     </text>

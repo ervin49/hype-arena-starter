@@ -1,0 +1,25 @@
+{
+  "_note": "Simulated, for building the confidence page before GET /metrics exists. Counts and accuracies are the measurements in PLAN_NEXT.md section 2; each confidence is the midpoint of the range the plan reports, not a fitted value. Never shown as real.",
+  "labels": {
+    "method": "isotonic",
+    "fitted_on": "out-of-fold practice, page-grouped 5-fold",
+    "bins": [
+      { "label": "true", "from": 0.5, "to": 0.6, "n": 13, "accuracy": 0.38, "confidence": 0.55 },
+      { "label": "true", "from": 0.6, "to": 0.8, "n": 66, "accuracy": 0.71, "confidence": 0.7 },
+      { "label": "true", "from": 0.8, "to": 0.9, "n": 143, "accuracy": 0.88, "confidence": 0.85 },
+      { "label": "true", "from": 0.9, "to": 1.0, "n": 145, "accuracy": 0.98, "confidence": 0.95 },
+      { "label": "false", "from": 0.5, "to": 1.0, "n": 13, "accuracy": 0.69, "confidence": 0.75 }
+    ],
+    "ece_before": 0.06,
+    "ece_after": 0.02
+  },
+  "claims": {
+    "cutoffs": ["2026-05-01", "2026-07-01", "2026-09-01"],
+    "groups": [
+      { "group": "change", "n": 166, "right": 166, "precision": 1.0, "confidence": 0.875 },
+      { "group": "at_event", "n": 200, "right": 200, "precision": 1.0, "confidence": 0.885 },
+      { "group": "compare", "n": 452, "right": 451, "precision": 0.998, "confidence": 0.89 },
+      { "group": "fact", "n": 134, "right": 95, "precision": 0.709, "confidence": 0.87 }
+    ]
+  }
+}
