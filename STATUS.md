@@ -92,7 +92,7 @@ Does confidence stay honest when the run's rows differ from practice? In each sc
 |---|---|---|---|
 | 5-model ensemble as the answerer (`eval/train_ensemble.py`) | A | Out of fold: lies 143 → 114, ECE 0.045 → 0.058; latest pages 83.5 → 82.0% | Not the default. Its `spread` flags wrong answers (about 2× higher on them, AUC 0.80) |
 | Synthetic lies (`eval/augment.py`) | B | Lies caught 118 → 104 at 1×; 5 of 6 shift cells worse | Not used |
-| Confidence model, layer 3 (`arena/confidence.py`) | C | Out of fold ECE 0.044 → 0.005, Brier 0.0887 → 0.0856. With the control, random pages 0.062 → **0.016**, but latest pages 0.034 → **0.055** (over-confident when the data shifts) | Not in the run; round 3 tries a shift-proof version |
+| Confidence model, layer 3 (`arena/confidence.py`) | C | Out of fold ECE 0.044 → 0.005, Brier 0.0887 → 0.0856. With the control (`reports/shift_test_layer3.json`): random pages 0.062 → **0.016**, but latest pages 0.034 → **0.055** and new subjects 0.031 → **0.083** (over-confident whenever the data shifts) | Not in the run; round 3 tries a shift-proof version |
 | Layer 3's flip (`false` → `true` when unlikely right) | C | +5 rows of accuracy, −16 lies caught | Not used |
 
 ## Branches
@@ -135,7 +135,13 @@ python3 scripts/check_output.py /tmp/arena/output data/practice.csv /tmp/arena/u
 
 ## Next, by owner (round 3, prompts in PLAN_FINAL.md)
 
-Where the errors are (1,858 honest answers, `reports/confidence_oof.json`): ~145 of ~210 errors are rows where our evidence **contradicts** the sentence. In the largest case, `stable_mismatch`, 151 of 210 rows are actually true: the "contradiction" is usually our own misreading.
+Where the errors are (1,858 honest answers, `reports/confidence_oof.json`): ~145 of ~210 errors are rows where our evidence **contradicts** the sentence. In the largest case, `stable_mismatch`, 151 of 210 rows are actually true. In all, **375 true rows** have a contradicting check.
+
+First look at those 375 (C, 12 read by hand), two different causes:
+- **Real changes over time, with the evidence only on the other side of the change** (most of the sample): "Hooly Docs grows to 80 templates" (Aug) vs "30 templates" (Jan–Mar); "75 editors" (Aug) vs "40 editors" (Mar); Pixel 10 "95,000 phones sold" (Jun) vs "410,000" (Oct); Calendar "v1.0" (Mar) vs "1.4" (Sep). A count, version or total that **grows** is not contradicted by an older smaller or a later larger value. Words like "grows to", "now", "has sold" mark the change.
+- **Wrong fact read**: "…said Richard Hendrix, our CTO" read as *Hooly Jules lead* (it is Hooly's CTO); "Released on 22 September 2026" assigned to Hooly Chrome (gold: Hooly Android 17); "Stable is planned for 8 September 2026" assigned to Hooly Pixel Fold (gold: Hooly Android 17). The subject taken from context is wrong.
+
+To list them again: load `reports/confidence_oof.json` (records with `gold` and the full `prediction`), keep `gold == "true"` and `prediction.kind == "contradicted"`, and print each check whose `case` contains `mismatch`, with its `fact` and `evidence_ids`.
 
 | # | What | Who |
 |---|---|---|
@@ -163,6 +169,7 @@ Where the errors are (1,858 honest answers, `reports/confidence_oof.json`): ~145
 
 | When | What |
 |---|---|
+| 28 Oct, night | Team chose a focused round 3 (8 hours left): A fixes false contradictions, B tests XGBoost/LightGBM and a text signal once, C keeps the run safe and merges only what measures better. C's first look at the 375 true-but-contradicted rows: most are real changes over time (growing counts, versions, totals) judged against evidence from the other side of the change; some are a wrong subject or attribute taken from context. Layer 3's full shift record: new subjects 0.031 → 0.083 with it, so it stays out. |
 | 28 Oct, night | C: layer 3, a confidence model on the engine's answers (`arena/confidence.py`, `scripts/train_confidence.py`; `scripts/shift_test.py --layer3`). Out of fold it calibrates far better, but it is over-confident when the data shifts, even with the run-time control, so it is **not in the run**. Error analysis: ~145 of ~210 errors are rows where our evidence contradicts the sentence; 151 of the 210 `stable_mismatch` rows are actually true. Round 3 planned on that. 394 tests pass; the run is unchanged. |
 | 28 Oct, night | Merged ML round 2, both measured and both **not used as the default**. **A, 5-model ensemble** (`eval/train_ensemble.py`, `label_rows(..., ensemble=True)`): as the answerer it catches fewer lies (143 → 114 of 277 out of fold) and is not better on the shift test, so the single model stays. Its `spread` (how much the 5 disagree) flags wrong answers: about twice as high on them, AUC 0.80. **B, synthetic lies** (`eval/augment.py`, `scripts/train_augmented.py`): lies caught fall as the synthetic share rises (118 → 104 at 1×), and 5 of 6 shift cells are worse, so it is not used: more lies of the same kind add no evidence. The run is unchanged: `check.sh` 340/380, 1,000 claims; 391 tests pass. |
 | 28 Oct, night | Merged A's `dev/a` (rare attributes read, subject origin as a feature; models and control retrained): out of fold 0.863 → **0.870**, lies caught 110 → **118**/277; hidden rows 337 → 339/380, lies 27 → 31/49. Shift test confirmed by C: random 88.0 → 88.8%, latest 83.7 → 83.5%, new subjects 80.3 → 79.5% (still below always `true`). C did B's confidence-page tasks: the claims chart shows only types checked on unseen rows (the rest listed as capped), a shift-test table and a run-time controls card, from `/metrics`. |
