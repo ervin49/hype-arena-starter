@@ -3,32 +3,33 @@
   "scenario": "random pages",
   "known": 1524,
   "unseen": 373,
+  "always_true": 0.839,
   "factors": {
    "true": 1.0,
    "false": 1.0
   },
   "control": {
    "control_answers": 308,
-   "accuracy": 0.851,
-   "said": 0.856,
-   "ece_before": 0.045,
-   "false_share": 0.039
+   "accuracy": 0.854,
+   "said": 0.837,
+   "ece_before": 0.047,
+   "false_share": 0.036
   },
   "control_unknown_share": 0.029,
   "unseen_before": {
    "n": 366,
-   "said": 0.825,
-   "right": 0.877,
-   "ece": 0.052,
-   "brier": 0.094,
+   "said": 0.832,
+   "right": 0.88,
+   "ece": 0.048,
+   "brier": 0.0916,
    "unknown_share": 0.052
   },
   "unseen_after": {
    "n": 366,
-   "said": 0.825,
-   "right": 0.877,
-   "ece": 0.052,
-   "brier": 0.094,
+   "said": 0.832,
+   "right": 0.88,
+   "ece": 0.048,
+   "brier": 0.0916,
    "unknown_share": 0.052
   }
  },
@@ -36,31 +37,32 @@
   "scenario": "latest pages",
   "known": 1432,
   "unseen": 465,
+  "always_true": 0.815,
   "factors": {
    "true": 1.0,
    "false": 1.0
   },
   "control": {
    "control_answers": 281,
-   "accuracy": 0.865,
-   "said": 0.832,
+   "accuracy": 0.872,
+   "said": 0.83,
    "ece_before": 0.059,
    "false_share": 0.071
   },
   "control_unknown_share": 0.045,
   "unseen_before": {
    "n": 460,
-   "said": 0.834,
-   "right": 0.833,
-   "ece": 0.034,
+   "said": 0.828,
+   "right": 0.837,
+   "ece": 0.032,
    "brier": 0.1185,
    "unknown_share": 0.08
   },
   "unseen_after": {
    "n": 460,
-   "said": 0.834,
-   "right": 0.833,
-   "ece": 0.034,
+   "said": 0.828,
+   "right": 0.837,
+   "ece": 0.032,
    "brier": 0.1185,
    "unknown_share": 0.08
   }
@@ -69,33 +71,34 @@
   "scenario": "held-out subjects",
   "known": 1515,
   "unseen": 382,
+  "always_true": 0.825,
   "factors": {
    "true": 1.0,
-   "false": 0.56
+   "false": 0.34
   },
   "control": {
    "control_answers": 298,
-   "accuracy": 0.852,
-   "said": 0.834,
+   "accuracy": 0.836,
+   "said": 0.83,
    "ece_before": 0.05,
-   "false_share": 0.111
+   "false_share": 0.148
   },
   "control_unknown_share": 0.05,
   "unseen_before": {
    "n": 366,
-   "said": 0.813,
-   "right": 0.795,
-   "ece": 0.05,
+   "said": 0.81,
+   "right": 0.803,
+   "ece": 0.046,
    "brier": 0.1482,
-   "unknown_share": 0.066
+   "unknown_share": 0.057
   },
   "unseen_after": {
    "n": 366,
-   "said": 0.808,
-   "right": 0.795,
-   "ece": 0.029,
-   "brier": 0.1443,
-   "unknown_share": 0.066
+   "said": 0.802,
+   "right": 0.803,
+   "ece": 0.028,
+   "brier": 0.143,
+   "unknown_share": 0.057
   }
  }
 ]

@@ -36,7 +36,7 @@
 | Claims | 1,000: 383 at_event, 317 change, 294 compare (dates), 4 fact (dates), 2 relation |
 | Claim confidence | measured on unseen rows: 294 at 0.971, 700 at 0.95 (capped), 4 at 0.867, 2 at 0.80; mean 0.956 |
 | Full run time | ~11 s on practice with the controls; 131 s on our **synthetic** 20,000-row input (of 30 min) |
-| Tests | 178 Python tests pass (`.venv/bin/pytest -q`); frontend type-checks, lints and builds; all 4 pages and 5 API routes checked live |
+| Tests | 384 Python tests pass (206 of them every example of `claim-forms.md` and `value-forms.md`) (`.venv/bin/pytest -q`); frontend type-checks, lints and builds; all 4 pages and 5 API routes checked live |
 
 ### Claim backtest (`scripts/backtest_claims.py` → `reports/claims_calibration.json`)
 
@@ -77,12 +77,12 @@ Does confidence stay honest when the run's rows differ from practice? In each sc
 
 | Scenario (unseen part) | Right | Always `true` | Said → after control | ECE → after | Brier → after |
 |---|---|---|---|---|---|
-| Random pages (no shift) | 87.7% | 83.9% | 0.825 → 0.825 | 0.052 → 0.052 | 0.094 → 0.094 |
-| Latest pages (time shift) | 83.3% | 81.5% | 0.834 → 0.834 | 0.034 → 0.034 | 0.119 → 0.119 |
-| Held-out subjects (new products) | **79.5%** | **82.5%** | 0.813 → 0.808 | 0.050 → **0.029** | 0.148 → 0.144 |
+| Random pages (no shift) | 88.0% | 83.9% | 0.832 → 0.832 | 0.048 → 0.048 | 0.092 → 0.092 |
+| Latest pages (time shift) | 83.7% | 81.5% | 0.828 → 0.828 | 0.032 → 0.032 | 0.119 → 0.119 |
+| Held-out subjects (new products) | **80.3%** | **82.5%** | 0.810 → 0.802 | 0.046 → **0.028** | 0.148 → 0.143 |
 
-- Confidence stays within ~2 points of the truth in every scenario. Where it was over-stated (new subjects), the control lowered `false` (factor 0.56) and the calibration error dropped from 0.050 to 0.029.
-- **On subjects it has never seen, the engine is worse than answering `true` (79.5% vs 82.5%).** That's a correctness problem for A, not a confidence one.
+- Confidence stays within ~2 points of the truth in every scenario. Where it was over-stated (new subjects), the control lowered `false` (factor 0.34) and the calibration error dropped from 0.046 to 0.028.
+- **On subjects it has never seen, the engine is worse than answering `true` (80.3% vs 82.5%).** That's a correctness problem for A, not a confidence one.
 
 ## Branches
 
@@ -152,6 +152,7 @@ python3 scripts/check_output.py /tmp/arena/output data/practice.csv /tmp/arena/u
 
 | When | What |
 |---|---|
+| 28 Oct, night | C: every example of `claim-forms.md` and `value-forms.md` is now a test (206), read from the files. The validator was fixed to match all of them: a second sentence may say anything, `on the same day as` counts as one phrase, `…, up from …` / `down from` read, and `up`/`down` must match the values. The 1,000 claims are unchanged. `/metrics` serves `shift` (with the always-`true` baseline) and `controls` (`reports/controls.json`, from `scripts/train_control.py`). Shift test rerun for the current engine. 384 tests pass. |
 | 28 Oct, night | C merged B's `fix/overfitting` engine (regularized trees, `l2=10, min_hess=20`) into `dev/c`: better in all three shift-test scenarios (random 87.7 → 88.0%, latest 83.3 → 83.7%, new subjects 79.5 → 80.3%; ECE same or lower) and on the honest hidden rows (329 → 337/380). Its claim formula (Laplace, date compares 0.99) was **not** taken: claim confidence stays the cautious Wilson bound. Control model retrained; control-group ECE 0.039 → 0.031. 178 tests, `check.sh` pass. |
 | 28 Oct, evening | C: run-time controls, as the organisers asked. A held-out control group recalibrates confidence on the real input (it can only lower it), a distribution monitor, and a claim veto from the input rows the engine is sure of. `check.sh` passes; our synthetic 20,000-row input in 131 s; 178 tests pass. |
 | 28 Oct, evening | C: `Dockerfile` (python 3.12 slim, `jsonschema` only, `USER 10001`). `scripts/check.sh` passes in Docker. A synthetic 20,000-row input made by us (practice sentences copied with shifted dates; 18,103 unlabelled) under the judges' limits (offline, read-only, 2 CPUs, 6 GiB) runs in 63 s; output 0.67 MB. |

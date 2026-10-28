@@ -82,7 +82,9 @@ def _load(state, engine, demo):
 
 
 METRICS = {"labels": os.path.join(HERE, "eval", "calibration_labels.json"),
-           "claims": os.path.join(HERE, "reports", "claims_calibration.json")}
+           "claims": os.path.join(HERE, "reports", "claims_calibration.json"),
+           "shift": os.path.join(HERE, "reports", "shift_test.json"),
+           "controls": os.path.join(HERE, "reports", "controls.json")}
 
 
 def _read_json(path):
@@ -173,8 +175,10 @@ def create_app(engine=None, demo=None):
 
     @app.get("/metrics")
     def metrics():
-        """Measured calibration: labels (A, eval/calibration_labels.json) and claims
-        (C, reports/claims_calibration.json). A file not written yet is null; nothing is invented."""
+        """Measured calibration: labels (A, eval/calibration_labels.json), claims
+        (C, reports/claims_calibration.json), the shift test (C, reports/shift_test.json) and the
+        confidence control on practice (C, reports/controls.json). A file not written yet is null;
+        nothing is invented."""
         out = {name: _read_json(path) for name, path in METRICS.items()}
         if out["claims"]:
             # Only what output.csv holds and the backtest measured: a dropped group's

@@ -148,7 +148,10 @@ def test_uploads_are_labelled_as_one_batch_like_the_runner():
 def test_metrics_serves_measurements_and_nulls_what_is_missing(api, tmp_path, monkeypatch):
     import api.main as m
     body = api.get("/metrics").json()
-    assert set(body) == {"labels", "claims"}
+    assert set(body) == {"labels", "claims", "shift", "controls"}
+    assert {s["scenario"] for s in body["shift"]} == {"random pages", "latest pages", "held-out subjects"}
+    assert all({"always_true", "factors", "unseen_before", "unseen_after"} <= set(s) for s in body["shift"])
+    assert {"control_answers", "accuracy", "said", "factors"} <= set(body["controls"])
     groups = {g["group"]: g for g in body["claims"]["groups"]}
     assert set(groups) >= {"change", "at_event", "compare.date"}
     assert "fact.unchanged" not in groups and "relation" not in groups  # dropped, unmeasured

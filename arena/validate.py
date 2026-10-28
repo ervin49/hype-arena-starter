@@ -21,7 +21,7 @@ import re
 from jsonschema import Draft202012Validator
 from referencing import Registry, Resource
 
-from arena.values import WORD_NUMBERS, comparable, has_negation, parse_values, values_equal
+from arena.values import WORD_NUMBERS, canonical_amount, comparable, has_negation, parse_values, values_equal
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CONTRACTS = os.path.join(ROOT, "contracts")
@@ -59,6 +59,24 @@ PHRASES += [("date", op, re.compile(p, re.I)) for op, p in (
 EVENT_PHRASE = re.compile(r"(?:\bat|\bduring|\bon\s+the\s+day\s+of|\bat\s+the\s+time\s+of)\s+(?:the\s+)?$", re.I)
 NUMBER_WORDS = set(WORD_NUMBERS) | {"dozen", "hundred", "thousand", "million", "billion"}
 SENTENCE_END = re.compile(r"[.!?](?=\s)|\n\s*\n")
+# value-forms.md: "The point of an abbreviation ends nothing"
+ABBREVIATION = re.compile(r"(?:\b(?:e\.g|i\.e|vs|approx|Inc|Ltd|Co|Corp|Dr|Mr|Mrs|Ms|Prof|St)|(?<![\w.])[A-Z])$")
+NO_BEFORE_NUMBER = re.compile(r"\bNo$")
+
+
+def sentences(text):
+    """The sentences of text, as value-forms.md splits them: at `.`, `!` or `?` before a space
+    or at a blank line, but not at the point of an abbreviation."""
+    out, start = [], 0
+    for m in SENTENCE_END.finditer(text):
+        before = text[start:m.start()]
+        if m.group(0) == "." and (ABBREVIATION.search(before) or
+                                  (NO_BEFORE_NUMBER.search(before) and re.match(r"\s*\d", text[m.end():]))):
+            continue
+        out.append(text[start:m.end()].strip())
+        start = m.end()
+    out.append(text[start:].strip())
+    return [x for x in out if x]
 
 
 def norm_text(s):
@@ -130,6 +148,26 @@ def _mask(text, spans):
     return "".join(chars)
 
 
+def _hits(masked):
+    """The compare phrases in a sentence, a phrase inside a longer one not counted again:
+    `on the same day as` holds `the same day as`."""
+    hits = [(fam, op, m) for fam, op, rx in PHRASES for m in rx.finditer(masked)]
+    return [h for h in hits if not any(o is not h and o[2].start() <= h[2].start() and h[2].end() <= o[2].end()
+                                       and o[2].span() != h[2].span() for o in hits)]
+
+
+def _phrase_hits(lex, text):
+    return _hits(_mask(text, [(a, b) for a, b, _ in lex.find(text)]))
+
+
+def _rises(frm, to):
+    """True when `to` is larger, False when smaller, None when the values have no order."""
+    a, b = canonical_amount(frm), canonical_amount(to)
+    if not a or not b or a[0] != b[0] or a[1] == b[1]:
+        return None
+    return b[1] > a[1]
+
+
 def _strict(parsed):
     return [p for p in parsed if not (p["approx"] or p["range"] or p["negated"]) and "op" not in p["value"]]
 
@@ -192,8 +230,22 @@ class Validator:
 
     # -- 3. text --------------------------------------------------------------
     def _text(self, t, form, text, issues):
-        if SENTENCE_END.search(text.rstrip()):
-            issues.append("text: more than one sentence")
+        """claim-forms.md: one sentence holds the claim; other sentences may say anything, but no
+        sentence of a compare holds a second phrase of the list."""
+        parts = sentences(text)
+        if len(parts) == 1:
+            return self._sentence(t, form, parts[0], issues)
+        results = []
+        for part in parts:
+            found = []
+            self._sentence(t, form, part, found)
+            results.append(found)
+        if t == "compare" and sum(len(_phrase_hits(self.lex, part)) for part in parts) > 1:
+            issues.append("text: a second compare phrase in another sentence")
+        if all(results):
+            issues.extend(min(results, key=len))
+
+    def _sentence(self, t, form, text, issues):
         names = self.lex.find(text)
         name_spans = [(a, b) for a, b, _ in names]
         masked = _mask(text, name_spans)
@@ -276,14 +328,29 @@ class Validator:
             issues.append(f"text: change values read as {[p['value'] for p in same_kind]}")
             return
         first, second = same_kind
-        if not (_same(first["value"], frm) and _same(second["value"], to)):
-            issues.append("text: the values are not from and to, in that order")
-        if not re.search(r"\bfrom\s+$", masked[:first["start"]], re.I) or \
-                not re.fullmatch(r"\s+to\s+", masked[first["end"]:second["start"]], re.I):
-            issues.append("text: no `from … to …` phrase")
+        between = masked[first["end"]:second["start"]]
+        since = re.fullmatch(r",\s*(up|down)\s+from\s+", between, re.I)  # `to, up from from`
+        if since:
+            direction = since.group(1).lower()
+            if not (_same(first["value"], to) and _same(second["value"], frm)):
+                issues.append("text: the values are not to and from, in that order")
+        else:
+            lead = re.search(r"\b(?:(up|down)\s+)?from\s+$", masked[:first["start"]], re.I)
+            if not lead or not re.fullmatch(r"\s+to\s+", between, re.I):
+                issues.append("text: no `from … to …` phrase")
+                return
+            direction = (lead.group(1) or "").lower()
+            if not (_same(first["value"], frm) and _same(second["value"], to)):
+                issues.append("text: the values are not from and to, in that order")
+        if direction:
+            rises = _rises(frm, to)
+            if rises is None:
+                issues.append(f"text: `{direction}` between values with no order")
+            elif rises != (direction == "up"):
+                issues.append(f"text: `{direction}` states the other direction")
 
     def _compare(self, form, text, masked, names, named, issues, allowed):
-        hits = [(fam, op, m) for fam, op, rx in PHRASES for m in rx.finditer(masked)]
+        hits = _hits(masked)
         if len(hits) != 1:
             issues.append(f"text: {len(hits)} compare phrases, not one")
             return
