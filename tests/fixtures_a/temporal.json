@@ -1,0 +1,21 @@
+{
+  "_note": "Synthetic fixture for the engine's tests. Acme Widget is not part of the Hooly universe; nothing here is evidence about Hooly.",
+  "lexicon": {
+    "subjects": [
+      {"name": "Acme Widget", "aliases": ["Widget"], "attributes": ["price", "launched", "users"]}
+    ],
+    "events": []
+  },
+  "rows": [
+    {"id": "fx-1", "text": "Acme Widget costs €10 per month.", "date": "2026-01-10", "label": "true",
+     "form": "[{\"subject\":\"Acme Widget\",\"attribute\":\"price\",\"value\":{\"kind\":\"money\",\"value\":10,\"currency\":\"EUR\",\"per\":\"month\"}}]"},
+    {"id": "fx-2", "text": "Acme Widget still costs €10 per month.", "date": "2026-02-10", "label": "true",
+     "form": "[{\"subject\":\"Acme Widget\",\"attribute\":\"price\",\"value\":{\"kind\":\"money\",\"value\":10,\"currency\":\"EUR\",\"per\":\"month\"}}]"},
+    {"id": "fx-3", "text": "Acme Widget now costs €12 per month.", "date": "2026-05-10", "label": "true",
+     "form": "[{\"subject\":\"Acme Widget\",\"attribute\":\"price\",\"value\":{\"kind\":\"money\",\"value\":12,\"currency\":\"EUR\",\"per\":\"month\"}}]"},
+    {"id": "fx-4", "text": "Acme Widget costs €99 per month.", "date": "2026-02-10", "label": "false",
+     "form": "[{\"subject\":\"Acme Widget\",\"attribute\":\"price\",\"value\":{\"kind\":\"money\",\"value\":99,\"currency\":\"EUR\",\"per\":\"month\"}}]"},
+    {"id": "fx-5", "text": "Acme Widget launched in March 2025.", "date": "2026-01-10", "label": "true",
+     "form": "[{\"subject\":\"Acme Widget\",\"attribute\":\"launched\",\"value\":{\"kind\":\"date\",\"value\":\"2025-03\"}}]"}
+  ]
+}
