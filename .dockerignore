@@ -1,0 +1,8 @@
+*
+!requirements.txt
+!arena/
+!contracts/
+!data/
+!reports/
+**/__pycache__
+**/*.pyc
