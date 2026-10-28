@@ -117,19 +117,59 @@ export interface ClaimGroup {
   group: string;
   n: number;
   right: number;
-  // Share of the group's backtested claims that were true after the cut-off.
+  // Share of the group's backtested claims that were true, judged on all practice rows
+  // (partly circular: the rows a claim came from also judge it).
   precision: number;
   confidence: number;
+  // The strict judge: only rows after the cut-off, which the generator never saw.
+  // strict_precision is null when those rows cannot check the group.
+  strict_n?: number;
+  strict_right?: number;
+  strict_precision?: number | null;
 }
 
 export interface ClaimCalibration {
   cutoffs: string[];
+  unverified_cap?: number;
   groups: ClaimGroup[];
+}
+
+// GET /metrics "shift" (scripts/shift_test.py): models trained only on the "known" part
+// of the practice data, measured on the "unseen" part, before and after the confidence control.
+export interface ShiftMeasure {
+  n: number;
+  said: number;
+  right: number;
+  ece: number | null;
+  brier: number;
+}
+
+export interface ShiftScenario {
+  scenario: string;
+  unseen: number;
+  always_true: number;
+  factors: Record<string, number>;
+  unseen_before: ShiftMeasure;
+  unseen_after: ShiftMeasure;
+}
+
+// GET /metrics "controls" (scripts/train_control.py): the run-time confidence control on practice.
+export interface ControlReport {
+  control_rows: number;
+  control_answers: number;
+  accuracy?: number;
+  said?: number;
+  ece_before?: number | null;
+  false_share?: number;
+  factors?: Record<string, number>;
+  note?: string;
 }
 
 export interface MetricsResponse {
   labels: LabelCalibration | null;
   claims: ClaimCalibration | null;
+  shift: ShiftScenario[] | null;
+  controls: ControlReport | null;
   // True only when this frontend serves its fixture instead of the API's numbers.
   simulated: boolean;
 }

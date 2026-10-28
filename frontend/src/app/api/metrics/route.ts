@@ -10,9 +10,16 @@ export const dynamic = "force-dynamic";
 const FIXTURE = DEMO || process.env.ARENA_METRICS_FIXTURE === "1";
 
 export async function GET() {
-  if (FIXTURE) return NextResponse.json({ labels: fixture.labels, claims: fixture.claims, simulated: true });
+  if (FIXTURE)
+    return NextResponse.json({ labels: fixture.labels, claims: fixture.claims, shift: null, controls: null, simulated: true });
   const res = await forward("/metrics", { method: "GET" });
   if (!res.ok) return res;
   const body = await res.json();
-  return NextResponse.json({ labels: body.labels ?? null, claims: body.claims ?? null, simulated: false });
+  return NextResponse.json({
+    labels: body.labels ?? null,
+    claims: body.claims ?? null,
+    shift: body.shift ?? null,
+    controls: body.controls ?? null,
+    simulated: false,
+  });
 }
