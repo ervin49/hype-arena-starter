@@ -1,7 +1,7 @@
 # Git Happens — status
 
-**Last updated:** 2026-10-28 15:10 EET, by C, on `integration`
-**Deadline:** PR to QA-DNA open before **11:00 on 29 Oct**. Feature freeze at 08:00, sample at 09:00, video after.
+**Last updated:** 2026-10-28 15:55 EET, by C, on `dev/c` (not yet merged into `integration`)
+**Deadline:** PR to QA-DNA open before **11:00 on 29 Oct**. Sample released at 09:00. The plan is in `PLAN_NEXT.md`.
 
 > Updated on every merge into `integration`. If something here is out of date, tell C.
 
@@ -9,13 +9,15 @@
 
 | Part | Owner | State |
 |---|---|---|
-| Engine: extraction, temporal check, ML verdict | A | ✅ works; false sentences are the weak spot |
+| Engine: extraction, temporal check, ML verdict | A | ✅ works; runs as one batch with page context; calibration to do |
 | Frontend: upload, verdicts, claims, architecture replay | B (+ C for claims and evidence) | ✅ works with the real engine |
-| API: `/health`, `/predict`, `/predict/csv`, `/claims` | C | ✅ works |
-| Batch runner → `/output/output.csv` | C | ✅ passes the official format checker locally |
-| Claim generator + validator: 1,000 claims | C | ✅ 1,000 valid, from a pool of ~1,280 |
-| `Dockerfile` + `scripts/check.sh` in Docker | C | ❌ **not started — required to be run at all** |
-| Start guide in the README | C | ❌ to do |
+| API: `/health`, `/predict`, `/predict/csv`, `/claims`, `/metrics` | C | ✅ works; uploads labelled like the batch run |
+| Batch runner → `/output/output.csv` | C | ✅ A's batch (`label_rows`); passes the official format checker locally |
+| Claim generator + validator: 1,000 claims | C | ✅ 1,000 valid; confidence measured by backtest; pool ~1,300 |
+| Confidence chart (`/metrics` → UI) | B | ❌ to do; the API serves the claim numbers, A's label file is pending |
+| Label calibration (`eval/calibration_labels.json`) | A | ❌ to do |
+| `Dockerfile` + `scripts/check.sh` in Docker | C | ⏸ parked for now — **required for the judges to run anything** |
+| README: how it works, start guide, predicted score | C | ⏸ not now |
 | Video on the 20 sample rows | all | ⏳ 29 Oct, 09:00 |
 | Pull request to QA-DNA | C | ⏳ 29 Oct, before 11:00 |
 
@@ -23,14 +25,32 @@
 
 | Metric | Value |
 |---|---|
-| Hidden rows labelled right | 329 / 380 (86.6%); always `true` would score 85% |
-| False sentences caught | 9 of 49: the main thing to improve |
+| Hidden rows labelled right | **331 / 380** (87.1%), was 329; always `true` would score 85% |
+| False sentences caught | **22 of 49**, was 9 (true rows called false: 15, was 4) |
+| Answers at confidence 0.9+ | **196**, 97% right (was 145, 98% right) |
+| Weakest band | `false` at 0.5–0.7: about 55% right; `true` at 0.5–0.6: 61% right |
 | `unsure` predicted | never (A's default; a team decision once scoring is known) |
-| Confidence 0.9+ is right | 95.5% of the time (A's cross-validation) |
-| Claims | 1,000: 309 change, 247 at_event, 241 fact, 197 compare, 6 relation |
-| Claim confidence | 0.83–0.97, most around 0.9 |
-| Full run time | ~2 s on practice; the ~20,000-row run is estimated at about 1 min of 30 |
-| Tests | 156 Python tests pass (`.venv/bin/pytest -q`); frontend builds and lints clean |
+| Claims | 1,000: 383 at_event, 316 change, 294 compare (dates), 5 fact (dates), 2 relation |
+| Claim confidence | measured: 993 at 0.99, 5 at 0.95, 2 at 0.80 (relation, not measurable) |
+| Full run time | ~2.5 s on practice; the ~20,000-row run is estimated at about 1 min of 30 |
+| Tests | 164 Python tests pass, 1 expected failure (`.venv/bin/pytest -q`) |
+
+### Claim backtest (`scripts/backtest_claims.py` → `reports/claims_calibration.json`)
+
+Claims built from the practice rows before 1 May, 1 Jul and 1 Sep, judged on the rows after.
+
+| Group | Judged | Right | Decision | Confidence |
+|---|---|---|---|---|
+| compare (dates) | 1,229 | 100% | kept | 0.99 |
+| at_event | 522 | 100% | kept | 0.99 |
+| change | 350 | 100% | kept | 0.99 |
+| fact (dates) | 67 | 100% | kept | 0.95 |
+| fact (values that never changed) | 113 | 52% | dropped | — |
+| fact (values that changed before) | 51 | 71% | dropped | — |
+| compare (amounts) | 29 | 97% | dropped (bar: 98% at every cut-off) | — |
+| relation | — | not judged | kept, cautious | 0.80 |
+
+Caveat: dates and events are judged partly on the same practice data plus the later reports; strong evidence, not proof. The final input is ~10× larger.
 
 ## Branches
 
@@ -73,33 +93,37 @@ python3 scripts/check_output.py /tmp/arena/output data/practice.csv /tmp/arena/u
 ## Next, by owner
 
 **C (platform)**
-1. `Dockerfile`, then `scripts/check.sh` offline as user 10001. This is the most urgent item.
-2. Runner: switch to A's `label_rows` (page context and corroboration).
-3. Start guide in `README.md`; move `test.csv` to `demo/`; drop `.claude/launch.json` from the submission.
+1. Done on `dev/c`: claim backtest + measured confidence; `label_rows` in the runner and the API; `GET /metrics`.
+2. Push `integration` and create `dev/a`, `dev/b`, `dev/c` on GitHub once B confirms commit `98f03f9` (below).
+3. Parked: `Dockerfile` + `scripts/check.sh`; README (how it works, start guide, predicted score); move `test.csv` to `demo/`; drop `.claude/launch.json`.
 
 **A (engine)**
-1. Catch more false sentences (9 / 49).
-2. Calibrate confidence (0.9+ is right 95.5% of the time, so it can honestly be higher).
-3. Note: `arena.values` reads `€59 per month or €590 per year` as a range; `value-forms.md` reads it as a choice.
+1. Label calibration → `eval/calibration_labels.json` (shape in `PLAN_NEXT.md` §5); `/metrics` serves it as soon as it exists.
+2. The weak bands: `false` at 0.5–0.7 (~55% right), `true` at 0.5–0.6 (61% right).
+3. Batch corroboration: check a row never confirms itself and copies are not counted as independent sources.
+4. Note: `arena.values` reads `€59 per month or €590 per year` as a range; `value-forms.md` reads it as a choice.
 
 **B (frontend)**
-1. Update Next.js to a patched 15.5.x (15.5.4 has a published vulnerability).
-2. Hide the dev indicator for the video, or record from `npm start`.
-3. Review C's additions: the Claims page, claim steps in the replay, evidence text in the detail panel.
+1. **Commit `98f03f9` on `team/frontend`** ("style: update frontend") conflicts with `integration` and looks like an older dashboard (merging it would delete `run-steps.ts`, `architecture.ts`, `RunProvider.tsx`). Is anything in it still needed? Until B answers, it is not merged.
+2. Confidence chart from `GET /metrics` (needs a proxy route `frontend/src/app/api/metrics/route.ts`, like `api/claims`).
+3. Update Next.js to a patched 15.5.x; record the video from `npm run build && npm start`.
+4. Review C's additions: the Claims page, claim steps in the replay, evidence text in the detail panel.
 
 **Team**
-- Ask the organisers how confidence and `unsure` are scored. It decides how cautious the engine should be.
+- Ask the organisers how confidence and `unsure` are scored. It sets `ARENA_UNSURE_BELOW`.
 
 ## Known risks
 
 - Practice is ~10% of the final input: new facts and later value changes we cannot see.
-- `fact` and amount `compare` claims depend on values still holding on 29 Oct; dates, changes and event values cannot go stale.
-- Without the Dockerfile there is no submission. It comes first.
+- Claims now avoid values that can go stale (the backtest showed 52–71% right for them); the 1,000 are dates, changes and event values.
+- Up to 30 claims rest on one fact; if a fact in our data is wrong, its claims fail together.
+- Without the Dockerfile there is no submission. It is parked, not dropped.
 
 ## Log
 
 | When | What |
 |---|---|
+| 28 Oct, 15:55 | `dev/c` (local): claim backtest and measured confidence (993 claims at 0.99; stale `fact` groups dropped); runner and API use A's `label_rows` (331/380 right, false caught 9 → 22); `GET /metrics`. |
 | 28 Oct, 15:10 | Claim generator + validator: 1,000 valid claims; runner passes the official format checker. API: `/claims` and evidence texts. Frontend: Claims page, claim steps in the replay, evidence sentences in the detail panel. |
 | 28 Oct, ~13:15 | Engine merged into `integration`; first live run with the real engine (4-row demo). |
 | 28 Oct, ~12:00 | API and frontend merged into `integration`; contract checked field by field. |
