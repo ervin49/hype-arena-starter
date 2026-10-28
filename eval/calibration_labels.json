@@ -2,134 +2,134 @@
   "method": "platt",
   "fitted_on": "out-of-fold practice, page-grouped 5-fold; pass 2 (label_rows), 100% of the other pages labelled; bins and ECE cross-fitted (each fold calibrated on the others)",
   "rows": 1897,
-  "accuracy": 0.866,
+  "accuracy": 0.863,
   "bins": [
     {
       "label": "true",
       "from": 0.5,
       "to": 0.6,
-      "n": 69,
-      "accuracy": 0.594,
-      "confidence": 0.543
+      "n": 78,
+      "accuracy": 0.59,
+      "confidence": 0.556
     },
     {
       "label": "true",
       "from": 0.6,
       "to": 0.7,
-      "n": 108,
-      "accuracy": 0.722,
-      "confidence": 0.649
+      "n": 94,
+      "accuracy": 0.638,
+      "confidence": 0.657
     },
     {
       "label": "true",
       "from": 0.7,
       "to": 0.8,
-      "n": 196,
-      "accuracy": 0.781,
-      "confidence": 0.75
+      "n": 176,
+      "accuracy": 0.784,
+      "confidence": 0.752
     },
     {
       "label": "true",
       "from": 0.8,
       "to": 0.9,
-      "n": 461,
-      "accuracy": 0.848,
-      "confidence": 0.853
+      "n": 467,
+      "accuracy": 0.859,
+      "confidence": 0.852
     },
     {
       "label": "true",
       "from": 0.9,
       "to": 1.0,
-      "n": 909,
-      "accuracy": 0.959,
+      "n": 918,
+      "accuracy": 0.962,
       "confidence": 0.939
     },
     {
       "label": "false",
       "from": 0.5,
       "to": 0.6,
-      "n": 57,
-      "accuracy": 0.544,
-      "confidence": 0.548
+      "n": 66,
+      "accuracy": 0.515,
+      "confidence": 0.544
     },
     {
       "label": "false",
       "from": 0.6,
       "to": 0.7,
-      "n": 38,
-      "accuracy": 0.658,
-      "confidence": 0.643
+      "n": 36,
+      "accuracy": 0.639,
+      "confidence": 0.645
     },
     {
       "label": "false",
       "from": 0.7,
       "to": 0.8,
-      "n": 24,
-      "accuracy": 0.875,
-      "confidence": 0.741
+      "n": 25,
+      "accuracy": 0.88,
+      "confidence": 0.744
     },
     {
       "label": "false",
       "from": 0.8,
       "to": 0.9,
-      "n": 22,
-      "accuracy": 0.818,
-      "confidence": 0.852
+      "n": 27,
+      "accuracy": 0.778,
+      "confidence": 0.856
     },
     {
       "label": "false",
       "from": 0.9,
       "to": 1.0,
-      "n": 13,
-      "accuracy": 0.923,
-      "confidence": 0.922
+      "n": 10,
+      "accuracy": 1.0,
+      "confidence": 0.93
     }
   ],
-  "ece_before": 0.025,
-  "ece_after": 0.027,
-  "low_bins_after": 0,
+  "ece_before": 0.02,
+  "ece_after": 0.029,
+  "low_bins_after": 1,
   "regimes": [
     {
       "pass": "pass1",
       "labelled": 0.1,
-      "ece_before": 0.033,
-      "ece_after": 0.023,
-      "accuracy": 0.837
+      "ece_before": 0.019,
+      "ece_after": 0.026,
+      "accuracy": 0.834
     },
     {
       "pass": "pass1",
       "labelled": 0.25,
-      "ece_before": 0.016,
-      "ece_after": 0.027,
-      "accuracy": 0.846
+      "ece_before": 0.009,
+      "ece_after": 0.023,
+      "accuracy": 0.845
     },
     {
       "pass": "pass1",
       "labelled": 1.0,
-      "ece_before": 0.01,
-      "ece_after": 0.02,
-      "accuracy": 0.859
+      "ece_before": 0.017,
+      "ece_after": 0.022,
+      "accuracy": 0.862
     },
     {
       "pass": "pass2",
       "labelled": 0.1,
       "ece_before": 0.023,
-      "ece_after": 0.022,
-      "accuracy": 0.846
+      "ece_after": 0.025,
+      "accuracy": 0.847
     },
     {
       "pass": "pass2",
       "labelled": 0.25,
-      "ece_before": 0.025,
-      "ece_after": 0.033,
-      "accuracy": 0.849
+      "ece_before": 0.016,
+      "ece_after": 0.024,
+      "accuracy": 0.852
     },
     {
       "pass": "pass2",
       "labelled": 1.0,
-      "ece_before": 0.025,
-      "ece_after": 0.027,
-      "accuracy": 0.866
+      "ece_before": 0.02,
+      "ece_after": 0.029,
+      "accuracy": 0.863
     }
   ]
 }

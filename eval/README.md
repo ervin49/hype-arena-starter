@@ -56,25 +56,27 @@ All measured on practice rows the models did not learn from: page-grouped 5-fold
 | | Right | False caught | False precision | ECE |
 |---|---|---|---|---|
 | always `true` | 331 / 380 | 0 / 49 | – | – |
-| runner path today (row by row, pass 1) | 332 / 380 | 13 / 49 | 13 / 18 | 0.042 |
-| `label_rows` (pass 2) | 329 / 380 | **22 / 49** | 22 / 39 | **0.037** |
+| runner path today (row by row, pass 1) | 334 / 380 | 16 / 49 | 16 / 22 | 0.071 |
+| `label_rows` (pass 2) | **337 / 380** | **27 / 49** | 27 / 41 | 0.059 |
 
-Without `--honest`, the shipped models have seen the hidden rows: 340 / 380 and 27 / 49 caught, an upper bound like `check.sh`'s own count (PLAN_NEXT's 329 / 380 was measured that way).
+Without `--honest`, the shipped models have seen the hidden rows: 340 / 380 and 29 / 49 caught, an upper bound like `check.sh`'s own count (PLAN_NEXT's 329 / 380 was measured that way).
+
+**Regularization** (28 Oct): the boosted trees now use `l2=10, min_hess=20` instead of `l2=1, min_hess=4`. Each practice row is trained on once per labelled ratio, so the old leaves could rest on one row. Before → after on the hidden rows (`--honest`, `label_rows`): 329 → 337 right, false precision 22/39 → 27/41, and the over-confident `false` 0.5–0.6 bin (said 0.52, right 0.39) is gone. Out of fold, log loss fell in 5 of the 6 pass × ratio cells (mean 0.372 → 0.369). The ECE on the hidden rows rose (0.037 → 0.059), from `true` labels at 0.5–0.8 that are right *more* often than they say: under-confidence, on bins of about 25 rows. Fewer rounds (100, 150), depth 1, depth 3, `l2=30, min_hess=40`, 500 rounds and logistic regression were measured too and were no better.
 
 **Simulated runs** (`python3 eval/train_model.py`). The run has about 10% labelled evidence and 90% unlabelled text; the simulation makes only a fraction of the other pages labelled evidence. Accuracy after calibration, all 1,897 rows out of fold:
 
 | Labelled evidence | Pass 1 | Pass 2, self-trained | False recall, pass 1 → 2 | ECE, pass 2 |
 |---|---|---|---|---|
-| 10% (the run's ratio) | 0.837 | **0.846** | 0.09 → 0.20 | 0.022 |
-| 25% | 0.846 | **0.849** | 0.18 → 0.27 | 0.033 |
-| 100% (dense evidence, as in the live demo) | 0.859 | **0.866** | 0.36 → 0.39 | 0.027 |
+| 10% (the run's ratio) | 0.834 | **0.847** | 0.10 → 0.23 | 0.025 |
+| 25% | 0.845 | **0.852** | 0.20 → 0.29 | 0.024 |
+| 100% (dense evidence, as in the live demo) | 0.862 | **0.863** | 0.37 → 0.40 | 0.029 |
 
 "Always true" scores 0.833. The simulated runs have far less evidence than the real one, so their absolute numbers are pessimistic.
 
 **Calibration** (PLAN_NEXT, Self-evaluation; report: [calibration_labels.json](calibration_labels.json)):
 - **Method:** Platt scaling, fitted on out-of-fold predictions and stored in each model file. `decide()` applies it.
-- **Pass 2 meets both targets in every regime:** ECE ≤ 0.05, and no bin of 20+ rows more than 0.05 below its confidence.
-- **Pass 1 (the row-by-row path) has one such bin in every regime:** `false` labels at 0.5–0.7 are right only about 45% of the time. Switching the runner to `label_rows` removes it.
+- **ECE ≤ 0.05 in every pass and regime.**
+- **Bins of 20+ rows more than 0.05 below their confidence:** none for pass 2 at 10% and 25%; one at 100%, `false` 0.8–0.9 (27 rows, said 0.86, right 0.78). Pass 1 has one at 25% and at 100%.
 - **Rejected after measuring:** an isotonic map (noisier on 1,900 rows, and it cost up to 1 point of accuracy) and a two-sided Platt (no better).
 
 **Other:**

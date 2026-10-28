@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { AlertTriangle, Loader2 } from "lucide-react";
 import { EngineError, getMetrics, type EngineFailure } from "@/lib/api";
 import type { ClaimCalibration, LabelCalibration, MetricsResponse } from "@/lib/types";
-import { CalibrationBars, CalibrationTable, TOLERANCE, type CalibrationRow } from "./CalibrationBars";
+import { CalibrationBars, CalibrationTable, TOLERANCE, isCalibrated, type CalibrationRow } from "./CalibrationBars";
 
 const band = (from: number, to: number) => `${Math.round(from * 100)}–${Math.round(to * 100)}%`;
 
@@ -19,7 +19,7 @@ function claimRows(m: ClaimCalibration): CalibrationRow[] {
 // How many rows/claims sit in bands that meet the plan's ±5-point limit.
 function share(rows: CalibrationRow[]): string {
   const total = rows.reduce((a, r) => a + r.n, 0);
-  const ok = rows.filter((r) => Math.abs(r.right - r.said) <= TOLERANCE).reduce((a, r) => a + r.n, 0);
+  const ok = rows.filter((r) => isCalibrated(r.said, r.right)).reduce((a, r) => a + r.n, 0);
   return total ? `${Math.round((ok / total) * 100)}%` : "—";
 }
 
