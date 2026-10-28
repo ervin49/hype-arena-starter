@@ -95,3 +95,25 @@ def test_deadline_in_the_past_still_writes_a_table(universe):
     runner.run(str(universe / "universe"), str(universe / "output"), PRACTICE, engine=ENGINE, deadline=0.0)
     rows = read_output(universe)
     assert {r["label"] for r in rows if not r["type"]} == {"unsure"}
+
+
+def test_the_batch_is_used_when_the_engine_has_one(universe):
+    seen = {}
+
+    def label_rows(rows, practice, lexicon, kb=None, extractor=None):
+        seen["rows"] = len(rows)  # the whole input, labelled rows included, in file order
+        return [{"id": r["id"], "label": "false", "confidence": 0.8} for r in rows if not r["label"]]
+
+    engine = types.SimpleNamespace(**{**vars(ENGINE), "label_rows": label_rows})
+    assert runner.run(str(universe / "universe"), str(universe / "output"), PRACTICE, engine=engine) == 0
+    assert seen["rows"] == 1897
+    assert {r["label"] for r in read_output(universe) if not r["type"]} == {"false"}
+
+
+def test_a_failing_batch_falls_back_to_the_same_engine_row_by_row(universe):
+    def label_rows(rows, practice, lexicon, kb=None, extractor=None):
+        raise RuntimeError("batch broke")
+
+    engine = types.SimpleNamespace(**{**vars(ENGINE), "label_rows": label_rows})
+    assert runner.run(str(universe / "universe"), str(universe / "output"), PRACTICE, engine=engine) == 0
+    assert {r["label"] for r in read_output(universe) if not r["type"]} == {"true", "unsure"}  # the fake engine's answers

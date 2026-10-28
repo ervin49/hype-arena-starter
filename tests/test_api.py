@@ -128,3 +128,18 @@ def test_claims_do_not_need_the_engine():
     with client(engine=types.SimpleNamespace(**{**vars(ENGINE), "build_kb": broken}), demo=False) as c:
         assert c.get("/health").status_code == 503
         assert len(c.get("/claims").json()["claims"]) == 1000
+
+
+def test_uploads_are_labelled_as_one_batch_like_the_runner():
+    seen = {}
+
+    def label_rows(rows, practice, lexicon, kb=None, extractor=None):
+        seen["ids"] = [r["id"] for r in rows]
+        return [{"id": r["id"], "label": "false", "confidence": 0.7, "evidence_ids": ["p-1560"], "reason": "batch",
+                 "extraction": {"facts": [], "complete": False, "issues": []}} for r in rows if not r["label"]]
+
+    with client(engine=types.SimpleNamespace(**{**vars(ENGINE), "label_rows": label_rows}), demo=False) as c:
+        body = c.post("/predict", json={"rows": [ROW, {**ROW, "id": "known", "label": "true"}]}).json()
+    assert seen["ids"] == ["demo-2", "known"]  # labelled rows go in as context
+    [p] = body["predictions"]
+    assert p["reason"] == "batch" and p["evidence"][0]["id"] == "p-1560"
