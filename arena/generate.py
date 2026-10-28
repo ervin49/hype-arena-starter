@@ -31,7 +31,8 @@ CALIBRATION = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 MIN_GROUP_PRECISION = 0.98   # a group must be this right at every backtest cut-off to be kept
 UNMEASURED_CONFIDENCE = 0.8  # a group the backtest cannot judge (relation): kept, never trusted high
 MAX_CLAIMS_PER_FACT = 10  # x3 in the second pass; kept groups backtest at 100%, pool ~1,300
-MAX_CLAIMS_PER_EVENT = 100  # an event date reported after the event is strong evidence
+MAX_CLAIMS_PER_EVENT = 60  # at_event values can't be checked on unseen rows: capped at 0.95, kept to a share
+MAX_DATE_COMPARES_PER_FACT = 40  # second pass: date compares measure 127/127 on unseen rows
 ACRONYMS = {"ceo": "CEO", "cto": "CTO", "sla": "SLA", "cli": "CLI", "eu": "EU", "soc2": "SOC 2",
             "sdk": "SDK", "ide": "IDE", "ai": "AI", "nps": "NPS", "arr": "ARR", "api": "API"}
 # Dates that move by nature, even after they pass: a pointer to the latest or next one, a plan,
@@ -204,6 +205,13 @@ def _changes(ev, out):
                 out.append(_claim("change", "change", form, texts, conf, x.rows[-2:] + y.rows[:2], [key]))
 
 
+def _counts_itself(attribute, rendered):
+    """The rendered value ends with the attribute's own noun: 38 employees for `employees`."""
+    noun = attribute_words(attribute).lower()
+    last = rendered.lower().split()[-1]
+    return " " not in noun and last in (noun, noun.rstrip("s"))
+
+
 def _at_events(ev, out):
     for event, (edate, econf, erows) in ev.event_dates().items():
         e = edate["value"]
@@ -227,6 +235,8 @@ def _at_events(ev, out):
                 texts = [f"{s} {words(a)} was {v} at the time of {event}.",
                          f"{s} {words(a)} stood at {v} during {event}.",
                          f"{s} had {v} at the time of {event}."]
+                if _counts_itself(a, v):  # "Hooly had 38 employees", not "Hooly employees was 38 employees"
+                    texts.insert(0, texts.pop())
                 out.append(_claim("at_event", "at_event", form, texts, min(conf, econf), seg.rows[:3] + erows[:1], [key, ("@event", event)]))
                 break
 
@@ -406,7 +416,8 @@ def select_claims(practice_rows, lexicon, as_of, input_texts, n=1000, calibratio
             key = json.dumps(c["form"], sort_keys=True)
             if key in vetoed and not allow_vetoed:
                 continue
-            if key in forms or any(per_fact[f] >= (MAX_CLAIMS_PER_EVENT if f[0] == "@event" else limit) for f in c["facts"]):
+            cap = max(limit, MAX_DATE_COMPARES_PER_FACT) if c["group"] == "compare.date" and limit > MAX_CLAIMS_PER_FACT else limit
+            if key in forms or any(per_fact[f] >= (MAX_CLAIMS_PER_EVENT if f[0] == "@event" else cap) for f in c["facts"]):
                 continue
             for text in c["texts"]:
                 claim = {k: v for k, v in c.items() if k not in ("texts", "facts", "score")}
