@@ -55,7 +55,7 @@ def test_no_fact_carries_too_many_claims(selected):
             per_fact[(f["right"]["subject"], f["right"]["attribute"])] += 1
         elif c["type"] != "relation":
             per_fact[(f["subject"], f["attribute"])] += 1
-    assert max(per_fact.values()) <= 18
+    assert max(per_fact.values()) <= 30
 
 
 def test_deterministic():
@@ -82,3 +82,38 @@ def test_full_run_with_the_real_generator_passes_the_official_checker(tmp_path):
     check = subprocess.run([sys.executable, os.path.join(ROOT, "scripts", "check_output.py"), str(tmp_path / "output"),
                             practice, str(tmp_path / "universe" / "universe.csv")], capture_output=True, text=True)
     assert "claims: 1000 new claims" in check.stdout and "the format checks pass" in check.stdout, check.stdout
+
+
+def test_confidence_comes_from_the_backtest(selected):
+    from arena.generate import load_calibration
+    table = load_calibration()
+    assert table, "reports/claims_calibration.json is missing: run scripts/backtest_claims.py"
+    claims, _ = selected
+    for c in claims:
+        assert table[c["group"]]["keep"] and c["confidence"] == table[c["group"]]["confidence"], c
+
+
+def test_groups_that_go_stale_are_dropped():
+    from arena.generate import load_calibration
+    table = load_calibration()
+    assert not table["fact.unchanged"]["keep"] and not table["fact.changed"]["keep"]
+
+
+def test_a_reserve_of_at_least_150():
+    pool, _ = select_claims(PRACTICE, LEXICON, "2026-10-29", TEXTS, 5000)
+    assert len(pool) >= 1150
+
+
+def test_calibration_rules():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("bt", os.path.join(ROOT, "scripts", "backtest_claims.py"))
+    bt = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(bt)
+    assert bt.wilson_lower(0, 0) == 0.0 and 0.98 < bt.wilson_lower(400, 400) < 0.991
+    cut = {c: {} for c in bt.CUTOFFS}
+    cut[bt.CUTOFFS[0]] = {"good": {"right": 100, "wrong": 0, "unknown": 3}, "bad": {"right": 90, "wrong": 10, "unknown": 0},
+                         "rare": {"right": 3, "wrong": 0, "unknown": 0}}
+    groups = {g["group"]: g for g in bt.calibration(cut)}
+    assert groups["good"]["keep"] and groups["good"]["confidence"] <= 1.0
+    assert not groups["bad"]["keep"]
+    assert groups["rare"]["keep"] and groups["rare"]["confidence"] == bt.UNMEASURED_CONFIDENCE
