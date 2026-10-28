@@ -27,7 +27,7 @@ _WORD = re.compile(r"[a-z][a-z0-9']*")
 _STOP = {"the", "a", "an", "of", "and", "to", "in", "is", "for", "on", "at", "it", "its",
          "with", "by", "as", "that", "this", "we", "our", "are", "be", "has", "from"}
 CONTEXT_ROWS = 6
-FALLBACK_PRIOR = -4.0
+FALLBACK_PRIOR = -11.0
 
 
 def _tokens(text):
@@ -65,7 +65,13 @@ class NaiveBayes:
 class Extractor:
     def __init__(self, lexicon_obj):
         self.lex = lexicon_obj
-        self.nb = NaiveBayes()          # value facts: class = attribute or NONE
+        self.nb = NaiveBayes()          # value facts, words near the value: class = attribute or NONE+kind
+        self.nb_row = NaiveBayes()      # value facts, words of the whole row
+        self.row_weight = 0.4           # weight of the row model against the local one
+        self.name_values = set()        # normalised names seen as values in practice
+        self.kind_facts = Counter()     # value kind -> facts of that kind in practice
+        self.ctx_prior, self.ctx_step = -4.0, 0.6   # log prior of a subject from context
+        self.fallback_prior = FALLBACK_PRIOR       # of a subject the page never names
         self.nb_bool = NaiveBayes()     # yes or no facts: class = attribute or NONE
         self.attr_kinds = defaultdict(Counter)      # attribute -> kinds
         self.sa_units = defaultdict(Counter)        # (subject, attribute) -> units
@@ -73,10 +79,8 @@ class Extractor:
         self.sa_count = Counter()                   # (subject, attribute) -> facts
         self.subj_count = Counter()
         self.known_forms = {}                       # row id -> facts (practice)
-        self.text_forms = {}                        # normalised text -> facts
         self.recent = []                            # (date, [subjects]) of recent rows
-        self.bool_none_rate = 0.0
-        self.none_bias = -4.0   # tuned with eval/eval_extract.py
+        self.none_bias = -7.0   # tuned with eval/eval_extract.py (page-grouped CV)
         self.bool_bias = 0.0
 
 
@@ -111,10 +115,6 @@ def _row_feats(text, mention_spans):
     return ["w:" + t for t in toks] + ["g:" + b for b in bigr]
 
 
-def _name_spans(lex, text):
-    return lex.mentions(text)
-
-
 def build_extractor(practice_rows, lexicon):
     value_names = set()
     rows = []
@@ -129,11 +129,10 @@ def build_extractor(practice_rows, lexicon):
                 value_names.add(f["value"]["value"])
     lex = Lexicon(lexicon, value_names)
     ex = Extractor(lex)
-    bool_rows = none_rows = 0
+    ex.name_values = {norm_name(n) for n in value_names}
     for r, facts in rows:
         text = r["text"]
         ex.known_forms[r["id"]] = facts
-        ex.text_forms.setdefault(norm_name(text), facts)
         mentions = lex.mentions(text)
         spans = parse_values(text, [(m["start"], m["end"]) for m in mentions if m["is_subject"]])
         rowf = _row_feats(text, [(m["start"], m["end"]) for m in mentions])
@@ -142,6 +141,7 @@ def build_extractor(practice_rows, lexicon):
             ex.attr_kinds[a][v["kind"]] += 1
             ex.sa_count[(f["subject"], a)] += 1
             ex.subj_count[f["subject"]] += 1
+            ex.kind_facts[v["kind"]] += 1
             if v.get("unit"):
                 ex.sa_units[(f["subject"], a)][singular(str(v["unit"]))] += 1
                 ex.attr_units[a][singular(str(v["unit"]))] += 1
@@ -150,7 +150,7 @@ def build_extractor(practice_rows, lexicon):
             v = f["value"]
             if v["kind"] == "boolean":
                 continue
-            cands = _value_candidates(lex, text, spans, mentions)
+            cands = _value_candidates(lex, text, spans, mentions, ex.name_values)
             for i, (span, val) in enumerate(cands):
                 if i in used:
                     continue
@@ -158,30 +158,40 @@ def build_extractor(practice_rows, lexicon):
                         {k: x for k, x in val.items() if k != "op"},
                         {k: x for k, x in v.items() if k != "op"}):
                     used.add(i)
-                    ex.nb.add(f["attribute"], _value_feats(text, span, val["kind"], val) + rowf)
+                    ex.nb.add(f["attribute"], _value_feats(text, span, val["kind"], val))
+                    ex.nb_row.add(f["attribute"], rowf)
                     break
-        for i, (span, val) in enumerate(_value_candidates(lex, text, spans, mentions)):
+        for i, (span, val) in enumerate(_value_candidates(lex, text, spans, mentions, ex.name_values)):
             if i not in used:
-                ex.nb.add(NONE + val["kind"], _value_feats(text, span, val["kind"], val) + rowf)
+                ex.nb.add(NONE + val["kind"], _value_feats(text, span, val["kind"], val))
+                ex.nb_row.add(NONE + val["kind"], rowf)
         bools = [f for f in facts if f["value"]["kind"] == "boolean"]
         for f in bools:
             ex.nb_bool.add(f["attribute"], rowf)
-            bool_rows += 1
         if not bools:
             ex.nb_bool.add(NONE, rowf)
-            none_rows += 1
-    ex.bool_none_rate = none_rows / max(1, none_rows + bool_rows)
     return ex
 
 
-def _value_candidates(lex, text, spans, mentions):
-    """(span, value) pairs: parsed values plus names that could be values."""
+def _value_candidates(lex, text, spans, mentions, name_values):
+    """(span, value) pairs: parsed values plus names that could be values:
+    names that are no subject, and subjects named as values in practice
+    (people such as Erlich Bachmann), not products or events."""
     out = [(s, s["value"]) for s in spans]
     for m in mentions:
+        if m["is_subject"] and norm_name(m["name"]) not in name_values:
+            continue
         out.append(({"start": m["start"], "end": m["end"], "raw": m["surface"],
                      "negated": False, "approx": False, "range": False, "name": m["name"]},
                     {"kind": "name", "value": m["surface"] if not m["is_subject"] else m["name"]}))
     return out
+
+
+def _attr_prior(ex, lex, subject, attribute):
+    """log P(attribute | subject), smoothed over the subject's attributes."""
+    n_attrs = max(1, len(lex.attributes(subject)))
+    return math.log((ex.sa_count.get((subject, attribute), 0) + 0.5)
+                    / (ex.subj_count.get(subject, 0) + 0.5 * n_attrs))
 
 
 def _unit_ok(ex, subject, attribute, value):
@@ -251,8 +261,8 @@ def extract(row, lexicon, extractor, context=None, remember_row=True):
             after = [m for m in subj_mentions if m["start"] >= pos]
             return -0.8 if after and after[0]["name"] == subject and not before else -1.6
         if subject in ctx:
-            return -1.2 - 0.6 * ctx.index(subject)
-        return FALLBACK_PRIOR
+            return ex.ctx_prior - ex.ctx_step * ctx.index(subject)
+        return ex.fallback_prior
 
     cand_subjects = []
     for m in subj_mentions:
@@ -268,68 +278,66 @@ def extract(row, lexicon, extractor, context=None, remember_row=True):
         if s not in cand_subjects and s in lex.subjects:
             cand_subjects.append(s)
 
-    facts, scores, used_spans = [], [], []
-    taken = set()
-    cands = _value_candidates(lex, text, spans, mentions)
-    # alternative readings of one span ("4.5 stars" or version 4.5) compete
-    for span, val in cands:
+    # Score every reading of every value against every (subject, attribute),
+    # then assign greedily, strongest first: one value per span, and one
+    # value per (subject, attribute) in a row.
+    options = []
+    near = set(_tokens(text))
+    cands = _value_candidates(lex, text, spans, mentions, ex.name_values)
+    for ci, (span, val) in enumerate(cands):
         if span.get("approx") or span.get("range"):
             issues.append(f"approximate or range value: {span['raw']}")
             continue
-        best = None
-        feats = _value_feats(text, span, val["kind"], val) + rowf
+        feats = _value_feats(text, span, val["kind"], val)
         none_cls = NONE + val["kind"]
-        none_score = math.log(ex.nb.cc[none_cls] + 1) + ex.nb.loglik(none_cls, feats) + ex.none_bias
+        n_none = ex.nb.cc[none_cls] + 1
+        n_fact = ex.kind_facts[val["kind"]] + 1
+        p_none = math.log(n_none / (n_none + n_fact))
+        none_score = (p_none + ex.nb.loglik(none_cls, feats)
+                      + ex.row_weight * ex.nb_row.loglik(none_cls, rowf) + ex.none_bias)
+        p_fact = math.log(n_fact / (n_none + n_fact))
         for subject in cand_subjects:
             if val["kind"] == "name" and span.get("name") == subject:
                 continue
             sp = subject_prior(subject, span["start"])
-            if sp is None:
-                continue
             for a in lex.attributes(subject):
                 ok = _unit_ok(ex, subject, a, val)
                 if ok is False:
                     continue
-                prior = math.log(ex.sa_count.get((subject, a), 0) + 0.5) - math.log(ex.subj_count.get(subject, 0) + 1)
-                s = sp + prior + math.log(ex.nb.cc.get(a, 0) + 1) + ex.nb.loglik(a, feats)
+                sc = (p_fact + sp + _attr_prior(ex, lex, subject, a) + ex.nb.loglik(a, feats)
+                      + ex.row_weight * ex.nb_row.loglik(a, rowf))
                 words = _attr_words(a)
-                near = set(_tokens(text))
-                s += 1.5 * sum(w in near for w in words) / max(1, len(words))
+                sc += 1.5 * sum(w in near for w in words) / max(1, len(words))
                 if ok is None:
-                    s -= 4.0
-                if best is None or s > best[0]:
-                    best = (s, subject, a)
-        if best is None:
+                    sc -= 4.0
+                if sc > none_score:
+                    options.append((sc - none_score, ci, subject, a))
+    options.sort(key=lambda o: -o[0])
+    facts, scores, chosen = [], [], []
+    used_sa = set()
+    for margin, ci, subject, a in options:
+        span, val = cands[ci]
+        if any(cs < span["end"] and span["start"] < ce for cs, ce in chosen):
             continue
-        margin = best[0] - none_score
-        if margin < 0:
+        if (subject, a) in used_sa:
             continue
         v = dict(val)
         if v["kind"] == "name":
             v["value"] = lex.resolve_value_name(v["value"]) or v["value"]
-        fact = {"subject": best[1], "attribute": best[2], "value": v}
-        key = (best[1], best[2], span["start"])
-        if key in taken:
-            continue
         if span.get("negated") and v["kind"] != "name":
             issues.append(f"negated value: {span['raw']}")
-        # the same span read twice (alternatives): keep the stronger
-        clash = [i for i, (fs, sp_) in enumerate(zip(facts, used_spans)) if sp_[0] < span["end"] and span["start"] < sp_[1]]
-        if clash:
-            i = clash[0]
-            if scores[i] >= margin:
-                continue
-            facts.pop(i), scores.pop(i), used_spans.pop(i)
-        taken.add(key)
-        facts.append(fact)
+        facts.append({"subject": subject, "attribute": a, "value": v})
         scores.append(margin)
-        used_spans.append((span["start"], span["end"]))
+        chosen.append((span["start"], span["end"]))
+        used_sa.add((subject, a))
+    order = sorted(range(len(facts)), key=lambda i: chosen[i][0])
+    facts, scores = [facts[i] for i in order], [scores[i] for i in order]
 
     # yes-or-no facts
     bool_attrs = []
     for subject in cand_subjects:
         sp = subject_prior(subject, 0 if not subj_mentions else subj_mentions[0]["end"])
-        if sp is None or sp <= FALLBACK_PRIOR:
+        if sp is None or sp <= ex.fallback_prior:
             continue
         for a in lex.attributes(subject):
             kinds = ex.attr_kinds.get(a)
