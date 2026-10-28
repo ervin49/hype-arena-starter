@@ -13,6 +13,7 @@ import os
 LABELS = ("true", "false", "unsure")
 MODEL_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "model.json")
 PASS2_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "model_pass2.json")
+ENSEMBLE_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ensemble")
 
 _STATUS_RANK = {"contradicted": 0, "unknown": 1, "supported": 2}
 
@@ -281,3 +282,42 @@ def decide(probs, unsure_below=0.0, calibration=None):
     if probs["unsure"] > probs[firm] or probs[firm] < unsure_below:
         return "unsure", None
     return firm, round(max(0.5, min(1.0, probs[firm])), 3)
+
+
+class Ensemble:
+    """Several calibrated models of one pass (eval/train_ensemble.py), each
+    trained without one page fold.
+
+    probs() averages the members' raw probabilities, as self-training's
+    threshold expects; calibrated() averages their calibrated ones, which give
+    the label and confidence, and returns the spread: the standard deviation
+    of the members' calibrated P(true), how much the answer depends on which
+    rows a model learned from."""
+
+    calibration = None
+
+    def __init__(self, members):
+        self.members = members
+
+    def probs(self, feats):
+        ps = [m.probs(feats) for m in self.members]
+        return {k: sum(p[k] for p in ps) / len(ps) for k in LABELS}
+
+    def calibrated(self, feats):
+        out = []
+        for m in self.members:
+            p = m.probs(feats)
+            cal = m.calibration.apply(p["true"]) if m.calibration else None
+            out.append({"true": cal[0], "false": cal[1], "unsure": max(0.0, 1 - cal[0] - cal[1])} if cal else p)
+        mean = {k: sum(p[k] for p in out) / len(out) for k in LABELS}
+        spread = math.sqrt(sum((p["true"] - mean["true"]) ** 2 for p in out) / len(out))
+        return mean, spread
+
+
+def load_ensemble(directory=ENSEMBLE_DIR, k=5):
+    """(pass-1 ensemble, pass-2 ensemble), or None when a member is missing."""
+    pairs = [(load_model(os.path.join(directory, f"model_{i}.json")),
+              load_model(os.path.join(directory, f"model_pass2_{i}.json"))) for i in range(k)]
+    if not pairs or any(m is None for pair in pairs for m in pair):
+        return None
+    return Ensemble([a for a, _ in pairs]), Ensemble([b for _, b in pairs])
