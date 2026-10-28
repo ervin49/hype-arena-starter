@@ -18,6 +18,7 @@ Confidences are heuristics from the evidence, not calibrated probabilities.
 """
 import json
 import os
+import re
 from collections import Counter, defaultdict
 from datetime import date
 
@@ -33,6 +34,11 @@ MAX_CLAIMS_PER_FACT = 10  # x3 in the second pass; kept groups backtest at 100%,
 MAX_CLAIMS_PER_EVENT = 100  # an event date reported after the event is strong evidence
 ACRONYMS = {"ceo": "CEO", "cto": "CTO", "sla": "SLA", "cli": "CLI", "eu": "EU", "soc2": "SOC 2",
             "sdk": "SDK", "ide": "IDE", "ai": "AI", "nps": "NPS", "arr": "ARR", "api": "API"}
+# Dates that move by nature, even after they pass: a pointer to the latest or next one, a plan,
+# a target, or a role that changes hands. `latest_release_date` moved from 20 June to 5 October
+# in the practice data, which made a date compare false a month later. Only one-time events
+# (founded, joined, launched, released...) stay true once they have happened.
+MOVING_DATE = re.compile(r"^(latest|last|next|current|newest|planned|target)_|_since$|^(training_data_cutoff|lease_end|net_zero_date)$")
 DATE_NOUNS = {"date": "", "launched": "launch", "joined": "start", "founded": "founding",
               "released": "release", "opened": "opening", "beta_opened": "beta opening",
               "stable_release": "stable release", "lease_end": "lease end"}
@@ -100,7 +106,9 @@ class Evidence:
 
     # -- the value of a fact on the as-of date ----------------------------------
     def past_date(self, key):
-        """A date reported after it passed, all such reports agreeing: (value, confidence, rows)."""
+        """A one-time date reported after it passed, all such reports agreeing: (value, confidence, rows)."""
+        if MOVING_DATE.search(key[1]):
+            return None
         reports = [(d, v, rid) for d, v, rid in self.obs.get(key, []) if v["kind"] == "date"
                    and d >= date_interval(v["value"])[1]]
         if not reports:
