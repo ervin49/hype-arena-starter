@@ -26,6 +26,7 @@ def main():
     ap.add_argument("--k", type=int, default=5)
     ap.add_argument("--none-bias", type=float, default=None)
     ap.add_argument("--bool-bias", type=float, default=None)
+    ap.add_argument("--prior", type=float, default=None, help="naive Bayes prior strength")
     args = ap.parse_args()
     rows, lex = load()
     tp = fp = fn = exact_rows = 0
@@ -39,6 +40,9 @@ def main():
             ex.none_bias = args.none_bias
         if args.bool_bias is not None:
             ex.bool_bias = args.bool_bias
+        if args.prior is not None:
+            for nb in (ex.nb, ex.nb_row, ex.nb_bool):
+                nb.prior = args.prior
         test_rows = [dict(rows[i], label="") for i in sorted(test)]
         outs = extract_batch(test_rows, lex, ex)
         for r, out in zip(test_rows, outs):

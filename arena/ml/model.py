@@ -57,6 +57,11 @@ def featurize(row, extraction, checks):
     f[f"trend×kind={feats.get('trend')}|{kind}"] = 1.0
     if order[0] < len(scores):
         f[f"w.score={_score_bin(scores[order[0]])}"] = 1.0
+    origin = extraction.get("subject_from") or []
+    if order[0] < len(origin):
+        f[f"w.subject_from={origin[order[0]]}"] = 1.0
+    if "other" in origin:
+        f["any_subject_other"] = 1.0
     return f
 
 

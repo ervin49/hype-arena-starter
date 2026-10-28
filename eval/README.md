@@ -56,20 +56,33 @@ All measured on practice rows the models did not learn from: page-grouped 5-fold
 | | Right | False caught | False precision | ECE |
 |---|---|---|---|---|
 | always `true` | 331 / 380 | 0 / 49 | – | – |
-| runner path today (row by row, pass 1) | 334 / 380 | 16 / 49 | 16 / 22 | 0.071 |
-| `label_rows` (pass 2) | **337 / 380** | **27 / 49** | 27 / 41 | 0.059 |
+| runner path today (row by row, pass 1) | 336 / 380 | 17 / 49 | 17 / 23 | 0.044 |
+| `label_rows` (pass 2) | **339 / 380** | **31 / 49** | 31 / 48 | 0.056 |
 
 Without `--honest`, the shipped models have seen the hidden rows: 340 / 380 and 29 / 49 caught, an upper bound like `check.sh`'s own count (PLAN_NEXT's 329 / 380 was measured that way).
 
 **Regularization** (28 Oct): the boosted trees now use `l2=10, min_hess=20` instead of `l2=1, min_hess=4`. Each practice row is trained on once per labelled ratio, so the old leaves could rest on one row. Before → after on the hidden rows (`--honest`, `label_rows`): 329 → 337 right, false precision 22/39 → 27/41, and the over-confident `false` 0.5–0.6 bin (said 0.52, right 0.39) is gone. Out of fold, log loss fell in 5 of the 6 pass × ratio cells (mean 0.372 → 0.369). The ECE on the hidden rows rose (0.037 → 0.059), from `true` labels at 0.5–0.8 that are right *more* often than they say: under-confidence, on bins of about 25 rows. Fewer rounds (100, 150), depth 1, depth 3, `l2=30, min_hess=40`, 500 rounds and logistic regression were measured too and were no better.
 
+**Rare attributes and subject origin** (28 Oct, PLAN_FINAL). 172 of the lexicon's 514 subject–attribute pairs have at most 2 practice facts. The extractor's naive Bayes smoothed each attribute toward uniform, so a rare attribute could not beat "no fact": the value was dropped or given to a subject with more data. Each attribute is now smoothed toward the words of all facts (`NB_PRIOR = 1000`, a broad optimum from 300 to 2,000 in `eval_extract.py --prior`): rows extracted exactly 0.747 → 0.816, F1 0.818 → 0.867. Each extraction also says where each fact's subject came from (`subject_from`: named, context, other), a feature of the label model. Before → after, models trained without the rows tested:
+
+| Test | Before | After |
+|---|---|---|
+| Out of fold, pass 2, 100% | 0.863, 110 / 277 false caught | **0.870**, 118 / 277; ECE 0.027, no low bin |
+| Hidden rows (`--honest`) | 337 / 380, 27 / 49 caught | **339 / 380, 31 / 49** |
+| Shift test, random pages | 0.880 | **0.888** |
+| Shift test, latest pages | 0.837 | 0.835 (1 row; about 30 rows flip between retrainings) |
+| Shift test, new subjects | 0.803 | 0.795 (always `true`: 0.825) |
+| New subjects, evidence shift only | 0.839 | **0.861** |
+
+"New subjects" removes two things at once: the labelled evidence about the subjects, and every example the extractor had of their attributes. Only the first can happen in the run, because practice holds all 514 pairs. Most of its wrong `false` labels are values put on a neighbouring subject ("Hooly Chrome starts in 1.9 s" read as Hooly AI Pro's free trial). "Evidence shift only" keeps the held-out subjects' labels away but lets the extractor learn forms (what a sentence states, not whether it is true) from every other page, as in the run.
+
 **Simulated runs** (`python3 eval/train_model.py`). The run has about 10% labelled evidence and 90% unlabelled text; the simulation makes only a fraction of the other pages labelled evidence. Accuracy after calibration, all 1,897 rows out of fold:
 
 | Labelled evidence | Pass 1 | Pass 2, self-trained | False recall, pass 1 → 2 | ECE, pass 2 |
 |---|---|---|---|---|
-| 10% (the run's ratio) | 0.834 | **0.847** | 0.10 → 0.23 | 0.025 |
-| 25% | 0.845 | **0.852** | 0.20 → 0.29 | 0.024 |
-| 100% (dense evidence, as in the live demo) | 0.862 | **0.863** | 0.37 → 0.40 | 0.029 |
+| 10% (the run's ratio) | 0.844 | **0.847** | 0.14 → 0.26 | 0.023 |
+| 25% | 0.849 | **0.857** | 0.26 → 0.33 | 0.018 |
+| 100% (dense evidence, as in the live demo) | **0.873** | 0.870 | 0.43 → 0.43 | 0.027 |
 
 "Always true" scores 0.833. The simulated runs have far less evidence than the real one, so their absolute numbers are pessimistic.
 
@@ -81,7 +94,7 @@ Without `--honest`, the shipped models have seen the hidden rows: 340 / 380 and 
 
 **Other:**
 - **Models:** gradient-boosted trees (pure Python, `arena/ml/model.py`), trained on a mix of the three regimes. Logistic regression is kept as an option.
-- **Extraction:** fact precision 0.85, recall 0.79; 75% of rows extracted exactly.
+- **Extraction:** fact precision 0.88, recall 0.85; 82% of rows extracted exactly.
 - **Commands:** `python3 eval/eval_extract.py`, `python3 eval/train_model.py` (refits both model files and the report), `python3 eval/eval_hidden.py [--honest]`, `python3 -m unittest discover -s tests -p "test_engine_*.py"`.
 
 What the evidence features capture (`arena/truth.py`, `fact_features`):
