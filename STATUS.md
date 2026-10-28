@@ -35,8 +35,8 @@
 | Labels on unseen rows given all other practice evidence (`scripts/train_confidence.py`) | 88.7% of 1,858; lies 143 / 277; ECE 0.044 |
 | Weakest band | `false` at 0.5–0.8: about 57% right; `true` at 0.5–0.6: 65% right |
 | `unsure` predicted | never (A's default; a team decision once scoring is known) |
-| Claims | 1,000: 383 at_event, 317 change, 294 compare (dates), 4 fact (dates), 2 relation |
-| Claim confidence | measured on unseen rows: 294 at 0.971, 700 at 0.95 (capped), 4 at 0.867, 2 at 0.80; mean 0.956 |
+| Claims | 1,000: 430 compare (dates), 317 change, 247 at_event (at most 60 per event), 4 fact (dates), 2 relation |
+| Claim confidence | measured on unseen rows: 430 at 0.972, 564 at 0.95 (capped), 4 at 0.867, 2 at 0.80; mean 0.959 |
 | Full run time | ~11 s on practice with the controls; 131 s on our **synthetic** 20,000-row input (of 30 min) |
 | Tests | 394 Python tests pass (206 of them every example of `claim-forms.md` and `value-forms.md`) (`.venv/bin/pytest -q`); frontend type-checks, lints and builds; all 4 pages and 5 API routes checked live |
 
@@ -50,10 +50,10 @@ Confidence is the lower of the two Wilson lower bounds (95%). If the strict judg
 
 | Group | Full judge | Strict judge | Decision | Confidence |
 |---|---|---|---|---|
-| compare (dates) | 1,211/1,211 | 127/127 | kept | 0.971 |
-| at_event | 522/522 | can't check | kept, capped | 0.95 |
+| compare (dates) | 1,314/1,314 | 133/133 | kept | 0.972 |
+| at_event | 449/449 | can't check | kept, capped | 0.95 |
 | change | 350/350 | can't check | kept, capped | 0.95 |
-| fact (dates) | 65/65 | 25/25 | kept | 0.867 |
+| fact (dates) | 62/62 | 25/25 | kept | 0.867 |
 | fact (values that never changed) | 59/113 | 59/113 | dropped | — |
 | fact (values that changed before) | 36/51 | 36/51 | dropped | — |
 | compare (amounts) | 28/29 | 28/29 | dropped (bar: 98% at every cut-off) | — |
@@ -169,6 +169,7 @@ To list them again: load `reports/confidence_oof.json` (records with `gold` and 
 
 | When | What |
 |---|---|
+| 29 Oct | C: claims mix moved toward what unseen rows can check (PLAN_ENGINE.md 4.2–4.4). **Event dates:** all five come from rows labelled true, read with their gold forms; I/O 2026 and the May outage have 3 reports after the event, Cloud Next 1 plus 3 plans agreeing; Maps Day and Gemini Launch Night have 1 each, so no date is in doubt. **Mix:** at most 60 claims per event (was 100), keeping the ones whose bracketing reports are closest (the `open_roles` ones drop out by themselves); up to 40 date compares per fact. Now 430 date compares (was 294), 247 at_event (was 383), 317 change. Date compares re-measured 133/133 on unseen rows: 0.972. **Wording:** "Hooly had 38 employees at the time of …" instead of "Hooly employees was 38 employees …" (31 claims). Labels unchanged; `check.sh` passes, 398 tests. |
 | 29 Oct | Plan for the night after the organisers mapped the rubric (claims 30%, labels 15%): `PLAN_ENGINE.md`, with a prompt each for A, B and C. **A:** stable_mismatch only inside the span (inside 90% false, outside 74% true), then plans versus realised dates and extraction guards. **B:** an independent referee of the 1,000 claims, written from the spec without reading our validator, then a denser synthetic test. **C:** claims mix and grammar, merges. `scripts/rule_audit.py` added; it reproduces the plan's tables. |
 | 29 Oct | C: the results can be downloaded as CSV from the frontend. On the dashboard, **Download CSV** saves every checked row, and on the claims page it saves all 1,000 claims. Both use the six `output.csv` columns, written byte for byte as `arena/io.py` writes them (checked against it on the 1,000 claims). Frontend only; the run is unchanged. |
 | 28 Oct, night | Team chose a focused round 3 (8 hours left): A fixes false contradictions, B tests XGBoost/LightGBM and a text signal once, C keeps the run safe and merges only what measures better. C's first look at the 375 true-but-contradicted rows: most are real changes over time (growing counts, versions, totals) judged against evidence from the other side of the change; some are a wrong subject or attribute taken from context. Layer 3's full shift record: new subjects 0.031 → 0.083 with it, so it stays out. |

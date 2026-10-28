@@ -7,7 +7,7 @@ from collections import Counter
 import pytest
 
 from arena import runner
-from arena.generate import select_claims
+from arena.generate import MAX_CLAIMS_PER_EVENT, MAX_CLAIMS_PER_FACT, MAX_DATE_COMPARES_PER_FACT, select_claims
 from arena.io import read_lexicon, read_rows
 from arena.validate import Validator
 from tests.fixtures_c.fake_engine import ENGINE
@@ -47,15 +47,21 @@ def test_unique_and_in_range(selected):
 
 def test_no_fact_carries_too_many_claims(selected):
     claims, _ = selected
-    per_fact = Counter()
+    per_fact, date_compared, per_event = Counter(), set(), Counter()
     for c in claims:
         f = c["form"]
         if c["type"] == "compare":
-            per_fact[(f["left"]["subject"], f["left"]["attribute"])] += 1
-            per_fact[(f["right"]["subject"], f["right"]["attribute"])] += 1
+            for side in (f["left"], f["right"]):
+                per_fact[(side["subject"], side["attribute"])] += 1
+                if c["group"] == "compare.date":
+                    date_compared.add((side["subject"], side["attribute"]))
         elif c["type"] != "relation":
             per_fact[(f["subject"], f["attribute"])] += 1
-    assert max(per_fact.values()) <= 30
+        if c["type"] == "at_event":
+            per_event[f["event"]] += 1
+    for fact, n in per_fact.items():
+        assert n <= (MAX_DATE_COMPARES_PER_FACT if fact in date_compared else MAX_CLAIMS_PER_FACT * 3), fact
+    assert max(per_event.values()) <= MAX_CLAIMS_PER_EVENT
 
 
 def test_deterministic():

@@ -12,8 +12,8 @@
  "groups": [
   {
    "group": "at_event",
-   "n": 522,
-   "right": 522,
+   "n": 449,
+   "right": 449,
    "precision": 1.0,
    "strict_n": 0,
    "strict_right": 0,
@@ -35,7 +35,7 @@
      "precision": 1.0
     },
     "2026-09-01": {
-     "right": 322,
+     "right": 249,
      "wrong": 0,
      "unknown": 0,
      "precision": 1.0
@@ -57,7 +57,7 @@
     "2026-09-01": {
      "right": 0,
      "wrong": 0,
-     "unknown": 322,
+     "unknown": 249,
      "precision": null
     }
    }
@@ -168,15 +168,15 @@
   },
   {
    "group": "compare.date",
-   "n": 1211,
-   "right": 1211,
+   "n": 1314,
+   "right": 1314,
    "precision": 1.0,
-   "strict_n": 127,
-   "strict_right": 127,
+   "strict_n": 133,
+   "strict_right": 133,
    "strict_precision": 1.0,
    "keep": true,
-   "confidence": 0.971,
-   "note": "kept: 127/127 right on later rows only",
+   "confidence": 0.972,
+   "note": "kept: 133/133 right on later rows only",
    "cutoffs": {
     "2026-05-01": {
      "right": 296,
@@ -185,13 +185,13 @@
      "precision": 1.0
     },
     "2026-07-01": {
-     "right": 446,
+     "right": 461,
      "wrong": 0,
      "unknown": 0,
      "precision": 1.0
     },
     "2026-09-01": {
-     "right": 469,
+     "right": 557,
      "wrong": 0,
      "unknown": 0,
      "precision": 1.0
@@ -205,15 +205,15 @@
      "precision": 1.0
     },
     "2026-07-01": {
-     "right": 42,
+     "right": 45,
      "wrong": 0,
-     "unknown": 404,
+     "unknown": 416,
      "precision": 1.0
     },
     "2026-09-01": {
-     "right": 42,
+     "right": 45,
      "wrong": 0,
-     "unknown": 427,
+     "unknown": 512,
      "precision": 1.0
     }
    }
@@ -272,8 +272,8 @@
   },
   {
    "group": "fact.date",
-   "n": 65,
-   "right": 65,
+   "n": 62,
+   "right": 62,
    "precision": 1.0,
    "strict_n": 25,
    "strict_right": 25,
@@ -295,7 +295,7 @@
      "precision": 1.0
     },
     "2026-09-01": {
-     "right": 18,
+     "right": 15,
      "wrong": 0,
      "unknown": 0,
      "precision": 1.0
@@ -317,7 +317,7 @@
     "2026-09-01": {
      "right": 7,
      "wrong": 0,
-     "unknown": 11,
+     "unknown": 8,
      "precision": 1.0
     }
    }
