@@ -99,7 +99,7 @@ python3 scripts/check_output.py /tmp/arena/output data/practice.csv /tmp/arena/u
 ## Next, by owner
 
 **C (platform)**
-1. Parked: `Dockerfile` + `scripts/check.sh` (needed for the judges to run anything); README (how it works, start guide, predicted score).
+1. Parked: README (how it works, start guide, predicted score).
 2. Clean-up before the PR: `test.csv` (now 104 rows) to a demo folder; drop `.claude/launch.json`.
 
 **A (engine)**
