@@ -11,16 +11,9 @@ export const metadata: Metadata = {
   description: "Checks each sentence against what the Hooly universe said on its date.",
 };
 
-// Light (blue on white) by default; dark only when chosen with the sidebar toggle.
-// Runs before first paint so a saved dark theme does not flash.
-const THEME_SCRIPT = `try{if(localStorage.getItem("theme")==="dark")document.documentElement.classList.add("dark")}catch(e){}`;
-
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
-      </head>
+    <html lang="en">
       <body className="font-sans antialiased">
         <RunProvider>{children}</RunProvider>
       </body>

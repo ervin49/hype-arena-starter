@@ -9,8 +9,10 @@ import { ARIA_LABEL, EDGES, NODES, NODE_H, STROKE, edgeKey, edgePath, nodeW, typ
 import { SKIPPED_EDGES, SKIPPED_NODES, nodeBadges, runSteps, type RunStep } from "@/lib/run-steps";
 import { cn } from "@/lib/utils";
 
-const STEP_MS = 1200;
+const STEP_MS = 1300;
 const FIRST_STEP_MS = 450;
+// How long a line takes to draw; its target node appears when the line arrives.
+const EDGE_MS = 800;
 // While the engine is working, dots loop along the row-checking path.
 const RUNNING_EDGES: [NodeId, NodeId][] = [
   ["F", "X"],
@@ -20,14 +22,17 @@ const RUNNING_EDGES: [NodeId, NodeId][] = [
 ];
 const RUNNING_NODES: NodeId[] = ["F", "U", "X", "V", "C"];
 
-type NodeState = "pending" | "current" | "done" | "skipped" | "running";
+// preview: no run yet, the whole diagram dimmed. hidden: not reached yet.
+type NodeState = "preview" | "hidden" | "current" | "done" | "skipped" | "running";
 
 export function RunReplay() {
-  const { last, running, error, run } = useRun();
+  const { last, running, restored, error, run } = useRun();
   const steps = useMemo(() => (last ? runSteps(last) : []), [last]);
   const badges = useMemo(() => (last ? nodeBadges(last) : {}), [last]);
   const [played, setPlayed] = useState(0);
   const [playing, setPlaying] = useState(false);
+  // Whether the lines of the current step have finished drawing.
+  const [arrived, setArrived] = useState(false);
   const fileInput = useRef<HTMLInputElement>(null);
 
   // A new run, or opening this tab, starts the replay from the left.
@@ -53,23 +58,38 @@ export function RunReplay() {
     return () => clearTimeout(t);
   }, [playing, played, steps.length]);
 
+  // Each new step starts with its lines drawing; its nodes wait for them.
+  useEffect(() => {
+    if (!playing) {
+      setArrived(true);
+      return;
+    }
+    setArrived(false);
+    const t = setTimeout(() => setArrived(true), EDGE_MS);
+    return () => clearTimeout(t);
+  }, [played, playing]);
+
   const isRunning = running !== null;
-  const shown = isRunning ? [] : steps.slice(0, played);
+  const preview = restored && !last && !isRunning;
+  const finished = !isRunning && last !== null && played >= steps.length;
   const current: RunStep | undefined = isRunning ? undefined : steps[played - 1];
-  const litNodes = new Set(shown.flatMap((s) => s.nodes));
-  const litEdges = new Set(shown.flatMap((s) => s.edges.map(([a, b]) => edgeKey(a, b))));
-  const currentNodes = new Set(current?.nodes ?? []);
+  const before = isRunning ? [] : steps.slice(0, Math.max(0, played - 1));
+  const reachedNodes = new Set(before.flatMap((s) => s.nodes));
+  const litEdges = new Set(
+    (isRunning ? [] : steps.slice(0, played)).flatMap((s) => s.edges.map(([a, b]) => edgeKey(a, b))),
+  );
   const currentEdges = new Set(current?.edges.map(([a, b]) => edgeKey(a, b)) ?? []);
+  const currentReady = !current || current.edges.length === 0 || arrived;
   const skippedEdges = new Set(SKIPPED_EDGES.map(([a, b]) => edgeKey(a, b)));
   const runningEdges = new Set(RUNNING_EDGES.map(([a, b]) => edgeKey(a, b)));
-  const showSkipped = !isRunning && last !== null;
 
   const nodeState = (id: NodeId): NodeState => {
-    if (isRunning) return RUNNING_NODES.includes(id) ? "running" : "pending";
-    if (showSkipped && SKIPPED_NODES.includes(id)) return "skipped";
-    if (currentNodes.has(id)) return "current";
-    if (litNodes.has(id)) return "done";
-    return "pending";
+    if (preview) return "preview";
+    if (isRunning) return RUNNING_NODES.includes(id) ? "running" : "hidden";
+    if (SKIPPED_NODES.includes(id)) return finished ? "skipped" : "hidden";
+    if (current?.nodes.includes(id)) return currentReady ? "current" : reachedNodes.has(id) ? "done" : "hidden";
+    if (reachedNodes.has(id)) return "done";
+    return "hidden";
   };
 
   const replay = () => {
@@ -130,19 +150,31 @@ export function RunReplay() {
               {EDGES.map(([a, b, f]) => {
                 const key = edgeKey(a, b);
                 const d = edgePath(a, b);
-                const lit = litEdges.has(key);
-                const skipped = showSkipped && skippedEdges.has(key);
-                const live = isRunning && runningEdges.has(key);
-                return (
-                  <g key={key}>
+                if (preview) {
+                  return (
+                    <path key={key} d={d} fill="none" stroke="var(--border)" strokeWidth={1.8} strokeDasharray={f === "ui" ? "6 5" : undefined} />
+                  );
+                }
+                if (skippedEdges.has(key)) {
+                  return (
                     <path
+                      key={key}
                       d={d}
                       fill="none"
-                      stroke={skipped ? "var(--muted-foreground)" : "var(--border)"}
-                      strokeWidth={1.8}
-                      strokeDasharray={skipped ? "3 5" : f === "ui" ? "6 5" : undefined}
-                      opacity={skipped ? 0.45 : 1}
+                      stroke="var(--muted-foreground)"
+                      strokeWidth={1.6}
+                      strokeDasharray="3 5"
+                      opacity={finished ? 0.4 : 0}
+                      style={{ transition: "opacity .6s" }}
                     />
+                  );
+                }
+                const live = isRunning && runningEdges.has(key);
+                const lit = litEdges.has(key) || live;
+                // The arrowhead appears once the line has reached its node.
+                const headed = live || (lit && (!currentEdges.has(key) || arrived));
+                return (
+                  <g key={key}>
                     <path
                       d={d}
                       fill="none"
@@ -150,14 +182,13 @@ export function RunReplay() {
                       strokeWidth={2.4}
                       pathLength={1}
                       strokeDasharray="1 1"
-                      strokeDashoffset={lit || live ? 0 : 1}
-                      markerEnd={lit || live ? `url(#run-arrow-${f})` : undefined}
-                      style={{ transition: "stroke-dashoffset .8s ease-out" }}
+                      strokeDashoffset={lit ? 0 : 1}
+                      markerEnd={headed ? `url(#run-arrow-${f})` : undefined}
+                      style={{ transition: `stroke-dashoffset ${EDGE_MS}ms ease-out` }}
                     />
-                    {currentEdges.has(key) && (
+                    {currentEdges.has(key) && !arrived && (
                       <circle key={`dot-${played}`} r={5} fill={STROKE[f]}>
-                        <animateMotion dur="0.8s" fill="freeze" path={d} />
-                        <animate attributeName="opacity" values="1;1;0" keyTimes="0;0.8;1" dur="0.8s" fill="freeze" />
+                        <animateMotion dur={`${EDGE_MS}ms`} fill="freeze" path={d} />
                       </circle>
                     )}
                     {live && (
@@ -180,11 +211,17 @@ export function RunReplay() {
                     : (state === "done" || state === "current") && badge
                       ? badge
                       : node.sub;
+                const visible = state !== "hidden";
                 return (
                   <g
                     key={node.id}
-                    style={{ transition: "opacity .4s" }}
-                    opacity={state === "pending" ? 0.5 : state === "skipped" ? 0.45 : 1}
+                    opacity={!visible ? 0 : state === "preview" ? 0.5 : state === "skipped" ? 0.4 : 1}
+                    style={{
+                      transformBox: "fill-box",
+                      transformOrigin: "center",
+                      transform: visible ? "scale(1)" : "scale(0.85)",
+                      transition: "opacity .45s ease-out, transform .45s cubic-bezier(.2,.9,.3,1.3)",
+                    }}
                   >
                     {(state === "current" || state === "running") && (
                       <rect
@@ -207,7 +244,7 @@ export function RunReplay() {
                       height={NODE_H}
                       rx={14}
                       fill={state === "done" || state === "current" ? "var(--accent)" : "var(--card)"}
-                      stroke={state === "pending" ? "var(--border)" : state === "skipped" ? "var(--muted-foreground)" : color}
+                      stroke={state === "preview" ? "var(--border)" : state === "skipped" ? "var(--muted-foreground)" : color}
                       strokeWidth={state === "current" ? 2.4 : 1.5}
                       strokeDasharray={state === "skipped" ? "4 4" : node.flow === "ui" ? "5 4" : undefined}
                       style={{ filter: "drop-shadow(0 6px 12px var(--node-shadow))", transition: "fill .4s, stroke .4s" }}
@@ -232,7 +269,7 @@ export function RunReplay() {
           <ArchitectureLegend />
         </div>
 
-        <Timeline steps={steps} played={isRunning ? 0 : played} running={running} hasRun={last !== null} />
+        <Timeline steps={steps} played={isRunning ? 0 : played} finished={finished} running={running} hasRun={last !== null} />
       </div>
     </div>
   );
@@ -306,9 +343,11 @@ function RunHeader({ last, running, playing, done, onReplay, onSkip, onPick }: {
   );
 }
 
-function Timeline({ steps, played, running, hasRun }: {
+// Lists only the steps reached so far; each one rises in as the replay gets to it.
+function Timeline({ steps, played, finished, running, hasRun }: {
   steps: RunStep[];
   played: number;
+  finished: boolean;
   running: { file: string } | null;
   hasRun: boolean;
 }) {
@@ -321,36 +360,36 @@ function Timeline({ steps, played, running, hasRun }: {
         <p className="mt-3 text-sm text-muted-foreground">Nothing to show until a CSV has been run.</p>
       ) : (
         <ol className="mt-4 space-y-4">
-          {steps.map((s, i) => {
-            const state = i < played - 1 ? "done" : i === played - 1 ? "current" : "pending";
+          {steps.slice(0, played).map((s, i) => {
+            const isCurrent = i === played - 1 && !finished;
             return (
-              <li key={s.id} className={cn("flex gap-3 transition-opacity", state === "pending" && "opacity-45")}>
+              <li key={s.id} className="flex animate-rise-in gap-3">
                 <span className="mt-0.5 shrink-0">
-                  {state === "done" ? (
-                    <CheckCircle2 className="size-5 text-primary" />
-                  ) : state === "current" ? (
+                  {isCurrent ? (
                     <span className="grid size-5 place-items-center">
                       <span className="size-3 animate-ping rounded-full bg-primary" />
                     </span>
                   ) : (
-                    <Circle className="size-5 text-muted-foreground" />
+                    <CheckCircle2 className="size-5 text-primary" />
                   )}
                 </span>
                 <div className="min-w-0">
-                  <p className={cn("text-sm font-semibold", state === "pending" ? "text-muted-foreground" : "text-heading")}>
+                  <p className="text-sm font-semibold text-heading">
                     {i + 1}. {s.title}
                   </p>
-                  {state !== "pending" && <p className="mt-0.5 text-sm text-muted-foreground">{s.detail}</p>}
+                  <p className="mt-0.5 text-sm text-muted-foreground">{s.detail}</p>
                 </div>
               </li>
             );
           })}
-          <li className="flex gap-3 opacity-60">
-            <Circle className="mt-0.5 size-5 shrink-0 text-muted-foreground" strokeDasharray="3 3" />
-            <p className="text-sm text-muted-foreground">
-              Not in a live run: the template generator, validation and output.csv, which the batch runner does for the 1,000 claims.
-            </p>
-          </li>
+          {finished && (
+            <li className="flex animate-rise-in gap-3 opacity-60">
+              <Circle className="mt-0.5 size-5 shrink-0 text-muted-foreground" strokeDasharray="3 3" />
+              <p className="text-sm text-muted-foreground">
+                Not in a live run: the template generator, validation and output.csv, which the batch runner does for the 1,000 claims.
+              </p>
+            </li>
+          )}
         </ol>
       )}
     </div>

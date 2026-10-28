@@ -20,6 +20,8 @@ interface RunContextValue {
   // The file being run right now, if any.
   running: { file: string; startedAt: number } | null;
   last: RunRecord | null;
+  // False until the saved run (if any) has been read, so pages don't flash an empty state.
+  restored: boolean;
   error: EngineFailure | null;
   run: (file: File) => Promise<void>;
 }
@@ -34,6 +36,7 @@ export function RunProvider({ children }: { children: React.ReactNode }) {
   const [health, setHealth] = useState<HealthState>({ state: "checking" });
   const [running, setRunning] = useState<RunContextValue["running"]>(null);
   const [last, setLast] = useState<RunRecord | null>(null);
+  const [restored, setRestored] = useState(false);
   const [error, setError] = useState<EngineFailure | null>(null);
 
   const checkHealth = useCallback(async () => {
@@ -54,6 +57,7 @@ export function RunProvider({ children }: { children: React.ReactNode }) {
     } catch {
       // Unreadable or blocked storage: start without a previous run.
     }
+    setRestored(true);
   }, [checkHealth]);
 
   const run = useCallback(async (file: File) => {
@@ -87,7 +91,7 @@ export function RunProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  return <RunContext.Provider value={{ health, checkHealth, running, last, error, run }}>{children}</RunContext.Provider>;
+  return <RunContext.Provider value={{ health, checkHealth, running, last, restored, error, run }}>{children}</RunContext.Provider>;
 }
 
 export function useRun(): RunContextValue {
