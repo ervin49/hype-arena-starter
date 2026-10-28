@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { ARIA_LABEL, EDGES, NODES, NODE_H, STROKE, edgePath, nodeW, type Flow } from "@/lib/architecture";
+import { ARIA_LABEL, EDGES, NODES, NODE_H, VIEW_H, STROKE, edgePath, nodeW, type Flow } from "@/lib/architecture";
 
 export function ArchitectureDiagram() {
   return (
@@ -17,7 +17,7 @@ export function ArchitectureDiagram() {
         </Link>
       </div>
       <div className="mt-4 overflow-x-auto">
-        <svg viewBox="0 0 1040 400" className="h-auto w-full min-w-[720px]" role="img" aria-label={ARIA_LABEL}>
+        <svg viewBox={`0 0 1040 ${VIEW_H}`} className="h-auto w-full min-w-[720px]" role="img" aria-label={ARIA_LABEL}>
           <defs>
             {(Object.keys(STROKE) as Flow[]).map((f) => (
               <marker key={f} id={`arrow-${f}`} viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
@@ -50,10 +50,13 @@ export function ArchitectureDiagram() {
                 strokeDasharray={n.flow === "ui" ? "5 4" : undefined}
                 style={{ filter: "drop-shadow(0 6px 12px var(--node-shadow))" }}
               />
-              <text x={n.x + 14} y={n.y + 24} fontSize={14} fontWeight={600} fill="var(--heading)">
+              <text x={n.x + 14} y={n.y + 23} fontSize={14} fontWeight={600} fill="var(--heading)">
                 {n.title}
               </text>
-              <text x={n.x + 14} y={n.y + 43} fontSize={12} fill="var(--muted-foreground)">
+              <text x={n.x + 14} y={n.y + 42} fontSize={11} fontWeight={600} fill="var(--primary)">
+                {n.tech}
+              </text>
+              <text x={n.x + 14} y={n.y + 60} fontSize={12} fill="var(--muted-foreground)">
                 {n.sub}
               </text>
             </g>

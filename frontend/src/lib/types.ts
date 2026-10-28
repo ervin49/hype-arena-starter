@@ -93,6 +93,47 @@ export interface ClaimsResponse {
   demo_mode: boolean;
 }
 
+// GET /metrics (PLAN_NEXT.md section 5): measured calibration, or null when not measured.
+export interface LabelBin {
+  label: Label;
+  from: number;
+  to: number;
+  n: number;
+  // How often labels in this band were right, out of fold.
+  accuracy: number;
+  // The confidence the engine reports for this band.
+  confidence: number;
+}
+
+export interface LabelCalibration {
+  method: string;
+  fitted_on: string;
+  bins: LabelBin[];
+  ece_before: number | null;
+  ece_after: number | null;
+}
+
+export interface ClaimGroup {
+  group: string;
+  n: number;
+  right: number;
+  // Share of the group's backtested claims that were true after the cut-off.
+  precision: number;
+  confidence: number;
+}
+
+export interface ClaimCalibration {
+  cutoffs: string[];
+  groups: ClaimGroup[];
+}
+
+export interface MetricsResponse {
+  labels: LabelCalibration | null;
+  claims: ClaimCalibration | null;
+  // True only when this frontend serves its fixture instead of the API's numbers.
+  simulated: boolean;
+}
+
 export interface ApiError {
   error: string;
   detail?: string;

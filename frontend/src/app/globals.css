@@ -24,6 +24,7 @@
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
   --color-track: var(--track);
+  --color-said: var(--said);
   --color-indigo: var(--indigo);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
@@ -49,6 +50,8 @@
   --primary: oklch(0.53 0.21 266);
   --primary-foreground: oklch(1 0 0);
   --track: oklch(0.87 0.06 270);
+  /* "We said" bars: validated against --primary for colour-blind separation. */
+  --said: #8fa6f0;
   --indigo: oklch(0.68 0.13 272);
   --muted: oklch(0.96 0.012 268);
   --muted-foreground: oklch(0.56 0.03 260);

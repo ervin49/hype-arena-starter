@@ -9,6 +9,8 @@ export interface ArchNode {
   y: number;
   w?: number;
   title: string;
+  // The technique this stage uses, shown on every box.
+  tech: string;
   sub: string;
   flow: Flow;
 }
@@ -17,20 +19,22 @@ export type NodeId = "P" | "L" | "U" | "K" | "X" | "F" | "G" | "V" | "Q" | "C" |
 export type Edge = [NodeId, NodeId, Flow];
 
 export const NODE_W = 170;
-export const NODE_H = 58;
+export const NODE_H = 74;
+// Height of the diagram's viewBox, fitting the lowest box.
+export const VIEW_H = 414;
 
 export const NODES: ArchNode[] = [
-  { id: "P", x: 20, y: 30, title: "Practice rows", sub: "labels + JSON forms", flow: "both" },
-  { id: "L", x: 20, y: 150, title: "Lexicon", sub: "subjects, aliases, events", flow: "both" },
-  { id: "U", x: 20, y: 270, title: "New row", sub: "text + date", flow: "cls" },
-  { id: "K", x: 240, y: 30, title: "Evidence base", sub: "facts with history", flow: "both" },
-  { id: "X", x: 240, y: 190, title: "Extraction", sub: "text → facts", flow: "cls" },
-  { id: "F", x: 240, y: 320, title: "Frontend", sub: "diagram + CSV upload", flow: "ui" },
-  { id: "G", x: 460, y: 30, title: "Template generator", sub: "5 claim types", flow: "gen" },
-  { id: "V", x: 460, y: 190, title: "Temporal check", sub: "logic at the row's date", flow: "cls" },
-  { id: "Q", x: 680, y: 30, title: "Validation", sub: "schema, text, evidence", flow: "gen" },
-  { id: "C", x: 680, y: 190, title: "Verdict", sub: "label, confidence, why", flow: "cls" },
-  { id: "O", x: 880, y: 110, w: 150, title: "output.csv", sub: "labels + 1,000 claims", flow: "both" },
+  { id: "P", x: 20, y: 30, title: "Practice rows", tech: "training + evidence data", sub: "labels + JSON forms", flow: "both" },
+  { id: "L", x: 20, y: 150, title: "Lexicon", tech: "longest-first alias match", sub: "subjects, aliases, events", flow: "both" },
+  { id: "U", x: 20, y: 270, title: "New row", tech: "CSV parser", sub: "text + date", flow: "cls" },
+  { id: "K", x: 240, y: 30, title: "Evidence base", tech: "temporal knowledge base", sub: "facts with history", flow: "both" },
+  { id: "X", x: 240, y: 190, title: "Extraction", tech: "parser + naive Bayes", sub: "text → facts", flow: "cls" },
+  { id: "F", x: 240, y: 320, title: "Frontend", tech: "Next.js + API proxy", sub: "diagram + CSV upload", flow: "ui" },
+  { id: "G", x: 460, y: 30, title: "Template generator", tech: "timeline templates", sub: "5 claim types", flow: "gen" },
+  { id: "V", x: 460, y: 190, title: "Temporal check", tech: "interval rules over dates", sub: "logic at the row's date", flow: "cls" },
+  { id: "Q", x: 680, y: 30, title: "Validation", tech: "rule validator + schema", sub: "schema, text, evidence", flow: "gen" },
+  { id: "C", x: 680, y: 190, title: "Verdict", tech: "logistic regression", sub: "label, confidence, why", flow: "cls" },
+  { id: "O", x: 880, y: 110, w: 150, title: "output.csv", tech: "atomic CSV write", sub: "labels + 1,000 claims", flow: "both" },
 ];
 
 export const EDGES: Edge[] = [

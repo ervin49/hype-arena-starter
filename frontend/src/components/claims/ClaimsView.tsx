@@ -83,6 +83,7 @@ export function ClaimsView() {
               setShown(PAGE);
             }}
             placeholder="Search claims…"
+            aria-label="Search claims"
             className="h-9 w-full rounded-full border bg-card px-4 text-sm outline-none focus:border-primary sm:w-56"
           />
         </div>
