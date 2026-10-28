@@ -17,7 +17,7 @@
 | Confidence chart (`/metrics` → `/confidence` page) | B | ✅ real measured numbers, labels and claims |
 | Label calibration (`eval/calibration_labels.json`) | A | ✅ Platt, cross-fitted; ECE 0.027 |
 | Demo script (`frontend/docs/demo-script.md`) | B | ✅ draft |
-| `Dockerfile` + `scripts/check.sh` in Docker | C | ✅ `scripts/check.sh` passes (exit 0, 380/380 labelled, 1,000 claims); 20,000 rows in 131 s with the controls; image ~50 MB |
+| `Dockerfile` + `scripts/check.sh` in Docker | C | ✅ `scripts/check.sh` passes (exit 0, 380/380 labelled, 1,000 claims); a **synthetic** 20,000-row input (made by us, not the organisers' data) runs in 131 s with the controls; image ~50 MB |
 | Run-time controls (`arena/controls.py`) | C | ✅ confidence control on a held-out group, distribution monitor, claim veto from confident input rows |
 | README: how it works, start guide, predicted score | C | ⏸ not now |
 | Video on the 20 sample rows | all | ⏳ 29 Oct, 09:00 |
@@ -35,7 +35,7 @@
 | `unsure` predicted | never (A's default; a team decision once scoring is known) |
 | Claims | 1,000: 383 at_event, 317 change, 294 compare (dates), 4 fact (dates), 2 relation |
 | Claim confidence | measured on unseen rows: 294 at 0.971, 700 at 0.95 (capped), 4 at 0.867, 2 at 0.80; mean 0.956 |
-| Full run time | ~2.6 s and 54 MB on practice; the ~20,000-row run is estimated at about 1 min of 30 |
+| Full run time | ~11 s on practice with the controls; 131 s on our **synthetic** 20,000-row input (of 30 min) |
 | Tests | 178 Python tests pass (`.venv/bin/pytest -q`); frontend type-checks, lints and builds; all 4 pages and 5 API routes checked live |
 
 ### Claim backtest (`scripts/backtest_claims.py` → `reports/claims_calibration.json`)
@@ -63,13 +63,13 @@ Why it isn't 0.99: the earlier 0.99 came from the full judge alone, which grades
 
 The run can't be adjusted after the freeze, so the system checks itself on the real input:
 
-| Control | How | On practice (`check.sh`) | On a 20,000-row test input |
+| Control | How | On practice (`check.sh`) | On our synthetic 20,000-row input |
 |---|---|---|---|
 | Confidence | A control model (`scripts/train_control.py`) never saw 381 practice rows. In the run it labels them in the context of the real input. Confidence becomes 0.5 + k·(c − 0.5), with k fitted per label on that group: it can only go down. | 298 answers, 86.9% right, said 0.83: k = 1 (nothing lowered) | 369 answers, 84% right; `false` over-stated, so k = 0.6; ECE 0.046 → 0.035 |
 | Distribution | The share of `false` on the input against the control group, logged | 10.0% vs 8.4% | 17.0% vs 14.1% |
 | Claims | Input rows labelled `true` at ≥ 0.9 are added as evidence; a candidate they contradict is vetoed and replaced from the reserve | 192 rows, 0 vetoed | 10,682 rows, 150 vetoed, 1,000 claims still filled |
 
-The 20,000-row input is practice sentences copied with shifted dates: it tests that the controls react, not our accuracy on new text.
+**The 20,000-row input is synthetic, made by us:** the 1,897 practice rows plus 18,103 copies of practice sentences with new ids, dates shifted by up to ±60 days and empty labels. We do not have the organisers' 18,000 rows. It tests speed, limits and that the controls react to noise; it says nothing about our accuracy on new text, and its 150 vetoes and factor 0.6 react to our artificial noise, not to the real data.
 
 ## Branches
 
@@ -139,8 +139,8 @@ python3 scripts/check_output.py /tmp/arena/output data/practice.csv /tmp/arena/u
 
 | When | What |
 |---|---|
-| 28 Oct, evening | C: run-time controls, as the organisers asked. A held-out control group recalibrates confidence on the real input (it can only lower it), a distribution monitor, and a claim veto from the input rows the engine is sure of. `check.sh` passes; 20,000 rows in 131 s; 178 tests pass. |
-| 28 Oct, evening | C: `Dockerfile` (python 3.12 slim, `jsonschema` only, `USER 10001`). `scripts/check.sh` passes in Docker. A 20,000-row input (18,103 unlabelled) under the judges' limits (offline, read-only, 2 CPUs, 6 GiB) runs in 63 s; output 0.67 MB. |
+| 28 Oct, evening | C: run-time controls, as the organisers asked. A held-out control group recalibrates confidence on the real input (it can only lower it), a distribution monitor, and a claim veto from the input rows the engine is sure of. `check.sh` passes; our synthetic 20,000-row input in 131 s; 178 tests pass. |
+| 28 Oct, evening | C: `Dockerfile` (python 3.12 slim, `jsonschema` only, `USER 10001`). `scripts/check.sh` passes in Docker. A synthetic 20,000-row input made by us (practice sentences copied with shifted dates; 18,103 unlabelled) under the judges' limits (offline, read-only, 2 CPUs, 6 GiB) runs in 63 s; output 0.67 MB. |
 | 28 Oct, evening | C: claim confidence made honest. Moving dates (`latest_release_date` etc.) dropped after a strict check found a stale claim. The backtest now has a strict judge (unseen rows only); confidence is the lower bound of both judges and capped at 0.95 where the strict judge can't check. 993 claims at 0.99 became 294 at 0.971 and 700 at 0.95. 169 tests pass. |
 | 28 Oct, 16:30 | Merged `dev/a` (engine: boosted trees, self-training, label calibration), `dev/b` (confidence page, Next.js 15.5.28, demo script), `dev/c`; no conflicts. 340/380 right, false caught 27/49; 167 tests pass; claim backtest unchanged; C fixed `/metrics` to the agreed shape (`n`, shipped groups only). After pulling, run `npm ci` in `frontend/`. |
 | 28 Oct, 15:55 | `dev/c` (local): claim backtest and measured confidence (993 claims at 0.99; stale `fact` groups dropped); runner and API use A's `label_rows` (331/380 right, false caught 9 → 22); `GET /metrics`. |
