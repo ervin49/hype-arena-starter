@@ -95,7 +95,9 @@ def scenario(name, rows, lex, known_mask):
     after_preds = {p["id"]: dict(p) for p in preds}
     controls.apply(after_preds, factors)
     after = answers(after_preds.values(), truth)
-    result = {"scenario": name, "known": len(known), "unseen": len(unseen), "factors": factors,
+    decided = [lab for lab in truth.values() if lab in ("true", "false")]
+    result = {"scenario": name, "known": len(known), "unseen": len(unseen),
+              "always_true": round(sum(lab == "true" for lab in decided) / len(decided), 3), "factors": factors,
               "control": {k: report.get(k) for k in ("control_answers", "accuracy", "said", "ece_before", "false_share")},
               "control_unknown_share": round(sum(p.get("kind") == "unknown" for p in ctrl_preds if p["id"] in group)
                                              / max(1, len(group)), 3),
@@ -111,10 +113,10 @@ def main():
     with open(OUT, "w", encoding="utf-8") as f:
         json.dump(results, f, indent=1)
         f.write("\n")
-    print(f"\n{'scenario':18} {'unseen':>6} {'right':>6} {'said':>6} {'→ after':>7} {'ECE':>6} {'→ after':>7} {'Brier':>7} {'→ after':>7}  factors")
+    print(f"\n{'scenario':18} {'unseen':>6} {'right':>6} {'always':>6} {'said':>6} {'→ after':>7} {'ECE':>6} {'→ after':>7} {'Brier':>7} {'→ after':>7}  factors")
     for r in results:
         b, a = r["unseen_before"], r["unseen_after"]
-        print(f"{r['scenario']:18} {b['n']:6} {b['right']:6.3f} {b['said']:6.3f} {a['said']:7.3f} {b['ece']:6.3f} {a['ece']:7.3f} "
+        print(f"{r['scenario']:18} {b['n']:6} {b['right']:6.3f} {r['always_true']:6.3f} {b['said']:6.3f} {a['said']:7.3f} {b['ece']:6.3f} {a['ece']:7.3f} "
               f"{b['brier']:7.4f} {a['brier']:7.4f}  {r['factors']}")
     print(f"wrote {os.path.relpath(OUT, ROOT)}")
 
