@@ -5,7 +5,7 @@ import type { ApiError, InputRow, Label, Prediction, PredictCsvResponse, Predict
 import PredictionDetail from "./PredictionDetail";
 import { ConfidenceBar, VerdictBadge } from "./Verdict";
 
-type Health = { state: "checking" } | { state: "ready"; demo: boolean } | { state: "down"; error: string };
+type Health = { state: "checking" } | { state: "ready"; demo: boolean; fixtures: boolean } | { state: "down"; error: string };
 
 interface RunResult {
   rows: InputRow[];
@@ -29,7 +29,7 @@ export default function Workbench() {
       const res = await fetch("/api/health", { cache: "no-store" });
       const body = await res.json();
       if (!res.ok) throw new Error(body.error ?? `HTTP ${res.status}`);
-      setHealth({ state: "ready", demo: Boolean(body.demo_mode) });
+      setHealth({ state: "ready", demo: Boolean(body.demo_mode), fixtures: Boolean(body.fixtures) });
     } catch (e) {
       setHealth({ state: "down", error: e instanceof Error ? e.message : String(e) });
     }
@@ -72,7 +72,7 @@ export default function Workbench() {
 
       <section className="rounded-2xl border border-line bg-surface p-5">
         <h2 className="mb-4 font-semibold">Upload CSV</h2>
-        <CsvInput busy={busy} onRun={runCsv} demo={health.state === "ready" && health.demo} />
+        <CsvInput busy={busy} onRun={runCsv} fixtures={health.state === "ready" && health.fixtures} />
       </section>
 
       {busy && (
@@ -113,7 +113,7 @@ function ModeBanner({ health, retry }: { health: Health; retry: () => void }) {
     return (
       <div className="rounded-xl border border-warn/50 bg-warn-soft px-4 py-2.5 text-sm">
         <strong className="text-warn">Demo mode — simulated results</strong>
-        <span className="text-muted"> (mod demonstrativ — rezultate simulate). The engine is not connected; every verdict below is a fixed fixture.</span>
+        <span className="text-muted"> (mod demonstrativ — rezultate simulate). The real engine is not connected; every verdict below is synthetic.</span>
       </div>
     );
   return (
@@ -126,7 +126,7 @@ function ModeBanner({ health, retry }: { health: Health; retry: () => void }) {
   );
 }
 
-function CsvInput({ busy, onRun, demo }: { busy: boolean; onRun: (f: File) => void; demo: boolean }) {
+function CsvInput({ busy, onRun, fixtures }: { busy: boolean; onRun: (f: File) => void; fixtures: boolean }) {
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string[]>([]);
   const [drag, setDrag] = useState(false);
@@ -179,7 +179,7 @@ function CsvInput({ busy, onRun, demo }: { busy: boolean; onRun: (f: File) => vo
         </div>
       )}
 
-      {demo && file && (
+      {fixtures && file && (
         <p className="text-xs text-warn">Demo mode: the file is not parsed; the fixture rows are shown instead.</p>
       )}
 

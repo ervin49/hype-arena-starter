@@ -49,6 +49,8 @@ export interface Prediction {
   evidence_ids: string[];
   reason: string;
   extraction?: Extraction;
+  // Set by the API when the engine failed on this row.
+  error?: string;
 }
 
 export interface PredictResponse {

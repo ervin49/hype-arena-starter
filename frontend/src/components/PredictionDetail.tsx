@@ -29,6 +29,12 @@ export default function PredictionDetail({ row, prediction, rowsById }: Props) {
         <ConfidenceBar value={prediction.confidence} />
       </div>
 
+      {prediction.error && (
+        <p role="alert" className="rounded-lg bg-bad-soft p-2.5 text-sm text-bad">
+          The engine failed on this row: {prediction.error}
+        </p>
+      )}
+
       <Section title="Why">
         <p className="text-sm">{prediction.reason || <span className="text-muted">No reason given.</span>}</p>
       </Section>
