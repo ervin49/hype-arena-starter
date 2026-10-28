@@ -14,11 +14,12 @@
 | API: `/health`, `/predict`, `/predict/csv`, `/claims`, `/metrics` | C | ✅ works; uploads labelled like the batch run |
 | Batch runner → `/output/output.csv` | C | ✅ A's batch (`label_rows`); passes the official format checker locally |
 | Claim generator + validator: 1,000 claims | C | ✅ 1,000 valid; confidence checked on unseen rows (strict backtest); pool ~1,300 |
-| Confidence chart (`/metrics` → `/confidence` page) | B | ✅ real measured numbers, labels and claims |
+| Confidence page (`/metrics` → `/confidence`) | B, C | ✅ labels; claims only where unseen rows check them; shift-test table; run-time controls |
 | Label calibration (`eval/calibration_labels.json`) | A | ✅ Platt, cross-fitted; ECE 0.027 |
 | Demo script (`frontend/docs/demo-script.md`) | B | ✅ draft |
 | `Dockerfile` + `scripts/check.sh` in Docker | C | ✅ `scripts/check.sh` passes (exit 0, 380/380 labelled, 1,000 claims); a **synthetic** 20,000-row input (made by us, not the organisers' data) runs in 131 s with the controls; image ~50 MB |
-| Run-time controls (`arena/controls.py`) | C | ✅ confidence control on a held-out group, distribution monitor, claim veto from confident input rows |
+| Run-time controls (`arena/controls.py`) | C | ✅ confidence control on a held-out group, distribution monitor, claim veto from confident input rows; claim confidence lowered by the veto share |
+| ML experiments, measured and **not** in the run | A, B, C | 5-model ensemble (A), synthetic lies (B), confidence model / layer 3 (C): see "Experiments" |
 | README: how it works, start guide, predicted score | C | ⏸ not now |
 | Video on the 20 sample rows | all | ⏳ 29 Oct, 09:00 |
 | Pull request to QA-DNA | C | ⏳ 29 Oct, before 11:00 |
@@ -30,13 +31,14 @@
 | Hidden rows labelled right | **340 / 380** (89.5%); 331 before this merge, 329 this morning; always `true` would score 85% |
 | False sentences caught | **27 of 49** (22 before, 9 this morning); true rows called false: 11 (15 before) |
 | Answers at confidence 0.9+ | 196, 96% right |
-| Label calibration (A, out of fold) | accuracy 86.6%; ECE 0.027; no bin more than 0.05 below its confidence |
+| Labels, honest (A, out of fold, `eval/train_model.py`) | accuracy **87.0%** (always `true`: 83.3%); lies caught 118 / 277; ECE 0.027 |
+| Labels on unseen rows given all other practice evidence (`scripts/train_confidence.py`) | 88.7% of 1,858; lies 143 / 277; ECE 0.044 |
 | Weakest band | `false` at 0.5–0.8: about 57% right; `true` at 0.5–0.6: 65% right |
 | `unsure` predicted | never (A's default; a team decision once scoring is known) |
 | Claims | 1,000: 383 at_event, 317 change, 294 compare (dates), 4 fact (dates), 2 relation |
 | Claim confidence | measured on unseen rows: 294 at 0.971, 700 at 0.95 (capped), 4 at 0.867, 2 at 0.80; mean 0.956 |
 | Full run time | ~11 s on practice with the controls; 131 s on our **synthetic** 20,000-row input (of 30 min) |
-| Tests | 387 Python tests pass (206 of them every example of `claim-forms.md` and `value-forms.md`) (`.venv/bin/pytest -q`); frontend type-checks, lints and builds; all 4 pages and 5 API routes checked live |
+| Tests | 394 Python tests pass (206 of them every example of `claim-forms.md` and `value-forms.md`) (`.venv/bin/pytest -q`); frontend type-checks, lints and builds; all 4 pages and 5 API routes checked live |
 
 ### Claim backtest (`scripts/backtest_claims.py` → `reports/claims_calibration.json`)
 
@@ -84,6 +86,15 @@ Does confidence stay honest when the run's rows differ from practice? In each sc
 - Confidence stays within ~2 points of the truth in every scenario. Where it was over-stated (new subjects), the control lowered `false` (factor 0.52) and the calibration error dropped from 0.040 to 0.031. On random pages we are now modest (said 0.83, right 88.8%): the control never raises confidence.
 - **On subjects it has never seen, the engine is worse than answering `true` (79.5% vs 82.5%).** That's a correctness problem for A, not a confidence one.
 
+### Experiments, measured and not in the run
+
+| Experiment | Owner | Result | Decision |
+|---|---|---|---|
+| 5-model ensemble as the answerer (`eval/train_ensemble.py`) | A | Out of fold: lies 143 → 114, ECE 0.045 → 0.058; latest pages 83.5 → 82.0% | Not the default. Its `spread` flags wrong answers (about 2× higher on them, AUC 0.80) |
+| Synthetic lies (`eval/augment.py`) | B | Lies caught 118 → 104 at 1×; 5 of 6 shift cells worse | Not used |
+| Confidence model, layer 3 (`arena/confidence.py`) | C | Out of fold ECE 0.044 → 0.005, Brier 0.0887 → 0.0856. With the control, random pages 0.062 → **0.016**, but latest pages 0.034 → **0.055** (over-confident when the data shifts) | Not in the run; round 3 tries a shift-proof version |
+| Layer 3's flip (`false` → `true` when unlikely right) | C | +5 rows of accuracy, −16 lies caught | Not used |
+
 ## Branches
 
 ```
@@ -122,23 +133,22 @@ ARENA_UNIVERSE=/tmp/arena/universe ARENA_OUTPUT=/tmp/arena/output .venv/bin/pyth
 python3 scripts/check_output.py /tmp/arena/output data/practice.csv /tmp/arena/universe/universe.csv
 ```
 
-## Next, by owner
+## Next, by owner (round 3, prompts in PLAN_FINAL.md)
 
-**C (platform)**
-1. Parked: README (how it works, start guide, predicted score).
-2. Clean-up before the PR: `test.csv` (now 104 rows) to a demo folder; drop `.claude/launch.json`.
+Where the errors are (1,858 honest answers, `reports/confidence_oof.json`): ~145 of ~210 errors are rows where our evidence **contradicts** the sentence. In the largest case, `stable_mismatch`, 151 of 210 rows are actually true: the "contradiction" is usually our own misreading.
 
-**A (engine)**
-1. The weak bands: `false` at 0.5–0.8 (~57% right), `true` at 0.5–0.6 (65% right).
-2. More false sentences (27 / 49).
-3. Batch corroboration: check a row never confirms itself and copies are not counted as independent sources.
-
-**B (frontend)**
-1. Rehearse the demo script; record the video from `npm run build && npm start` (no dev indicator).
-2. Technique names on every diagram box (`PLAN_NEXT.md` §3, Architecture).
+| # | What | Who |
+|---|---|---|
+| 1 | Fix false contradictions: classify the true `stable_mismatch` rows by cause, fix the biggest | A |
+| 2 | XGBoost / LightGBM on the same features, then monotonic constraints; export to JSON trees if it wins | B |
+| 3 | Text signal for lies: does the wording of a sentence predict a lie, out of fold? | B |
+| 4 | Layer 3, shift-proof: trained on subject/time-held-out folds, with A's `spread` | C |
+| 5 | "Not understood" rows (83 answers, 14 errors): extraction coverage | A, after 1 |
+| 6 | `unsure` policy, once the organisers say how wrong answers score | C |
 
 **Team**
-- Ask the organisers how confidence and `unsure` are scored. It sets `ARENA_UNSURE_BELOW`.
+- Ask the organisers how confidence, wrong answers and `unsure` are scored.
+- Freeze: start guide (location to decide), clean-up (`test.csv`, `.claude/launch.json`), `integration` → `main`, PR "Git Happens" before 11:00 on 29 Oct.
 
 ## Known risks
 
@@ -146,12 +156,14 @@ python3 scripts/check_output.py /tmp/arena/output data/practice.csv /tmp/arena/u
 - Claims now avoid values that can go stale (the backtest showed 52–71% right for them) and dates that move (`latest_*`, `next_*`, `planned_*`, `*_since`); the 1,000 are one-time dates, changes and event values.
 - at_event and change claims can't be checked on unseen rows, so their 0.95 is a cap, not a measurement.
 - Up to 30 claims rest on one fact; if a fact in our data is wrong, its claims fail together.
-- The local `check.sh` label count (340/380) is an upper bound: the image's model was trained on all practice rows. The honest figure is 86.6% out of fold, against 83% for always `true`.
+- The local `check.sh` label count (340/380) is an upper bound: the image's model was trained on all practice rows. The honest figure is 87.0% out of fold, against 83.3% for always `true`.
+- On subjects it never saw, the engine is below always `true` (79.5% vs 82.5%, shift test).
 
 ## Log
 
 | When | What |
 |---|---|
+| 28 Oct, night | C: layer 3, a confidence model on the engine's answers (`arena/confidence.py`, `scripts/train_confidence.py`; `scripts/shift_test.py --layer3`). Out of fold it calibrates far better, but it is over-confident when the data shifts, even with the run-time control, so it is **not in the run**. Error analysis: ~145 of ~210 errors are rows where our evidence contradicts the sentence; 151 of the 210 `stable_mismatch` rows are actually true. Round 3 planned on that. 394 tests pass; the run is unchanged. |
 | 28 Oct, night | Merged ML round 2, both measured and both **not used as the default**. **A, 5-model ensemble** (`eval/train_ensemble.py`, `label_rows(..., ensemble=True)`): as the answerer it catches fewer lies (143 → 114 of 277 out of fold) and is not better on the shift test, so the single model stays. Its `spread` (how much the 5 disagree) flags wrong answers: about twice as high on them, AUC 0.80. **B, synthetic lies** (`eval/augment.py`, `scripts/train_augmented.py`): lies caught fall as the synthetic share rises (118 → 104 at 1×), and 5 of 6 shift cells are worse, so it is not used: more lies of the same kind add no evidence. The run is unchanged: `check.sh` 340/380, 1,000 claims; 391 tests pass. |
 | 28 Oct, night | Merged A's `dev/a` (rare attributes read, subject origin as a feature; models and control retrained): out of fold 0.863 → **0.870**, lies caught 110 → **118**/277; hidden rows 337 → 339/380, lies 27 → 31/49. Shift test confirmed by C: random 88.0 → 88.8%, latest 83.7 → 83.5%, new subjects 80.3 → 79.5% (still below always `true`). C did B's confidence-page tasks: the claims chart shows only types checked on unseen rows (the rest listed as capped), a shift-test table and a run-time controls card, from `/metrics`. |
 | 28 Oct, night | C: claim-confidence control. A group that the input's confident rows contradict loses confidence in proportion (c × (1 − v)); a vetoed claim used only to fill the 1,000 gets 0.5. No change on practice; on the synthetic 20,000-row input, 9 vetoes lower at_event to 0.932 and change to 0.947. 387 tests pass. |

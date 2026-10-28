@@ -1,0 +1,24 @@
+{
+ "measured_on": "out-of-fold answers on all practice rows; the confidence model trained without each answer's fold (nested)",
+ "l2": 0.3,
+ "engine": {
+  "n": 1858,
+  "accuracy": 0.887,
+  "lies_caught": 143,
+  "lies": 277,
+  "false_answers": 219,
+  "ece": 0.044,
+  "brier": 0.0887,
+  "said": 0.843
+ },
+ "confidence_model": {
+  "n": 1858,
+  "accuracy": 0.8897,
+  "lies_caught": 127,
+  "lies": 277,
+  "false_answers": 182,
+  "ece": 0.005,
+  "brier": 0.0857,
+  "said": 0.893
+ }
+}
