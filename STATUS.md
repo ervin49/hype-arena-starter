@@ -77,12 +77,12 @@ Does confidence stay honest when the run's rows differ from practice? In each sc
 
 | Scenario (unseen part) | Right | Always `true` | Said → after control | ECE → after | Brier → after |
 |---|---|---|---|---|---|
-| Random pages (no shift) | 88.0% | 83.9% | 0.832 → 0.832 | 0.048 → 0.048 | 0.092 → 0.092 |
-| Latest pages (time shift) | 83.7% | 81.5% | 0.828 → 0.828 | 0.032 → 0.032 | 0.119 → 0.119 |
-| Held-out subjects (new products) | **80.3%** | **82.5%** | 0.810 → 0.802 | 0.046 → **0.028** | 0.148 → 0.143 |
+| Random pages (no shift) | 88.8% | 83.9% | 0.826 → 0.826 | 0.062 → 0.062 | 0.093 → 0.093 |
+| Latest pages (time shift) | 83.5% | 81.5% | 0.826 → 0.826 | 0.034 → 0.034 | 0.120 → 0.120 |
+| Held-out subjects (new products) | **79.5%** | **82.5%** | 0.835 → 0.826 | 0.040 → **0.031** | 0.144 → 0.140 |
 
-- Confidence stays within ~2 points of the truth in every scenario. Where it was over-stated (new subjects), the control lowered `false` (factor 0.34) and the calibration error dropped from 0.046 to 0.028.
-- **On subjects it has never seen, the engine is worse than answering `true` (80.3% vs 82.5%).** That's a correctness problem for A, not a confidence one.
+- Confidence stays within ~2 points of the truth in every scenario. Where it was over-stated (new subjects), the control lowered `false` (factor 0.52) and the calibration error dropped from 0.040 to 0.031. On random pages we are now modest (said 0.83, right 88.8%): the control never raises confidence.
+- **On subjects it has never seen, the engine is worse than answering `true` (79.5% vs 82.5%).** That's a correctness problem for A, not a confidence one.
 
 ## Branches
 
@@ -152,6 +152,7 @@ python3 scripts/check_output.py /tmp/arena/output data/practice.csv /tmp/arena/u
 
 | When | What |
 |---|---|
+| 28 Oct, night | Merged A's `dev/a` (rare attributes read, subject origin as a feature; models and control retrained): out of fold 0.863 → **0.870**, lies caught 110 → **118**/277; hidden rows 337 → 339/380, lies 27 → 31/49. Shift test confirmed by C: random 88.0 → 88.8%, latest 83.7 → 83.5%, new subjects 80.3 → 79.5% (still below always `true`). C did B's confidence-page tasks: the claims chart shows only types checked on unseen rows (the rest listed as capped), a shift-test table and a run-time controls card, from `/metrics`. |
 | 28 Oct, night | C: claim-confidence control. A group that the input's confident rows contradict loses confidence in proportion (c × (1 − v)); a vetoed claim used only to fill the 1,000 gets 0.5. No change on practice; on the synthetic 20,000-row input, 9 vetoes lower at_event to 0.932 and change to 0.947. 387 tests pass. |
 | 28 Oct, night | C: every example of `claim-forms.md` and `value-forms.md` is now a test (206), read from the files. The validator was fixed to match all of them: a second sentence may say anything, `on the same day as` counts as one phrase, `…, up from …` / `down from` read, and `up`/`down` must match the values. The 1,000 claims are unchanged. `/metrics` serves `shift` (with the always-`true` baseline) and `controls` (`reports/controls.json`, from `scripts/train_control.py`). Shift test rerun for the current engine. 384 tests pass. |
 | 28 Oct, night | C merged B's `fix/overfitting` engine (regularized trees, `l2=10, min_hess=20`) into `dev/c`: better in all three shift-test scenarios (random 87.7 → 88.0%, latest 83.3 → 83.7%, new subjects 79.5 → 80.3%; ECE same or lower) and on the honest hidden rows (329 → 337/380). Its claim formula (Laplace, date compares 0.99) was **not** taken: claim confidence stays the cautious Wilson bound. Control model retrained; control-group ECE 0.039 → 0.031. 178 tests, `check.sh` pass. |

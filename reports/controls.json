@@ -2,18 +2,18 @@
  "input": "data/practice.csv, the control group's labels hidden",
  "control_rows": 381,
  "control_answers": 369,
- "accuracy": 0.878,
- "ece_before": 0.046,
- "ece_after": 0.046,
- "said": 0.832,
- "said_after": 0.832,
- "false_share": 0.119,
+ "accuracy": 0.894,
+ "ece_before": 0.044,
+ "ece_after": 0.045,
+ "said": 0.85,
+ "said_after": 0.849,
+ "false_share": 0.168,
  "factors": {
   "true": 1.0,
-  "false": 1.0
+  "false": 0.98
  },
  "per_label": {
-  "true": 325,
-  "false": 44
+  "true": 307,
+  "false": 62
  }
 }

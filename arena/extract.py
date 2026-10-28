@@ -28,6 +28,9 @@ _STOP = {"the", "a", "an", "of", "and", "to", "in", "is", "for", "on", "at", "it
          "with", "by", "as", "that", "this", "we", "our", "are", "be", "has", "from"}
 CONTEXT_ROWS = 6
 FALLBACK_PRIOR = -11.0
+# Strength of the naive Bayes prior toward all facts' words; a broad optimum
+# (300 to 2,000) in eval/eval_extract.py's page-grouped CV.
+NB_PRIOR = 1000.0
 
 
 def _tokens(text):
@@ -39,14 +42,21 @@ def _attr_words(attribute):
 
 
 class NaiveBayes:
-    """Multinomial naive Bayes with add-alpha smoothing over string features."""
+    """Multinomial naive Bayes over string features.
 
-    def __init__(self, alpha=0.3):
-        self.alpha = alpha
+    A class's word distribution is smoothed toward the pooled distribution
+    of every fact class (a Dirichlet prior of strength `prior`), not toward
+    uniform: an attribute with one or two practice examples then reads like
+    a fact in general, and its name words and units tell it apart. With
+    prior 0 it is plain add-alpha smoothing."""
+
+    def __init__(self, alpha=0.3, prior=0.0):
+        self.alpha, self.prior = alpha, prior
         self.fc = defaultdict(Counter)
         self.total = Counter()
         self.cc = Counter()
         self.vocab = set()
+        self.pooled, self.pooled_total = Counter(), 0
 
     def add(self, cls, feats):
         self.cc[cls] += 1
@@ -54,25 +64,33 @@ class NaiveBayes:
             self.fc[cls][f] += 1
             self.total[cls] += 1
             self.vocab.add(f)
+            if not cls.startswith(NONE):
+                self.pooled[f] += 1
+                self.pooled_total += 1
 
     def loglik(self, cls, feats):
         v = len(self.vocab) + 1
-        t = self.total[cls] + self.alpha * v
         fc = self.fc[cls]
-        return sum(math.log((fc.get(f, 0) + self.alpha) / t) for f in feats if f in self.vocab)
+        if not self.prior or cls.startswith(NONE):
+            t = self.total[cls] + self.alpha * v
+            return sum(math.log((fc.get(f, 0) + self.alpha) / t) for f in feats if f in self.vocab)
+        pt = self.pooled_total + self.alpha * v
+        t = self.total[cls] + self.prior
+        return sum(math.log((fc.get(f, 0) + self.prior * (self.pooled.get(f, 0) + self.alpha) / pt) / t)
+                   for f in feats if f in self.vocab)
 
 
 class Extractor:
     def __init__(self, lexicon_obj):
         self.lex = lexicon_obj
-        self.nb = NaiveBayes()          # value facts, words near the value: class = attribute or NONE+kind
-        self.nb_row = NaiveBayes()      # value facts, words of the whole row
+        self.nb = NaiveBayes(prior=NB_PRIOR)        # value facts, words near the value: class = attribute or NONE+kind
+        self.nb_row = NaiveBayes(prior=NB_PRIOR)    # value facts, words of the whole row
         self.row_weight = 0.4           # weight of the row model against the local one
         self.name_values = set()        # normalised names seen as values in practice
         self.kind_facts = Counter()     # value kind -> facts of that kind in practice
         self.ctx_prior, self.ctx_step = -4.0, 0.6   # log prior of a subject from context
         self.fallback_prior = FALLBACK_PRIOR       # of a subject the page never names
-        self.nb_bool = NaiveBayes()     # yes or no facts: class = attribute or NONE
+        self.nb_bool = NaiveBayes(prior=NB_PRIOR)   # yes or no facts: class = attribute or NONE
         self.attr_kinds = defaultdict(Counter)      # attribute -> kinds
         self.sa_units = defaultdict(Counter)        # (subject, attribute) -> units
         self.attr_units = defaultdict(Counter)      # attribute -> units
@@ -359,6 +377,11 @@ def extract(row, lexicon, extractor, context=None, remember_row=True):
                           "value": {"kind": "boolean", "value": not has_negation(text)}})
             scores.append(margin)
 
+    # where each fact's subject comes from: named in the sentence, the page's
+    # context, or neither (a guess the classifier should trust less)
+    named = {m["name"] for m in subj_mentions}
+    origin = ["named" if f["subject"] in named else "context" if f["subject"] in ctx else "other"
+              for f in facts]
     complete = bool(facts)
     if not facts:
         issues.append("no fact extracted")
@@ -368,7 +391,8 @@ def extract(row, lexicon, extractor, context=None, remember_row=True):
         issues.append("subject from context")
     if remember_row:
         remember(ex, row, facts)
-    return {"facts": facts, "complete": complete, "issues": issues, "scores": [round(s, 3) for s in scores]}
+    return {"facts": facts, "complete": complete, "issues": issues, "scores": [round(s, 3) for s in scores],
+            "subject_from": origin}
 
 
 def extract_batch(rows, lexicon, extractor):
