@@ -145,3 +145,13 @@ def test_shipped_confidence_is_never_above_the_strict_evidence():
     for g in load_calibration().values():
         if g["keep"] and g["n"] >= 20:
             assert g["confidence"] <= (0.99 if g["strict_n"] >= 20 else 0.95), g
+
+
+def test_wording_reads_like_english():
+    from arena.generate import _had, possessive
+    assert possessive("Hooly Docs") == "Hooly Docs'" and possessive("Hooly") == "Hooly's"
+    assert _had("employees", "38 employees") == "38 employees"
+    assert _had("monthly_active_users", "341,000,000 users") == "341,000,000 monthly active users"
+    assert _had("official_sdks", "5 sdks") == "5 official SDKs"
+    assert _had("languages_served", "71 languages") is None  # the noun is not the attribute's last word
+    assert _had("price", "€59 per month") is None
