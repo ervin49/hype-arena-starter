@@ -135,6 +135,21 @@ class ContractTest(unittest.TestCase):
         self.assertEqual([p["id"] for p in out], ["t-3"])
         self.assertIn("extraction", out[0])
 
+    def test_label_rows_ensemble(self):
+        rows = [dict(self.rows[0]),
+                {"id": "t-4", "text": "Hooly AI Pro costs €49 per month.", "date": "2026-10-20", "label": ""},
+                {"id": "t-5", "text": "The weather is nice.", "date": "2026-10-20", "label": ""}]
+        single = label_rows(rows, self.rows, self.lex, self.kb, self.ex)
+        out = label_rows(rows, self.rows, self.lex, self.kb, self.ex, ensemble=True)
+        self.assertEqual([p["id"] for p in out], ["t-4", "t-5"])
+        self.assertTrue(all("spread" not in p for p in single))
+        for p in out:
+            self.assertTrue(0 <= p["spread"] <= 1)
+            self.assertIn(p["label"], ("true", "false", "unsure"))
+            if p["label"] != "unsure":
+                self.assertTrue(0.5 <= p["confidence"] <= 1)
+            json.dumps({k: v for k, v in p.items() if k != "_raw_checks"})
+
 
 if __name__ == "__main__":
     unittest.main()

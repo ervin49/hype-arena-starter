@@ -11,7 +11,7 @@ they have different remedies, though both export as unsure.
 
 import os
 
-from arena.ml.model import PASS2_PATH, decide, featurize, load_model
+from arena.ml.model import PASS2_PATH, Ensemble, decide, featurize, load_ensemble, load_model
 
 # An extraction weaker than this (naive Bayes margin, log scale) does not
 # decide a label on its own.
@@ -27,6 +27,14 @@ PSEUDO_TAU = 0.85
 
 _MODEL = load_model()
 _MODEL_PASS2 = load_model(PASS2_PATH)
+_ENSEMBLE = None    # (pass 1, pass 2), loaded on first use
+
+
+def _ensemble():
+    global _ENSEMBLE
+    if _ENSEMBLE is None:
+        _ENSEMBLE = load_ensemble() or ()
+    return _ENSEMBLE or None
 
 
 def _fact_text(f):
@@ -48,8 +56,14 @@ def classify(row, extraction, check, model="default"):
     if model is None:
         return pred
     checks = pred.pop("_raw_checks")
-    probs = model.probs(featurize(row, extraction, checks))
-    label, conf = decide(probs, UNSURE_BELOW, getattr(model, "calibration", None))
+    feats = featurize(row, extraction, checks)
+    probs = model.probs(feats)
+    if isinstance(model, Ensemble):
+        cal, spread = model.calibrated(feats)
+        label, conf = decide(cal, UNSURE_BELOW)
+        pred["spread"] = round(spread, 3)
+    else:
+        label, conf = decide(probs, UNSURE_BELOW, getattr(model, "calibration", None))
     if label != pred["label"]:
         pred["reason"] = (f"Model: {label} ({probs[label]:.2f}) on the evidence; "
                           f"the rules alone say {pred['label']}. " + pred["reason"])
@@ -102,7 +116,8 @@ def classify_rules(row, extraction, check):
             "checks": detail, "_raw_checks": checks}
 
 
-def label_rows(rows, practice_rows, lexicon, kb=None, extractor=None, self_train=True, models=None):
+def label_rows(rows, practice_rows, lexicon, kb=None, extractor=None, self_train=True, models=None,
+               ensemble=False):
     """The whole engine on an input: [prediction] for every unlabelled row.
 
     rows: the universe in input order (labelled rows give context and
@@ -112,8 +127,10 @@ def label_rows(rows, practice_rows, lexicon, kb=None, extractor=None, self_train
     With self_train and a pass-2 model, a second pass checks each row
     against the evidence plus the rows the first pass is confident about,
     leaving out the row's own page. models: (pass 1, pass 2) instead of the
-    saved ones (evaluation)."""
-    model1, model2 = models or (_MODEL, _MODEL_PASS2)
+    saved ones (evaluation). ensemble: both passes use the five models of
+    arena/ml/ensemble/, averaged, and each prediction gets "spread" (0..1),
+    their disagreement on P(true); the single model when they are missing."""
+    model1, model2 = models or (ensemble and _ensemble()) or (_MODEL, _MODEL_PASS2)
     from arena.extract import build_extractor, extract_batch
     from arena.truth import build_kb, check_fact, page_groups
     kb = kb or build_kb(practice_rows, lexicon)
