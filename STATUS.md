@@ -35,14 +35,16 @@
 ## Branches
 
 ```
-ML-and-python (A) ─┐
-team/frontend (B) ─┼──► integration (C merges and tests) ──► main ──► PR to QA-DNA
-teamapi (C) ───────┘
+dev/a (A) ─┐
+dev/b (B) ─┼──► integration (C merges and tests) ──► main ──► PR to QA-DNA
+dev/c (C) ─┘
 ```
 
-- Each person pushes only their own branch and says so in the chat; C merges into `integration`.
+- Each person pushes only their own `dev/` branch and says so in the chat; C merges into `integration`.
+- After every merge, everyone runs `git merge origin/integration` into their branch.
 - Anyone can pull `integration` to run the whole system.
 - `main` is updated once, at the freeze.
+- The first-phase branches (`ML-and-python`, `team/frontend`, `teamapi`) are kept as a record; nobody works on them. Details: `PLAN_NEXT.md`, section 8.
 
 ## How to run it
 
