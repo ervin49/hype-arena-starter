@@ -19,7 +19,6 @@ const PREVIEW_LINES = 8;
 
 export default function Workbench() {
   const [health, setHealth] = useState<Health>({ state: "checking" });
-  const [tab, setTab] = useState<"csv" | "manual">("csv");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<ApiError | null>(null);
   const [result, setResult] = useState<RunResult | null>(null);
@@ -39,7 +38,7 @@ export default function Workbench() {
     checkHealth();
   }, []);
 
-  const run = async (call: () => Promise<Response>, source: string, sent?: InputRow[]) => {
+  const run = async (call: () => Promise<Response>, source: string) => {
     setBusy(true);
     setError(null);
     try {
@@ -51,7 +50,7 @@ export default function Workbench() {
         return;
       }
       const data = body as PredictResponse & Partial<PredictCsvResponse>;
-      const rows = data.rows ?? sent ?? [];
+      const rows = data.rows ?? [];
       setResult({ rows, predictions: data.predictions, demo: data.demo_mode, source });
     } catch (e) {
       setError({ error: "The request failed.", detail: e instanceof Error ? e.message : String(e) });
@@ -67,39 +66,13 @@ export default function Workbench() {
     run(() => fetch("/api/predict/csv", { method: "POST", body: fd }), file.name);
   };
 
-  const runRows = (rows: InputRow[]) =>
-    run(
-      () =>
-        fetch("/api/predict", {
-          method: "POST",
-          headers: { "content-type": "application/json" },
-          body: JSON.stringify({ rows }),
-        }),
-      `${rows.length} typed row${rows.length === 1 ? "" : "s"}`,
-      rows,
-    );
-
   return (
     <div className="space-y-6">
       <ModeBanner health={health} retry={checkHealth} />
 
       <section className="rounded-2xl border border-line bg-surface p-5">
-        <div className="mb-4 flex gap-1 rounded-lg bg-bg p-1 text-sm w-fit">
-          {(["csv", "manual"] as const).map((t) => (
-            <button
-              key={t}
-              onClick={() => setTab(t)}
-              className={`rounded-md px-3 py-1.5 ${tab === t ? "bg-surface shadow-sm font-medium" : "text-muted"}`}
-            >
-              {t === "csv" ? "Upload CSV" : "Type rows"}
-            </button>
-          ))}
-        </div>
-        {tab === "csv" ? (
-          <CsvInput busy={busy} onRun={runCsv} demo={health.state === "ready" && health.demo} />
-        ) : (
-          <ManualInput busy={busy} onRun={runRows} />
-        )}
+        <h2 className="mb-4 font-semibold">Upload CSV</h2>
+        <CsvInput busy={busy} onRun={runCsv} demo={health.state === "ready" && health.demo} />
       </section>
 
       {busy && (
@@ -217,69 +190,6 @@ function CsvInput({ busy, onRun, demo }: { busy: boolean; onRun: (f: File) => vo
       >
         Run the engine
       </button>
-    </div>
-  );
-}
-
-interface Draft {
-  text: string;
-  date: string;
-}
-
-function ManualInput({ busy, onRun }: { busy: boolean; onRun: (rows: InputRow[]) => void }) {
-  const [drafts, setDrafts] = useState<Draft[]>([{ text: "", date: "2026-10-29" }]);
-  const set = (i: number, d: Partial<Draft>) => setDrafts((ds) => ds.map((x, j) => (j === i ? { ...x, ...d } : x)));
-  const valid = drafts.filter((d) => d.text.trim() && /^\d{4}-\d{2}-\d{2}$/.test(d.date));
-
-  return (
-    <div className="space-y-3">
-      {drafts.map((d, i) => (
-        <div key={i} className="flex flex-col gap-2 sm:flex-row sm:items-start">
-          <span className="pt-2 font-mono text-xs text-muted sm:w-14">row-{i + 1}</span>
-          <textarea
-            value={d.text}
-            onChange={(e) => set(i, { text: e.target.value })}
-            rows={2}
-            placeholder="A sentence about Hooly, e.g. Hooly AI Pro costs €59 per month."
-            className="min-w-0 flex-1 resize-y rounded-lg border border-line bg-bg px-3 py-2 text-sm outline-none focus:border-cls"
-          />
-          <input
-            type="date"
-            value={d.date}
-            onChange={(e) => set(i, { date: e.target.value })}
-            className="rounded-lg border border-line bg-bg px-3 py-2 text-sm outline-none focus:border-cls"
-          />
-          <button
-            onClick={() => setDrafts((ds) => ds.filter((_, j) => j !== i))}
-            disabled={drafts.length === 1}
-            className="self-start rounded-md px-2 py-2 text-xs text-muted hover:text-bad disabled:opacity-30"
-            aria-label={`Remove row ${i + 1}`}
-          >
-            ✕
-          </button>
-        </div>
-      ))}
-      <div className="flex gap-3">
-        <button
-          onClick={() => setDrafts((ds) => [...ds, { text: "", date: ds[ds.length - 1]?.date ?? "2026-10-29" }])}
-          className="rounded-lg border border-line px-3 py-2 text-sm"
-        >
-          Add row
-        </button>
-        <button
-          disabled={valid.length === 0 || busy}
-          onClick={() =>
-            onRun(
-              drafts
-                .map((d, i) => ({ id: `row-${i + 1}`, text: d.text.trim(), date: d.date, label: "" as const }))
-                .filter((r) => r.text),
-            )
-          }
-          className="rounded-lg bg-fg px-4 py-2 text-sm font-medium text-bg disabled:opacity-40"
-        >
-          Run the engine
-        </button>
-      </div>
     </div>
   );
 }
