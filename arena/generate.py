@@ -34,7 +34,8 @@ MAX_CLAIMS_PER_FACT = 10  # x3 in the second pass; kept groups backtest at 100%,
 MAX_CLAIMS_PER_EVENT = 60  # at_event values can't be checked on unseen rows: capped at 0.95, kept to a share
 MAX_DATE_COMPARES_PER_FACT = 40  # second pass: date compares measure 127/127 on unseen rows
 ACRONYMS = {"ceo": "CEO", "cto": "CTO", "sla": "SLA", "cli": "CLI", "eu": "EU", "soc2": "SOC 2",
-            "sdk": "SDK", "ide": "IDE", "ai": "AI", "nps": "NPS", "arr": "ARR", "api": "API"}
+            "sdk": "SDK", "ide": "IDE", "ai": "AI", "nps": "NPS", "arr": "ARR", "api": "API",
+            "ides": "IDEs", "sdks": "SDKs"}
 # Dates that move by nature, even after they pass: a pointer to the latest or next one, a plan,
 # a target, or a role that changes hands. `latest_release_date` moved from 20 June to 5 October
 # in the practice data, which made a date compare false a month later. Only one-time events
@@ -205,11 +206,20 @@ def _changes(ev, out):
                 out.append(_claim("change", "change", form, texts, conf, x.rows[-2:] + y.rows[:2], [key]))
 
 
-def _counts_itself(attribute, rendered):
-    """The rendered value ends with the attribute's own noun: 38 employees for `employees`."""
-    noun = attribute_words(attribute).lower()
-    last = rendered.lower().split()[-1]
-    return " " not in noun and last in (noun, noun.rstrip("s"))
+def possessive(name):
+    return f"{name}'" if name.endswith("s") else f"{name}'s"
+
+
+def _had(attribute, rendered):
+    """`38 employees` for `employees`, `341,000,000 monthly active users` for `monthly_active_users`:
+    the count with the attribute's words before its noun (value-forms allows up to two), or None."""
+    aw, vw = words(attribute).split(), rendered.split()
+    if len(vw) != 2 or not vw[0][0].isdigit() or len(aw) > 3:
+        return None
+    noun, last = vw[1].lower(), aw[-1].lower()
+    if last not in (noun, noun + "s", noun + "es", noun.rstrip("s")):
+        return None
+    return " ".join([vw[0]] + aw[:-1] + [ACRONYMS.get(noun, vw[1])])
 
 
 def _at_events(ev, out):
@@ -235,15 +245,16 @@ def _at_events(ev, out):
                 texts = [f"{s} {words(a)} was {v} at the time of {event}.",
                          f"{s} {words(a)} stood at {v} during {event}.",
                          f"{s} had {v} at the time of {event}."]
-                if _counts_itself(a, v):  # "Hooly had 38 employees", not "Hooly employees was 38 employees"
-                    texts.insert(0, texts.pop())
+                had = _had(a, v)
+                if had:  # "Hooly had 38 employees", not "Hooly employees was 38 employees"
+                    texts.insert(0, f"{s} had {had} at the time of {event}.")
                 out.append(_claim("at_event", "at_event", form, texts, min(conf, econf), seg.rows[:3] + erows[:1], [key, ("@event", event)]))
                 break
 
 
 def _date_phrase(subject, attribute):
     noun = DATE_NOUNS.get(attribute, words(attribute) if attribute.endswith("date") else f"{words(attribute)} date")
-    return [f"{subject}'s {noun}" if noun else subject, f"the {noun} of {subject}" if noun else subject]
+    return [f"{possessive(subject)} {noun}" if noun else subject, f"the {noun} of {subject}" if noun else subject]
 
 
 def _compares(ev, out):
@@ -330,7 +341,7 @@ def _relations(ev, out):
                     continue
                 form = {"subject": s, "link": link, "target": target, "attribute": a, "value": value}
                 texts = [f"The {words(link)} of {s} — {words(a)}: {v}.",
-                         f"{s}'s {words(link)} — {words(a)}: {v}."]
+                         f"{possessive(s)} {words(link)} — {words(a)}: {v}."]
                 out.append(_claim("relation", "relation", form, texts, min(conf, 0.92), seg.rows[:2] + rows[:2], [(s, link), (t, a)]))
 
 
