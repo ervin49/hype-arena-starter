@@ -130,7 +130,7 @@ def test_the_strict_judge_lowers_or_drops():
     strict = {c: {} for c in bt.CUTOFFS}
     strict[bt.CUTOFFS[0]] = {"checked": {"right": 50, "wrong": 0, "unknown": 350}, "refuted": {"right": 40, "wrong": 10, "unknown": 350}}
     groups = {g["group"]: g for g in bt.calibration(full, strict)}
-    assert groups["checked"]["keep"] and groups["checked"]["confidence"] == round(bt.wilson_lower(50, 50), 3)
+    assert groups["checked"]["keep"] and groups["checked"]["confidence"] == round(bt.expected_precision(50, 50), 3)
     assert not groups["refuted"]["keep"]
 
 

@@ -8,7 +8,7 @@
  "window_days": 45,
  "min_group_precision": 0.98,
  "unverified_cap": 0.95,
- "confidence": "the lower Wilson lower bound (95%) of the full and the strict judge, pooled",
+ "confidence": "the lower expected precision ((right + 1) / (judged + 2)) of the full and the strict judge, pooled; at most 0.99, or the unverified cap",
  "groups": [
   {
    "group": "at_event",
@@ -175,7 +175,7 @@
    "strict_right": 127,
    "strict_precision": 1.0,
    "keep": true,
-   "confidence": 0.971,
+   "confidence": 0.99,
    "note": "kept: 127/127 right on later rows only",
    "cutoffs": {
     "2026-05-01": {
@@ -279,7 +279,7 @@
    "strict_right": 25,
    "strict_precision": 1.0,
    "keep": true,
-   "confidence": 0.867,
+   "confidence": 0.963,
    "note": "kept: 25/25 right on later rows only",
    "cutoffs": {
     "2026-05-01": {

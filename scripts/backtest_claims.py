@@ -16,8 +16,9 @@ strict judge sees only the rows dated on or after the cut-off, which the generat
 
 Writes reports/claims_calibration.json, which arena.generate reads. A group is kept when it is at
 least MIN_GROUP_PRECISION right at every cut-off where it was judged on 10+ claims, by both judges.
-Its confidence is the lower of the two Wilson lower bounds (95%) of the pooled precision; when the
-strict judge cannot judge the group, it is at most UNVERIFIED_CAP.
+Its confidence is the lower of the two judges' expected precision (Laplace: (right + 1) / (judged + 2)),
+at most 0.99; when the strict judge cannot judge the group, it is at most UNVERIFIED_CAP. A Wilson lower
+bound would be a pessimistic bound rather than how often the claims are right: at 25/25 it says 0.87.
 
     .venv/bin/python scripts/backtest_claims.py
 """
@@ -49,6 +50,11 @@ def wilson_lower(right, n, z=1.96):
         return 0.0
     p = right / n
     return (p + z * z / (2 * n) - z * math.sqrt(p * (1 - p) / n + z * z / (4 * n * n))) / (1 + z * z / n)
+
+
+def expected_precision(right, n):
+    """How often the next claim of the group is right, after `right` of `n` (Laplace's rule)."""
+    return (right + 1) / (n + 2)
 
 
 class Judge:
@@ -164,11 +170,12 @@ def calibration(per_cut, strict_cut=None):
             note = f"dropped: {s_precision:.0%} right on later rows only"
         elif s_judged >= MIN_JUDGED:
             keep = True
-            conf = round(max(0.5, min(0.99, wilson_lower(right, judged), wilson_lower(s_right, s_judged))), 3)
+            conf = round(max(0.5, min(0.99, expected_precision(right, judged),
+                                      expected_precision(s_right, s_judged))), 3)
             note = f"kept: {s_right}/{s_judged} right on later rows only"
         else:
             keep = True
-            conf = round(min(UNVERIFIED_CAP, max(0.5, wilson_lower(right, judged))), 3)
+            conf = round(min(UNVERIFIED_CAP, max(0.5, expected_precision(right, judged))), 3)
             note = f"kept, capped at {UNVERIFIED_CAP}: later rows alone cannot check it"
         out.append({"group": g, "n": judged, "right": right,
                     "precision": round(precision, 3) if judged else None,
@@ -186,7 +193,8 @@ def main():
     with open(CALIBRATION, "w", encoding="utf-8") as f:
         json.dump({"cutoffs": CUTOFFS, "as_of_after_days": AS_OF_AFTER_DAYS, "window_days": WINDOW_DAYS,
                    "min_group_precision": MIN_GROUP_PRECISION, "unverified_cap": UNVERIFIED_CAP,
-                   "confidence": "the lower Wilson lower bound (95%) of the full and the strict judge, pooled",
+                   "confidence": "the lower expected precision ((right + 1) / (judged + 2)) of the full and the strict "
+                                 "judge, pooled; at most 0.99, or the unverified cap",
                    "groups": groups}, f, indent=1)
         f.write("\n")
     print(f"{'group':16} {'judged':>6} {'right':>6} {'strict':>9} {'conf':>6}  decision")

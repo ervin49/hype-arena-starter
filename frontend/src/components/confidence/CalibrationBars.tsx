@@ -11,6 +11,10 @@ export interface CalibrationRow {
 // Plan's acceptance limit: a band is calibrated when right is within this of said.
 export const TOLERANCE = 0.05;
 
+// Gap in whole points, as the table shows it: 1.0 − 0.95 is 0.0500…04 in floating point.
+const gapPoints = (said: number, right: number) => Math.round(Math.abs(right - said) * 100);
+export const isCalibrated = (said: number, right: number) => gapPoints(said, right) <= TOLERANCE * 100;
+
 const pct = (x: number) => `${Math.round(x * 100)}%`;
 
 // "We said X → we were right Y", one pair of bars per band or claim type.
@@ -101,12 +105,11 @@ export function CalibrationTable({ rows, unit }: { rows: CalibrationRow[]; unit:
 }
 
 function GapPill({ said, right }: { said: number; right: number }) {
-  const gap = right - said;
-  const points = Math.round(Math.abs(gap) * 100);
+  const points = gapPoints(said, right);
   const [cls, text] =
-    Math.abs(gap) <= TOLERANCE
+    isCalibrated(said, right)
       ? ["bg-ok-soft text-ok", "calibrated"]
-      : gap < 0
+      : right < said
         ? ["bg-bad-soft text-bad", `over-confident by ${points} pts`]
         : ["bg-warn-soft text-warn", `under-confident by ${points} pts`];
   return <span className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold ${cls}`}>{text}</span>;

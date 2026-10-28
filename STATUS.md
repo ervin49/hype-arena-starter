@@ -43,7 +43,7 @@ Claims built from the practice rows before 1 May, 1 Jul and 1 Sep, then judged t
 - **full judge**: all practice rows. Partly circular, because the rows a claim came from also judge it.
 - **strict judge**: only the rows dated after the cut-off, which the generator never saw.
 
-Confidence is the lower of the two Wilson lower bounds (95%). If the strict judge can't check a group, its confidence is capped at 0.95.
+Confidence is the lower of the two judges' expected precision, (right + 1) / (judged + 2), at most 0.99. If the strict judge can't check a group, its confidence is capped at 0.95.
 
 | Group | Full judge | Strict judge | Decision | Confidence |
 |---|---|---|---|---|
