@@ -8,13 +8,14 @@ type Filter = "all" | Label;
 
 const PAGE = 8;
 
-export function VerdictsTable({ items, selectedId, onSelect, subtitle, simulated, emptyText }: {
+export function VerdictsTable({ items, selectedId, onSelect, subtitle, simulated, emptyText, onDownload }: {
   items: { row: InputRow; pred: Prediction }[];
   selectedId: string | null;
   onSelect: (id: string) => void;
   subtitle?: string;
   simulated: boolean;
   emptyText: string;
+  onDownload?: () => void;
 }) {
   const [filter, setFilter] = useState<Filter>("all");
   const [showAll, setShowAll] = useState(false);
@@ -32,11 +33,18 @@ export function VerdictsTable({ items, selectedId, onSelect, subtitle, simulated
           </h2>
           {subtitle && <p className="mt-0.5 text-xs text-muted-foreground">{subtitle}</p>}
         </div>
-        {filtered.length > PAGE && (
-          <button onClick={() => setShowAll((s) => !s)} className="shrink-0 text-sm font-semibold text-primary hover:underline">
-            {showAll ? "Show less" : `See all ${filtered.length}`}
-          </button>
-        )}
+        <div className="flex shrink-0 items-center gap-4">
+          {onDownload && (
+            <button onClick={onDownload} className="text-sm font-semibold text-primary hover:underline" title="Every checked row, in the six output.csv columns">
+              Download CSV
+            </button>
+          )}
+          {filtered.length > PAGE && (
+            <button onClick={() => setShowAll((s) => !s)} className="text-sm font-semibold text-primary hover:underline">
+              {showAll ? "Show less" : `See all ${filtered.length}`}
+            </button>
+          )}
+        </div>
       </div>
       <div className="mt-4 flex flex-wrap gap-2">
         {(["all", "true", "false", "unsure"] as Filter[]).map((f) => (
