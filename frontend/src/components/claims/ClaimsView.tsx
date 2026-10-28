@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { AlertTriangle, Loader2, MousePointerClick } from "lucide-react";
 import { EngineError, getClaims, type EngineFailure } from "@/lib/api";
+import { downloadCsv, outputCsv } from "@/lib/csv";
 import { confFraction } from "@/lib/format";
 import type { Claim, ClaimType, ClaimsResponse } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -76,16 +77,25 @@ export function ClaimsView() {
               Every one validated against the schema, the lexicon, the claim-form rules and its evidence; all labelled true.
             </p>
           </div>
-          <input
-            value={query}
-            onChange={(e) => {
-              setQuery(e.target.value);
-              setShown(PAGE);
-            }}
-            placeholder="Search claims…"
-            aria-label="Search claims"
-            className="h-9 w-full rounded-full border bg-card px-4 text-sm outline-none focus:border-primary sm:w-56"
-          />
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => downloadCsv("claims.csv", outputCsv([], claims))}
+              title="All claims, in the six output.csv columns"
+              className="h-9 shrink-0 rounded-full border px-4 text-sm font-semibold text-primary transition hover:bg-accent"
+            >
+              Download CSV
+            </button>
+            <input
+              value={query}
+              onChange={(e) => {
+                setQuery(e.target.value);
+                setShown(PAGE);
+              }}
+              placeholder="Search claims…"
+              aria-label="Search claims"
+              className="h-9 w-full rounded-full border bg-card px-4 text-sm outline-none focus:border-primary sm:w-56"
+            />
+          </div>
         </div>
         <div className="mt-4 flex flex-wrap gap-2">
           {(["all", ...TYPES] as Filter[]).map((f) => (

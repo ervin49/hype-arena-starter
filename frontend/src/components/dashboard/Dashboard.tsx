@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useRun } from "@/components/run/RunProvider";
+import { downloadCsv, outputCsv } from "@/lib/csv";
 import { byMonth, computeStats } from "@/lib/format";
 import type { PredictCsvResponse } from "@/lib/types";
 import { AppShell } from "./AppShell";
@@ -88,6 +89,11 @@ export default function Dashboard() {
             subtitle={subtitle}
             simulated={Boolean(data?.demo_mode)}
             emptyText={emptyText}
+            onDownload={
+              resp.predictions.length
+                ? () => downloadCsv(`labels-${source.replace(/\.csv$/i, "") || "run"}.csv`, outputCsv(resp.predictions))
+                : undefined
+            }
           />
         </div>
         <ArchitectureDiagram />
