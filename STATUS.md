@@ -13,7 +13,7 @@
 | Frontend: upload, verdicts, claims, architecture replay, confidence | B | ✅ works with the real engine; Next.js 15.5.28 (patched) |
 | API: `/health`, `/predict`, `/predict/csv`, `/claims`, `/metrics` | C | ✅ works; uploads labelled like the batch run |
 | Batch runner → `/output/output.csv` | C | ✅ A's batch (`label_rows`); passes the official format checker locally |
-| Claim generator + validator: 1,000 claims | C | ✅ 1,000 valid; confidence measured by backtest; pool ~1,300 |
+| Claim generator + validator: 1,000 claims | C | ✅ 1,000 valid; confidence checked on unseen rows (strict backtest); pool ~1,300 |
 | Confidence chart (`/metrics` → `/confidence` page) | B | ✅ real measured numbers, labels and claims |
 | Label calibration (`eval/calibration_labels.json`) | A | ✅ Platt, cross-fitted; ECE 0.027 |
 | Demo script (`frontend/docs/demo-script.md`) | B | ✅ draft |
@@ -32,27 +32,31 @@
 | Label calibration (A, out of fold) | accuracy 86.6%; ECE 0.027; no bin more than 0.05 below its confidence |
 | Weakest band | `false` at 0.5–0.8: about 57% right; `true` at 0.5–0.6: 65% right |
 | `unsure` predicted | never (A's default; a team decision once scoring is known) |
-| Claims | 1,000: 383 at_event, 316 change, 294 compare (dates), 5 fact (dates), 2 relation |
-| Claim confidence | measured: 993 at 0.99, 5 at 0.95, 2 at 0.80 (relation, not measurable) |
+| Claims | 1,000: 383 at_event, 317 change, 294 compare (dates), 4 fact (dates), 2 relation |
+| Claim confidence | measured on unseen rows: 294 at 0.971, 700 at 0.95 (capped), 4 at 0.867, 2 at 0.80; mean 0.956 |
 | Full run time | ~2.6 s and 54 MB on practice; the ~20,000-row run is estimated at about 1 min of 30 |
-| Tests | 167 Python tests pass (`.venv/bin/pytest -q`); frontend type-checks, lints and builds; all 4 pages and 5 API routes checked live |
+| Tests | 169 Python tests pass (`.venv/bin/pytest -q`); frontend type-checks, lints and builds; all 4 pages and 5 API routes checked live |
 
 ### Claim backtest (`scripts/backtest_claims.py` → `reports/claims_calibration.json`)
 
-Claims built from the practice rows before 1 May, 1 Jul and 1 Sep, judged on the rows after.
+Claims built from the practice rows before 1 May, 1 Jul and 1 Sep, then judged twice:
+- **full judge**: all practice rows. Partly circular, because the rows a claim came from also judge it.
+- **strict judge**: only the rows dated after the cut-off, which the generator never saw.
 
-| Group | Judged | Right | Decision | Confidence |
+Confidence is the lower of the two Wilson lower bounds (95%). If the strict judge can't check a group, its confidence is capped at 0.95.
+
+| Group | Full judge | Strict judge | Decision | Confidence |
 |---|---|---|---|---|
-| compare (dates) | 1,229 | 100% | kept | 0.99 |
-| at_event | 522 | 100% | kept | 0.99 |
-| change | 350 | 100% | kept | 0.99 |
-| fact (dates) | 67 | 100% | kept | 0.95 |
-| fact (values that never changed) | 113 | 52% | dropped | — |
-| fact (values that changed before) | 51 | 71% | dropped | — |
-| compare (amounts) | 29 | 97% | dropped (bar: 98% at every cut-off) | — |
-| relation | — | not judged | kept, cautious | 0.80 |
+| compare (dates) | 1,211/1,211 | 127/127 | kept | 0.971 |
+| at_event | 522/522 | can't check | kept, capped | 0.95 |
+| change | 350/350 | can't check | kept, capped | 0.95 |
+| fact (dates) | 65/65 | 25/25 | kept | 0.867 |
+| fact (values that never changed) | 59/113 | 59/113 | dropped | — |
+| fact (values that changed before) | 36/51 | 36/51 | dropped | — |
+| compare (amounts) | 28/29 | 28/29 | dropped (bar: 98% at every cut-off) | — |
+| relation | not judged | not judged | kept, cautious | 0.80 |
 
-Caveat: dates and events are judged partly on the same practice data plus the later reports; strong evidence, not proof. The final input is ~10× larger.
+Why it isn't 0.99: the earlier 0.99 came from the full judge alone, which grades a claim with the rows it was built from. Self-evaluation scores honest confidence, so we now ship only what the unseen rows support. The final input is ~10× larger.
 
 ## Branches
 
@@ -113,7 +117,8 @@ python3 scripts/check_output.py /tmp/arena/output data/practice.csv /tmp/arena/u
 ## Known risks
 
 - Practice is ~10% of the final input: new facts and later value changes we cannot see.
-- Claims now avoid values that can go stale (the backtest showed 52–71% right for them); the 1,000 are dates, changes and event values.
+- Claims now avoid values that can go stale (the backtest showed 52–71% right for them) and dates that move (`latest_*`, `next_*`, `planned_*`, `*_since`); the 1,000 are one-time dates, changes and event values.
+- at_event and change claims can't be checked on unseen rows, so their 0.95 is a cap, not a measurement.
 - Up to 30 claims rest on one fact; if a fact in our data is wrong, its claims fail together.
 - Without the Dockerfile there is no submission. It is parked, not dropped.
 
@@ -121,6 +126,7 @@ python3 scripts/check_output.py /tmp/arena/output data/practice.csv /tmp/arena/u
 
 | When | What |
 |---|---|
+| 28 Oct, evening | C: claim confidence made honest. Moving dates (`latest_release_date` etc.) dropped after a strict check found a stale claim. The backtest now has a strict judge (unseen rows only); confidence is the lower bound of both judges and capped at 0.95 where the strict judge can't check. 993 claims at 0.99 became 294 at 0.971 and 700 at 0.95. 169 tests pass. |
 | 28 Oct, 16:30 | Merged `dev/a` (engine: boosted trees, self-training, label calibration), `dev/b` (confidence page, Next.js 15.5.28, demo script), `dev/c`; no conflicts. 340/380 right, false caught 27/49; 167 tests pass; claim backtest unchanged; C fixed `/metrics` to the agreed shape (`n`, shipped groups only). After pulling, run `npm ci` in `frontend/`. |
 | 28 Oct, 15:55 | `dev/c` (local): claim backtest and measured confidence (993 claims at 0.99; stale `fact` groups dropped); runner and API use A's `label_rows` (331/380 right, false caught 9 → 22); `GET /metrics`. |
 | 28 Oct, 15:10 | Claim generator + validator: 1,000 valid claims; runner passes the official format checker. API: `/claims` and evidence texts. Frontend: Claims page, claim steps in the replay, evidence sentences in the detail panel. |
