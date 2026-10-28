@@ -42,6 +42,8 @@ CASE_CONFIDENCE = {
     "constraint_violated": 0.85,
     "stable_match": 0.95,
     "stable_mismatch": 0.9,
+    "denied_match": 0.85,
+    "denied_mismatch": 0.7,
 }
 
 
@@ -74,6 +76,8 @@ class KB:
             src = source_key(r.get("text"))
             self.row_src[r["id"]] = src
             for f in ex.get("facts") or []:
+                if f.get("negated"):
+                    continue
                 key = (_canon_subject(f["subject"], self.lexicon), f["attribute"])
                 self.unl[key].append({"row": r["id"], "date": r["date"], "src": src,
                                       "day": _days(r["date"]), "value": f["value"]})
@@ -94,7 +98,7 @@ class KB:
         for key, lst in self.neg.items():
             kb.neg[key] = list(lst)
         for r, ex, p in zip(rows, extractions, probs):
-            facts = (ex or {}).get("facts") or []
+            facts = [f for f in (ex or {}).get("facts") or [] if not f.get("negated")]
             if not p or not facts:
                 continue
             if p["true"] >= tau:
@@ -171,7 +175,9 @@ def _facts_of(row):
     if not form:
         return []
     facts = json.loads(form) if isinstance(form, str) else form
-    return facts if isinstance(facts, list) else [facts]
+    facts = facts if isinstance(facts, list) else [facts]
+    # a negated fact ("does not cost €59") observes no value
+    return [f for f in facts if not f.get("negated")]
 
 
 def build_kb(practice_rows, lexicon):
@@ -458,7 +464,24 @@ def fact_features(fact, at_date, kb, exclude_row_ids=()):
 def check_fact(fact, at_date, kb, exclude_row_ids=()):
     res = _check(fact, at_date, kb, exclude_row_ids)
     res["features"] = fact_features(fact, at_date, kb, exclude_row_ids)
+    if fact.get("negated") and fact["value"].get("kind") != "boolean":
+        res = _denied(res)
     return res
+
+
+def _denied(res):
+    """The check of a negated fact ("does not cost €59"): the evidence for the
+    value contradicts the sentence, the evidence against it supports it. Its
+    features describe the value, not the sentence, so only its kind is kept."""
+    flip = {"supported": ("contradicted", "denied_match"),
+            "contradicted": ("supported", "denied_mismatch")}
+    if res["status"] not in flip:
+        return dict(res, features={"kind": res["features"].get("kind"), "negated": True})
+    status, case = flip[res["status"]]
+    return {"status": status, "confidence": CASE_CONFIDENCE[case],
+            "evidence_ids": res["evidence_ids"], "case": case,
+            "reason": f"Negated: {res['reason']}",
+            "features": {"kind": res["features"].get("kind"), "negated": True}}
 
 
 def source_key(text):

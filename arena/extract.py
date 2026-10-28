@@ -342,9 +342,11 @@ def extract(row, lexicon, extractor, context=None, remember_row=True):
         v = dict(val)
         if v["kind"] == "name":
             v["value"] = lex.resolve_value_name(v["value"]) or v["value"]
+        fact = {"subject": subject, "attribute": a, "value": v}
         if span.get("negated") and v["kind"] != "name":
             issues.append(f"negated value: {span['raw']}")
-        facts.append({"subject": subject, "attribute": a, "value": v})
+            fact["negated"] = True      # "does not cost €59": the check is inverted
+        facts.append(fact)
         scores.append(margin)
         chosen.append((span["start"], span["end"]))
         used_sa.add((subject, a))

@@ -93,6 +93,25 @@ class TruthTest(unittest.TestCase):
         f = check_fact(users, "2026-03-01", kb2, ("c-1",))["features"]
         self.assertFalse(f["u_any"])          # c-2 is a copy of c-1: it does not
 
+    def test_negated_value_inverts_the_check(self):
+        # €10 holds on 2026-01-25: "costs €10" is supported, "does not cost €10" contradicted
+        said, denied = price(10), dict(price(10), negated=True)
+        self.assertEqual(self.check(said, "2026-01-25")["status"], "supported")
+        r = self.check(denied, "2026-01-25")
+        self.assertEqual((r["status"], r["case"]), ("contradicted", "denied_match"))
+        # €11 does not: "costs €11" is contradicted, "does not cost €11" supported
+        self.assertEqual(self.check(price(11), "2026-01-25")["status"], "contradicted")
+        r = self.check(dict(price(11), negated=True), "2026-01-25")
+        self.assertEqual((r["status"], r["case"]), ("supported", "denied_mismatch"))
+
+    def test_negated_fact_is_no_evidence(self):
+        rows, lex = fixture()
+        rows = rows + [{"id": "fx-n", "text": "Acme Widget does not cost €11 per month.", "date": "2026-01-20",
+                        "label": "true", "form": json.dumps([dict(price(11), negated=True)])}]
+        kb = build_kb(rows, lex)
+        self.assertEqual(check_fact(price(11), "2026-01-20", kb)["status"], "contradicted")
+        self.assertNotIn("fx-n", check_fact(price(10), "2026-01-20", kb)["evidence_ids"])
+
     def test_partial_date_is_stable(self):
         fact = {"subject": "Acme Widget", "attribute": "launched",
                 "value": {"kind": "date", "value": "2025-03"}}
@@ -113,6 +132,15 @@ class ContractTest(unittest.TestCase):
         self.assertEqual(out["facts"][0], {"subject": "Hooly AI Pro", "attribute": "price",
                                            "value": {"kind": "money", "value": 59,
                                                      "currency": "EUR", "per": "month"}})
+
+    def test_extract_negated_value(self):
+        said = extract({"id": "t-6", "text": "Hooly AI Pro costs €59 per month.", "date": "2026-10-20",
+                        "label": ""}, self.lex, self.ex, context=[])
+        denied = extract({"id": "t-7", "text": "Hooly AI Pro does not cost €59 per month.",
+                          "date": "2026-10-20", "label": ""}, self.lex, self.ex, context=[])
+        self.assertNotIn("negated", said["facts"][0])
+        self.assertTrue(denied["facts"][0]["negated"])
+        self.assertEqual(denied["facts"][0]["value"], said["facts"][0]["value"])
 
     def test_classify_shape(self):
         check = lambda fact, date: check_fact(fact, date, self.kb)
