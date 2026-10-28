@@ -71,6 +71,19 @@ The run can't be adjusted after the freeze, so the system checks itself on the r
 
 **The 20,000-row input is synthetic, made by us:** the 1,897 practice rows plus 18,103 copies of practice sentences with new ids, dates shifted by up to ±60 days and empty labels. We do not have the organisers' 18,000 rows. It tests speed, limits and that the controls react to noise; it says nothing about our accuracy on new text, and its 150 vetoes and factor 0.6 react to our artificial noise, not to the real data.
 
+### Shift test (`scripts/shift_test.py` → `reports/shift_test.json`)
+
+Does confidence stay honest when the run's rows differ from practice? In each scenario, ~20% of the practice data is "unseen". The main and control models are trained only on the rest, then the run is replayed with the control.
+
+| Scenario (unseen part) | Right | Always `true` | Said → after control | ECE → after | Brier → after |
+|---|---|---|---|---|---|
+| Random pages (no shift) | 87.7% | 83.9% | 0.825 → 0.825 | 0.052 → 0.052 | 0.094 → 0.094 |
+| Latest pages (time shift) | 83.3% | 81.5% | 0.834 → 0.834 | 0.034 → 0.034 | 0.119 → 0.119 |
+| Held-out subjects (new products) | **79.5%** | **82.5%** | 0.813 → 0.808 | 0.050 → **0.029** | 0.148 → 0.144 |
+
+- Confidence stays within ~2 points of the truth in every scenario. Where it was over-stated (new subjects), the control lowered `false` (factor 0.56) and the calibration error dropped from 0.050 to 0.029.
+- **On subjects it has never seen, the engine is worse than answering `true` (79.5% vs 82.5%).** That's a correctness problem for A, not a confidence one.
+
 ## Branches
 
 ```
