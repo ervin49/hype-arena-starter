@@ -1,0 +1,101 @@
+[
+ {
+  "scenario": "random pages",
+  "known": 1524,
+  "unseen": 373,
+  "factors": {
+   "true": 1.0,
+   "false": 1.0
+  },
+  "control": {
+   "control_answers": 308,
+   "accuracy": 0.851,
+   "said": 0.856,
+   "ece_before": 0.045,
+   "false_share": 0.039
+  },
+  "control_unknown_share": 0.029,
+  "unseen_before": {
+   "n": 366,
+   "said": 0.825,
+   "right": 0.877,
+   "ece": 0.052,
+   "brier": 0.094,
+   "unknown_share": 0.052
+  },
+  "unseen_after": {
+   "n": 366,
+   "said": 0.825,
+   "right": 0.877,
+   "ece": 0.052,
+   "brier": 0.094,
+   "unknown_share": 0.052
+  }
+ },
+ {
+  "scenario": "latest pages",
+  "known": 1432,
+  "unseen": 465,
+  "factors": {
+   "true": 1.0,
+   "false": 1.0
+  },
+  "control": {
+   "control_answers": 281,
+   "accuracy": 0.865,
+   "said": 0.832,
+   "ece_before": 0.059,
+   "false_share": 0.071
+  },
+  "control_unknown_share": 0.045,
+  "unseen_before": {
+   "n": 460,
+   "said": 0.834,
+   "right": 0.833,
+   "ece": 0.034,
+   "brier": 0.1185,
+   "unknown_share": 0.08
+  },
+  "unseen_after": {
+   "n": 460,
+   "said": 0.834,
+   "right": 0.833,
+   "ece": 0.034,
+   "brier": 0.1185,
+   "unknown_share": 0.08
+  }
+ },
+ {
+  "scenario": "held-out subjects",
+  "known": 1515,
+  "unseen": 382,
+  "factors": {
+   "true": 1.0,
+   "false": 0.56
+  },
+  "control": {
+   "control_answers": 298,
+   "accuracy": 0.852,
+   "said": 0.834,
+   "ece_before": 0.05,
+   "false_share": 0.111
+  },
+  "control_unknown_share": 0.05,
+  "unseen_before": {
+   "n": 366,
+   "said": 0.813,
+   "right": 0.795,
+   "ece": 0.05,
+   "brier": 0.1482,
+   "unknown_share": 0.066
+  },
+  "unseen_after": {
+   "n": 366,
+   "said": 0.808,
+   "right": 0.795,
+   "ece": 0.029,
+   "brier": 0.1443,
+   "unknown_share": 0.066
+  }
+ }
+]

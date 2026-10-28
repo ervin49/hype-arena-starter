@@ -40,6 +40,6 @@ Every verdict carries its reason and the ids of the rows it rests on.
 
 Every number is measured on practice rows the engine did not learn from, with whole pages held out at a time:
 
-- **Hidden rows (`scripts/check.sh`'s setup), with the models retrained without them:** 329 of 380 right (86.6%). *Always true* scores 331. The engine catches 22 of the 49 false sentences, and 22 of the 39 it calls false are false.
-- **Calibration:** expected calibration error (ECE) 0.037 on those hidden rows. Across the folds it is 0.022–0.033, with no confidence bin of 20 or more rows more than 0.05 below its stated confidence.
+- **Hidden rows (`scripts/check.sh`'s setup), with the models retrained without them:** 337 of 380 right (88.7%). *Always true* scores 331. The engine catches 27 of the 49 false sentences, and 27 of the 41 it calls false are false.
+- **Calibration:** expected calibration error (ECE) 0.059 on those hidden rows, mostly `true` labels that are right more often than they say. Across the folds it is 0.022–0.029; one confidence bin of 20 or more rows is more than 0.05 below its stated confidence (`false` 0.8–0.9 with dense evidence: said 0.86, right 0.78).
 - **Scale:** practice is about 10% of the final input, so these are estimates. More evidence helps in every test we ran.

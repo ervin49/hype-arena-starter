@@ -146,7 +146,10 @@ def reliability(y, preds):
 
 
 def make_model(kind="boost"):
-    return (lambda: Boost(rounds=300, depth=2)) if kind == "boost" else (lambda: LogReg())
+    # Each practice row is trained on once per ratio, so leaves need 20 of
+    # hessian (5 rows) and a stronger L2: measured out of fold and on the
+    # hidden rows, it overfits less than l2=1, min_hess=4 (eval/README.md).
+    return (lambda: Boost(rounds=300, depth=2, l2=10.0, min_hess=20.0)) if kind == "boost" else (lambda: LogReg())
 
 
 def simulate(rows, lex, labelled, tau, make, oracle=False):
