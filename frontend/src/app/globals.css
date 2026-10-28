@@ -1,70 +1,102 @@
 @import "tailwindcss";
 
-:root {
-  --bg: #f7f7f5;
-  --surface: #ffffff;
-  --fg: #1b1b1a;
-  --muted: #6b6a66;
-  --line: #dedcd6;
-  --cls: #2f6fd6;
-  --cls-soft: #eaf1fc;
-  --gen: #7b4fd1;
-  --gen-soft: #f1ecfb;
-  --ui: #0f8a7e;
-  --ui-soft: #e6f5f3;
-  --ok: #1f8a4c;
-  --ok-soft: #e5f4ea;
-  --bad: #c8382d;
-  --bad-soft: #fbe9e7;
-  --warn: #a86a00;
-  --warn-soft: #fbf1dc;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #121211;
-    --surface: #1c1c1a;
-    --fg: #ecebe7;
-    --muted: #9c9a94;
-    --line: #34332f;
-    --cls: #6fa0f0;
-    --cls-soft: #18263d;
-    --gen: #a98af0;
-    --gen-soft: #251d38;
-    --ui: #4cc3b5;
-    --ui-soft: #13302c;
-    --ok: #5bc483;
-    --ok-soft: #14301f;
-    --bad: #f0776c;
-    --bad-soft: #3a1a17;
-    --warn: #e6b04a;
-    --warn-soft: #362a12;
-  }
-}
+/* Dark mode follows a .dark class on <html>, set before paint in layout.tsx. */
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme inline {
-  --color-bg: var(--bg);
-  --color-surface: var(--surface);
-  --color-fg: var(--fg);
+  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-heading: var(--heading);
+  --color-card: var(--card);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-track: var(--track);
+  --color-indigo: var(--indigo);
   --color-muted: var(--muted);
-  --color-line: var(--line);
-  --color-cls: var(--cls);
-  --color-cls-soft: var(--cls-soft);
-  --color-gen: var(--gen);
-  --color-gen-soft: var(--gen-soft);
-  --color-ui: var(--ui);
-  --color-ui-soft: var(--ui-soft);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-border: var(--border);
+  --color-sidebar: var(--card);
+  --color-sidebar-foreground: var(--muted-foreground);
+  --color-sidebar-accent: var(--accent);
   --color-ok: var(--ok);
   --color-ok-soft: var(--ok-soft);
   --color-bad: var(--bad);
   --color-bad-soft: var(--bad-soft);
   --color-warn: var(--warn);
   --color-warn-soft: var(--warn-soft);
-  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --shadow-soft: var(--shadow-card);
 }
 
-body {
-  background: var(--bg);
-  color: var(--fg);
+:root {
+  --background: oklch(0.973 0.009 268);
+  --foreground: oklch(0.24 0.08 266);
+  --heading: oklch(0.2 0.08 266);
+  --card: oklch(1 0 0);
+  --primary: oklch(0.53 0.21 266);
+  --primary-foreground: oklch(1 0 0);
+  --track: oklch(0.87 0.06 270);
+  --indigo: oklch(0.68 0.13 272);
+  --muted: oklch(0.96 0.012 268);
+  --muted-foreground: oklch(0.56 0.03 260);
+  --accent: oklch(0.94 0.03 268);
+  --border: oklch(0.93 0.015 268);
+  --ok: oklch(0.52 0.12 155);
+  --ok-soft: oklch(0.95 0.04 155);
+  --bad: oklch(0.55 0.17 22);
+  --bad-soft: oklch(0.95 0.03 20);
+  --warn: oklch(0.58 0.12 70);
+  --warn-soft: oklch(0.96 0.05 85);
+  --shadow-card: 0 18px 50px -20px oklch(0.45 0.12 266 / 0.18);
+  --node-shadow: oklch(0.45 0.12 266 / 0.12);
+}
+
+.dark {
+  --background: oklch(0.17 0.05 266);
+  --foreground: oklch(0.92 0.02 268);
+  --heading: oklch(0.97 0.01 268);
+  --card: oklch(0.22 0.06 266);
+  --primary: oklch(0.62 0.19 266);
+  --track: oklch(0.36 0.08 268);
+  --indigo: oklch(0.72 0.12 272);
+  --muted: oklch(0.26 0.05 266);
+  --muted-foreground: oklch(0.7 0.03 265);
+  --accent: oklch(0.29 0.07 266);
+  --border: oklch(0.3 0.05 266);
+  --ok: oklch(0.78 0.12 155);
+  --ok-soft: oklch(0.32 0.05 155);
+  --bad: oklch(0.78 0.12 22);
+  --bad-soft: oklch(0.32 0.06 20);
+  --warn: oklch(0.82 0.11 80);
+  --warn-soft: oklch(0.33 0.05 75);
+  --shadow-card: 0 18px 50px -24px oklch(0 0 0 / 0.6);
+  --node-shadow: oklch(0 0 0 / 0.35);
+}
+
+@utility card-soft {
+  background-color: var(--card);
+  border-radius: 22px;
+  box-shadow: var(--shadow-card);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  html,
+  body {
+    overflow-x: hidden;
+  }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+  }
+  h1,
+  h2,
+  h3 {
+    color: var(--color-heading);
+  }
 }
