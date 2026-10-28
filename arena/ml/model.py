@@ -12,6 +12,7 @@ import os
 
 LABELS = ("true", "false", "unsure")
 MODEL_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "model.json")
+PASS2_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "model_pass2.json")
 
 _STATUS_RANK = {"contradicted": 0, "unknown": 1, "supported": 2}
 
@@ -112,6 +113,95 @@ class LogReg:
         with open(path, encoding="utf-8") as f:
             d = json.load(f)
         return cls(d["weights"], d.get("l2", 1.0))
+
+
+class Boost:
+    """Gradient-boosted trees on one-hot features, false against the rest.
+
+    Each tree splits on whether a feature is present, so it learns
+    combinations ("never seen, above the all-time max, and near a change")
+    the linear model needs by hand. P(unsure) is the training base rate."""
+
+    def __init__(self, trees=None, base=0.0, p_unsure=0.02, rounds=150, depth=3,
+                 rate=0.1, l2=1.0, min_hess=4.0):
+        self.trees, self.base, self.p_unsure = trees or [], base, p_unsure
+        self.rounds, self.depth, self.rate, self.l2, self.min_hess = rounds, depth, rate, l2, min_hess
+
+    @staticmethod
+    def _leaf(tree, feats):
+        while "leaf" not in tree:
+            tree = tree["yes"] if tree["f"] in feats else tree["no"]
+        return tree["leaf"]
+
+    def margin(self, feats):
+        return self.base + sum(self._leaf(t, feats) for t in self.trees)
+
+    def probs(self, feats):
+        p = 1 / (1 + math.exp(-max(-30.0, min(30.0, self.margin(feats)))))
+        rest = 1 - self.p_unsure
+        return {"true": (1 - p) * rest, "false": p * rest, "unsure": self.p_unsure}
+
+    def _grow(self, X, idx, g, h, depth):
+        G, H = sum(g[i] for i in idx), sum(h[i] for i in idx)
+        leaf = {"leaf": -G / (H + self.l2) * self.rate}
+        if depth == 0 or H < 2 * self.min_hess:
+            return leaf
+        sg, sh = {}, {}
+        for i in idx:
+            for k in X[i]:
+                sg[k] = sg.get(k, 0.0) + g[i]
+                sh[k] = sh.get(k, 0.0) + h[i]
+        parent = G * G / (H + self.l2)
+        best, best_gain = None, 1e-6
+        for k, gy in sg.items():
+            hy = sh[k]
+            hn = H - hy
+            if hy < self.min_hess or hn < self.min_hess:
+                continue
+            gn = G - gy
+            gain = gy * gy / (hy + self.l2) + gn * gn / (hn + self.l2) - parent
+            if gain > best_gain:
+                best, best_gain = k, gain
+        if best is None:
+            return leaf
+        yes = [i for i in idx if best in X[i]]
+        no = [i for i in idx if best not in X[i]]
+        return {"f": best, "yes": self._grow(X, yes, g, h, depth - 1),
+                "no": self._grow(X, no, g, h, depth - 1)}
+
+    def fit(self, X, y):
+        t = [1.0 if lab == "false" else 0.0 for lab in y]
+        pos = min(max(sum(t), 1.0), len(t) - 1.0)
+        self.base = math.log(pos / (len(t) - pos))
+        self.p_unsure = max(0.001, sum(1 for lab in y if lab == "unsure") / len(y))
+        m = [self.base] * len(X)
+        idx = list(range(len(X)))
+        self.trees = []
+        for _ in range(self.rounds):
+            p = [1 / (1 + math.exp(-v)) for v in m]
+            g = [pi - ti for pi, ti in zip(p, t)]
+            h = [max(pi * (1 - pi), 1e-6) for pi in p]
+            tree = self._grow(X, idx, g, h, self.depth)
+            self.trees.append(tree)
+            for i in idx:
+                m[i] += self._leaf(tree, X[i])
+        return self
+
+    def save(self, path=MODEL_PATH, meta=None):
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump({"type": "boost", "labels": LABELS, "base": self.base,
+                       "p_unsure": self.p_unsure, "meta": meta or {}, "trees": self.trees}, f)
+
+
+def load_model(path=MODEL_PATH):
+    """The saved label model (logistic regression or boosted trees), or None."""
+    if not os.path.exists(path):
+        return None
+    with open(path, encoding="utf-8") as f:
+        d = json.load(f)
+    if d.get("type") == "boost":
+        return Boost(d["trees"], d["base"], d.get("p_unsure", 0.02))
+    return LogReg(d["weights"], d.get("l2", 1.0))
 
 
 def decide(probs, unsure_below=0.0):
