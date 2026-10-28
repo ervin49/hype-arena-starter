@@ -247,10 +247,17 @@ def has_negation(text):
 def _flags(text, start, end):
     before, after = text[max(0, start - 40):start], text[end:end + 30]
     approx = bool(_APPROX_BEFORE.search(before) or _APPROX_AFTER.search(after))
+    # "1 or 2 days" is a range; "€49 a month or €490 a year" is a choice, and
+    # both of its values read: "or" joins a range only after a bare number.
+    # "10 GB to 20 GB" is a range at both ends, but "from 10 GB to 20 GB" is a
+    # change, whose values read.
+    change = re.search(r"\bfrom\s+\S*\d[\d,.]*\s*[A-Za-z%]*\s+to\s+\S*$", before, re.I)
     rng = bool(re.search(r"\bbetween\s+$", before, re.I)
                or re.search(r"\bbetween\s+\S+\s+and\s+$", before, re.I)
-               or re.search(r"\d\s*(?:-|–|—|to|or)\s*\S*$", before)
-               or re.match(r"^\s*(?:-|–|—)\s*\S?\d|^\s*(?:to|or)\s+\S?\d", after)
+               or re.search(r"\d\s*(?:-|–|—|to)\s*\S*$", before)
+               or re.search(r"(?<![\w.,])\d[\d,.]*\s+or\s+\S*$", before)
+               or (re.search(r"\d[\d,.]*\s*[A-Za-z%]+\s+to\s+\S*$", before) and not change)
+               or re.match(r"^\s*(?:-|–|—)\s*\S?\d|^\s*to\s+\S?\d", after)
                or re.match(r"^\s*and\s+\S?\d", after) and re.search(r"\bbetween\s+\S*$", before, re.I))
     return approx, rng
 

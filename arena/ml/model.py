@@ -100,9 +100,12 @@ class LogReg:
                     ws[j] -= step * (gs[j] + reg * ws[j]) / n
         return self
 
+    calibration = None
+
     def save(self, path=MODEL_PATH, meta=None):
         with open(path, "w", encoding="utf-8") as f:
             json.dump({"labels": LABELS, "l2": self.l2, "meta": meta or {},
+                       "calibration": self.calibration.to_json() if self.calibration else None,
                        "weights": {k: [round(v, 6) for v in ws] for k, ws in self.w.items()}},
                       f, indent=0, sort_keys=True)
 
@@ -187,10 +190,60 @@ class Boost:
                 m[i] += self._leaf(tree, X[i])
         return self
 
+    calibration = None
+
     def save(self, path=MODEL_PATH, meta=None):
         with open(path, "w", encoding="utf-8") as f:
             json.dump({"type": "boost", "labels": LABELS, "base": self.base,
-                       "p_unsure": self.p_unsure, "meta": meta or {}, "trees": self.trees}, f)
+                       "p_unsure": self.p_unsure, "meta": meta or {},
+                       "calibration": self.calibration.to_json() if self.calibration else None,
+                       "trees": self.trees}, f)
+
+
+class Calibration:
+    """Platt scaling: P(really true) = sigmoid(a * logit(P(true)) + b),
+    fitted on out-of-fold predictions; P(unsure) stays its base rate.
+
+    Two parameters, so it cannot fit noise. An isotonic map was measured
+    too (eval/train_model.py) and was worse on 1,900 rows: noisier, and it
+    cost accuracy."""
+
+    def __init__(self, a=1.0, b=0.0, p_unsure=0.02):
+        self.a, self.b, self.p_unsure = a, b, p_unsure
+
+    @staticmethod
+    def _logit(p):
+        p = min(max(p, 1e-6), 1 - 1e-6)
+        return math.log(p / (1 - p))
+
+    @classmethod
+    def fit(cls, p_true, labels, steps=500, rate=0.5):
+        xs = [cls._logit(p) for p in p_true]
+        t = [1.0 if lab == "true" else 0.0 for lab in labels]
+        a, b, n = 1.0, 0.0, len(xs)
+        for _ in range(steps):
+            ga = gb = 0.0
+            for x, ti in zip(xs, t):
+                g = 1 / (1 + math.exp(-(a * x + b))) - ti
+                ga += g * x
+                gb += g
+            a -= rate * ga / n
+            b -= rate * gb / n
+        p_unsure = sum(1 for lab in labels if lab == "unsure") / max(1, n)
+        return cls(round(a, 6), round(b, 6), round(p_unsure, 6))
+
+    def apply(self, p_true):
+        """(P(really true), P(really false)) for a model P(true)."""
+        z = max(-30.0, min(30.0, self.a * self._logit(p_true) + self.b))
+        pt = (1 - self.p_unsure) / (1 + math.exp(-z))
+        return pt, 1 - self.p_unsure - pt
+
+    def to_json(self):
+        return {"method": "platt", "a": self.a, "b": self.b, "p_unsure": self.p_unsure}
+
+    @classmethod
+    def from_json(cls, d):
+        return cls(d["a"], d["b"], d.get("p_unsure", 0.02)) if d and d.get("method") == "platt" else None
 
 
 def load_model(path=MODEL_PATH):
@@ -200,16 +253,25 @@ def load_model(path=MODEL_PATH):
     with open(path, encoding="utf-8") as f:
         d = json.load(f)
     if d.get("type") == "boost":
-        return Boost(d["trees"], d["base"], d.get("p_unsure", 0.02))
-    return LogReg(d["weights"], d.get("l2", 1.0))
+        m = Boost(d["trees"], d["base"], d.get("p_unsure", 0.02))
+    else:
+        m = LogReg(d["weights"], d.get("l2", 1.0))
+    m.calibration = Calibration.from_json(d.get("calibration"))
+    return m
 
 
-def decide(probs, unsure_below=0.0):
+def decide(probs, unsure_below=0.0, calibration=None):
     """Label and confidence from the model's probabilities.
 
-    The label is the likeliest of true and false; it becomes unsure when
-    unsure is likelier still, or when the firm label's probability is below
-    unsure_below. A firm label's confidence is its probability, at least 0.5."""
+    With a calibration, the probabilities are first mapped to how often such
+    rows were really true or false out of fold, so a confidence of 0.9 means
+    right about 90% of the time. The label is the likelier of true and false;
+    it becomes unsure when unsure is likelier still, or when the firm label's
+    probability is below unsure_below. A firm confidence is at least 0.5."""
+    if calibration is not None:
+        cal = calibration.apply(probs["true"])
+        if cal:
+            probs = {"true": cal[0], "false": cal[1], "unsure": max(0.0, 1 - cal[0] - cal[1])}
     firm = max(("true", "false"), key=lambda k: probs[k])
     if probs["unsure"] > probs[firm] or probs[firm] < unsure_below:
         return "unsure", None
