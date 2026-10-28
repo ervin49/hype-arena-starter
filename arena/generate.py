@@ -353,17 +353,25 @@ def calibrate(candidates, calibration):
     return out
 
 
-def select_claims(practice_rows, lexicon, as_of, input_texts, n=1000, calibration="default"):
+def select_claims(practice_rows, lexicon, as_of, input_texts, n=1000, calibration="default", check_rows=None):
     """The n best candidates whose text validates, each fact in at most a few claims.
 
     calibration: "default" reads reports/claims_calibration.json (as the image ships it),
     None keeps every group with its heuristic score (what the backtest measures), or a dict.
+    check_rows: input rows the engine is confident are true, as practice rows (arena.controls).
+    A candidate that does not survive with them added to the evidence is vetoed: chosen only
+    when the others run out.
     """
     if calibration == "default":
         calibration = load_calibration()
     validator = Validator(practice_rows, lexicon, input_texts)
     raw = generate_candidates(practice_rows, lexicon, as_of)
     candidates = calibrate(raw, calibration)
+    vetoed = set()
+    if check_rows:
+        survive = {json.dumps(c["form"], sort_keys=True)
+                   for c in calibrate(generate_candidates(practice_rows + list(check_rows), lexicon, as_of), calibration)}
+        vetoed = {json.dumps(c["form"], sort_keys=True) for c in candidates} - survive
     # Highest confidence first; inside a confidence, the strongest evidence; types interleaved.
     by_type = defaultdict(list)
     for c in candidates:
@@ -378,12 +386,17 @@ def select_claims(practice_rows, lexicon, as_of, input_texts, n=1000, calibratio
     for c in raw:
         report[f"candidates.{c['type']}"] += 1
     report["dropped_by_calibration"] = len(raw) - len(candidates)
+    if check_rows:
+        report["vetoed_by_input"] = len(vetoed)
     chosen, forms, texts, per_fact = [], set(), set(), Counter()
-    for limit in (MAX_CLAIMS_PER_FACT, MAX_CLAIMS_PER_FACT * 3):
+    passes = [(limit, False) for limit in (MAX_CLAIMS_PER_FACT, MAX_CLAIMS_PER_FACT * 3)]
+    for limit, allow_vetoed in passes + ([(MAX_CLAIMS_PER_FACT * 3, True)] if vetoed else []):
         for _, _, t, c in order:
             if len(chosen) >= n:
                 break
             key = json.dumps(c["form"], sort_keys=True)
+            if key in vetoed and not allow_vetoed:
+                continue
             if key in forms or any(per_fact[f] >= (MAX_CLAIMS_PER_EVENT if f[0] == "@event" else limit) for f in c["facts"]):
                 continue
             for text in c["texts"]:
@@ -396,6 +409,8 @@ def select_claims(practice_rows, lexicon, as_of, input_texts, n=1000, calibratio
             else:
                 continue
             chosen.append(claim)
+            if key in vetoed:
+                report["vetoed_but_needed"] += 1
             forms.add(key)
             texts.add(text.lower())
             for f in c["facts"]:

@@ -4,7 +4,9 @@ Order of work, so that a complete table is on disk as early as possible:
 1. read the input, generate and validate the claims;
 2. write a first complete table: the claims, and every unlabelled row unsure;
 3. classify the unlabelled rows with the engine, rewriting the table now and then;
-4. write the final table. Every write is atomic (arena.io.write_output).
+4. the controls (arena.controls): lower the confidence as far as a held-out control group
+   shows it is over-stated, and veto claims that rows the engine is sure of contradict;
+5. write the final table. Every write is atomic (arena.io.write_output).
 """
 import os
 import signal
@@ -82,6 +84,56 @@ def deadline_from_env():
         return None
 
 
+def run_controls(pipeline, rows, practice, all_practice, lexicon, batch, predictions, claims, claims_target, deadline):
+    """The controls of arena.controls, each on its own: one that fails or runs out of time is
+    skipped and leaves the table as it was. Returns the claims to write."""
+    from arena import controls
+    from arena.generate import select_claims
+
+    def time_left():
+        return deadline is None or time.time() < deadline
+
+    control = controls.load_control()
+    if control is None:
+        log("confidence control: no control model; confidence unchanged")
+    elif time_left():
+        try:
+            ids, m1, m2 = control
+            hidden, practice_out, group, _ = controls.control_input(rows, practice, ids)
+            members = set(group)
+            answers = pipeline.engine.label_rows(hidden, practice_out, lexicon, models=(m1, m2))
+            truth = {r["id"]: r["label"] for r in rows if r["id"] in members}
+            factors, report = controls.measure([p for p in answers if p.get("id") in members], truth)
+            controls.apply(predictions, factors)
+            log(f"confidence control: {len(members)} held-out rows; {report}")
+            labels = [p["label"] for p in predictions.values() if p["label"] in ("true", "false")]
+            if labels and "false_share" in report:
+                share = sum(lab == "false" for lab in labels) / len(labels)
+                log(f"distribution monitor: false share {share:.3f} on the input, "
+                    f"{report['false_share']:.3f} on the control group")
+        except Stop:
+            raise
+        except Exception:
+            log("confidence control failed; confidence unchanged")
+            traceback.print_exc()
+    if time_left():
+        try:
+            check = controls.check_rows(rows, batch)
+            checked, report = select_claims(all_practice, lexicon, AS_OF, [r["text"] for r in rows],
+                                            claims_target, check_rows=check)
+            log(f"claim control: {len(check)} confident input rows as evidence; vetoed "
+                f"{report.get('vetoed_by_input', 0)} candidates, {report.get('vetoed_but_needed', 0)} still needed")
+            if len(checked) >= len(claims):
+                return checked
+            log("claim control: fewer claims than before; keeping the first set")
+        except Stop:
+            raise
+        except Exception:
+            log("claim control failed; the first claims stand")
+            traceback.print_exc()
+    return claims
+
+
 class Stop(Exception):
     pass
 
@@ -122,6 +174,7 @@ def run(universe_dir, output_dir, practice_path, engine=None, deadline=None, cla
         predictions[p["id"]] = {"id": p["id"], "label": p.get("label") or "unsure", "confidence": p.get("confidence")}
 
     errors, done, last_write = 0, 0, time.time()
+    batch = None
     # The batch first: it sees the whole input. If it fails, the same engine row by row.
     try:
         batch = pipeline.label_all(rows) if deadline is None or time.time() < deadline else None
@@ -157,6 +210,13 @@ def run(universe_dir, output_dir, practice_path, engine=None, deadline=None, cla
         log("SIGTERM: writing what is classified")
         status = 0
     write_output(predictions.values(), claims, out)
+    if batch is not None:
+        try:
+            claims = run_controls(pipeline, rows, practice, all_practice, lexicon, batch, predictions, claims,
+                                  claims_target, deadline)
+            write_output(predictions.values(), claims, out)
+        except Stop:
+            log("SIGTERM during the controls: the table without them stands")
     counts = {}
     for p in predictions.values():
         counts[p["label"]] = counts.get(p["label"], 0) + 1
