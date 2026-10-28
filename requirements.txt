@@ -1,0 +1,2 @@
+# Runtime of the batch runner (the Docker image). Only C edits this file.
+jsonschema==4.23.0
