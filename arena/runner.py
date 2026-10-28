@@ -87,10 +87,14 @@ def run(universe_dir, output_dir, practice_path, engine=None, deadline=None, cla
     rows = read_rows(os.path.join(universe_dir, "universe.csv"))
     lexicon = read_lexicon(os.path.join(universe_dir, "lexicon.json"))
     labelled, unlabelled = split_rows(rows)
-    practice = known_practice(read_rows(practice_path, require_form=True), rows)
-    log(f"input: {len(rows)} rows, {len(unlabelled)} unlabelled; practice with forms: {len(practice)}")
+    all_practice = read_rows(practice_path, require_form=True)
+    practice = known_practice(all_practice, rows)
+    log(f"input: {len(rows)} rows, {len(unlabelled)} unlabelled; practice with forms: "
+        f"{len(all_practice)}, of which the engine sees {len(practice)}")
 
-    claims, report = select_claims(practice, lexicon, AS_OF, [r["text"] for r in rows], claims_target)
+    # Claims come from the whole practice file, as in the real run where every practice
+    # row is labelled; the engine sees only the labels the input shows (no leakage into labels).
+    claims, report = select_claims(all_practice, lexicon, AS_OF, [r["text"] for r in rows], claims_target)
     log(f"claims: {len(claims)} selected; {report}")
     predictions = {r["id"]: {"id": r["id"], "label": "unsure", "confidence": None} for r in unlabelled}
     write_output(predictions.values(), claims, out)

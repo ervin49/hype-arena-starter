@@ -104,7 +104,8 @@ export function DetailPanel({ row, pred, rowsById }: { row?: InputRow; pred?: Pr
         {pred.evidence_ids.length === 0 && <p className="mt-1 text-xs text-muted-foreground">No evidence cited.</p>}
         <div className="mt-2 space-y-2">
           {pred.evidence_ids.map((id) => {
-            const src = rowsById.get(id);
+            // A row of the upload, or a practice row the API sent with its text.
+            const src = rowsById.get(id) ?? pred.evidence?.find((e) => e.id === id);
             return (
               <div key={id} className="rounded-2xl bg-muted p-3 text-xs">
                 <div className="flex items-center justify-between gap-2">
@@ -116,7 +117,7 @@ export function DetailPanel({ row, pred, rowsById }: { row?: InputRow; pred?: Pr
                     </span>
                   )}
                 </div>
-                <p className="mt-1 text-muted-foreground">{src ? src.text : "Source row not in the uploaded file."}</p>
+                <p className="mt-1 text-muted-foreground">{src ? src.text : "The API sent no text for this source row."}</p>
               </div>
             );
           })}

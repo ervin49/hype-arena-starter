@@ -15,8 +15,9 @@ from typing import Literal
 from fastapi import FastAPI, File, HTTPException, UploadFile
 from pydantic import BaseModel, Field, field_validator
 
+from arena.generate import select_claims
 from arena.io import InputError, parse_rows, read_lexicon, read_rows
-from arena.runner import HERE, Pipeline
+from arena.runner import AS_OF, CLAIMS, HERE, Pipeline
 
 MAX_ROWS = 5000
 MAX_UPLOAD_BYTES = 5 * 1024 * 1024
@@ -50,6 +51,9 @@ class State:
     pipeline = None
     demo = False
     error = None
+    sources = {}        # practice row id -> {id, text, date, label}, to show evidence
+    claims = None       # the claims the batch run writes, built once at startup
+    claims_error = None
 
 
 def _load(state, engine, demo):
@@ -60,11 +64,30 @@ def _load(state, engine, demo):
         from tests.fixtures_c.fake_engine import ENGINE
         engine = ENGINE
     state.demo = demo
+    state.sources = {r["id"]: {k: r[k] for k in ("id", "text", "date", "label")} for r in practice}
+    try:
+        claims, report = select_claims(practice, lexicon, AS_OF, [r["text"] for r in practice], CLAIMS)
+        state.claims = {"claims": [_public_claim(c, state.sources) for c in claims],
+                        "report": report, "as_of": AS_OF}
+    except Exception as e:
+        traceback.print_exc()
+        state.claims_error = f"claim generator failed: {type(e).__name__}: {e}"
     try:
         state.pipeline = Pipeline(practice, lexicon, engine)
     except Exception as e:
         traceback.print_exc()
         state.error = f"engine unavailable: {type(e).__name__}: {e}"
+
+
+def _evidence(ids, sources):
+    """The practice rows behind a verdict or a claim, for display."""
+    return [sources[i] for i in ids if i in sources]
+
+
+def _public_claim(c, sources):
+    return {"id": c["id"], "type": c["type"], "text": c["text"], "form": c["form"],
+            "confidence": c["confidence"], "evidence_ids": c["evidence_ids"],
+            "evidence": _evidence(c["evidence_ids"], sources)}
 
 
 def create_app(engine=None, demo=None):
@@ -93,11 +116,14 @@ def create_app(engine=None, demo=None):
             if row["label"]:
                 continue
             try:
-                out.append(p.predict(row))
+                pred = p.predict(row)
+                pred["evidence"] = _evidence(pred.get("evidence_ids") or [], state.sources)
+                out.append(pred)
             except Exception as e:
                 traceback.print_exc()
                 out.append({"id": row["id"], "label": "unsure", "confidence": None, "evidence_ids": [],
                             "reason": "The engine failed on this row.", "error": f"{type(e).__name__}: {e}",
+                            "evidence": [],
                             "extraction": {"facts": [], "complete": False, "issues": ["engine error"]}})
         return out
 
@@ -113,6 +139,13 @@ def create_app(engine=None, demo=None):
         if state.pipeline is None:
             raise HTTPException(503, state.error or "engine not loaded")
         return {"status": "ok", "demo_mode": state.demo}
+
+    @app.get("/claims")
+    def claims():
+        """The claims the batch run writes for this practice data, with their evidence."""
+        if state.claims is None:
+            raise HTTPException(503, state.claims_error or "claims not built")
+        return {**state.claims, "demo_mode": state.demo}
 
     @app.post("/predict")
     def predict(request: PredictRequest):

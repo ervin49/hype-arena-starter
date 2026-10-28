@@ -1,10 +1,12 @@
 import type { RunRecord } from "@/components/run/RunProvider";
 import type { NodeId } from "./architecture";
+import type { ClaimsResponse } from "./types";
 
 // The steps of one live run, in the order data moves through the system, each
 // described with numbers from that run's response. A live run only labels
-// rows; the claim generator, validation and output.csv belong to the batch
-// runner and are marked as skipped.
+// rows. The claims are built once when the API starts, as the batch runner
+// builds them; with the API's claim report the generator, validation and
+// output.csv play too, otherwise they are marked as skipped.
 
 export interface RunStep {
   id: string;
@@ -14,13 +16,29 @@ export interface RunStep {
   edges: [NodeId, NodeId][];
 }
 
-export const SKIPPED_NODES: NodeId[] = ["G", "Q", "O"];
-export const SKIPPED_EDGES: [NodeId, NodeId][] = [
+const CLAIM_NODES: NodeId[] = ["G", "Q", "O"];
+const CLAIM_EDGES: [NodeId, NodeId][] = [
   ["K", "G"],
   ["G", "Q"],
   ["Q", "O"],
   ["C", "O"],
 ];
+
+// Claims count only when the API built some; this frontend's own demo mode has none.
+export const hasClaims = (claims: ClaimsResponse | null | undefined): claims is ClaimsResponse =>
+  !!claims && claims.claims.length > 0;
+
+export function skipped(claims: ClaimsResponse | null | undefined): { nodes: NodeId[]; edges: [NodeId, NodeId][] } {
+  return hasClaims(claims) ? { nodes: [], edges: [] } : { nodes: CLAIM_NODES, edges: CLAIM_EDGES };
+}
+
+const TYPE_ORDER = ["fact", "compare", "change", "at_event", "relation"];
+
+function typeCounts(report: Record<string, number>, prefix: string): string {
+  return TYPE_ORDER.filter((t) => report[`${prefix}.${t}`])
+    .map((t) => `${n(report[`${prefix}.${t}`])} ${t.replace("_", " ")}`)
+    .join(", ");
+}
 
 const n = (x: number) => x.toLocaleString("en-US");
 const plural = (x: number, one: string, many = `${one}s`) => `${n(x)} ${x === 1 ? one : many}`;
@@ -79,11 +97,54 @@ export function runStats(run: RunRecord): RunStats {
   };
 }
 
-export function runSteps(run: RunRecord): RunStep[] {
+function claimSteps(claims: ClaimsResponse): { build: RunStep[]; write: RunStep } {
+  const r = claims.report;
+  const rejected = Object.entries(r)
+    .filter(([k]) => k.startsWith("rejected."))
+    .reduce((a, [, x]) => a + x, 0);
+  return {
+    build: [
+      {
+        id: "generate",
+        title: "Template generator",
+        detail:
+          `${plural(r.candidates ?? 0, "candidate claim")} from the evidence base (${typeCounts(r, "candidates")}), ` +
+          "built once at startup.",
+        nodes: ["G"],
+        edges: [["K", "G"]],
+      },
+      {
+        id: "validate",
+        title: "Validation",
+        detail:
+          `${n(r.selected ?? claims.claims.length)} kept, the best supported: each passes the schema, the lexicon, ` +
+          `the claim-form rules and its evidence` +
+          (rejected ? `; ${plural(rejected, "wording")} rejected.` : "."),
+        nodes: ["Q"],
+        edges: [["G", "Q"]],
+      },
+    ],
+    write: {
+      id: "output",
+      title: "output.csv",
+      detail:
+        `In the batch run: a label for every unlabelled row, and the ${n(claims.claims.length)} claims ` +
+        `(${typeCounts(r, "selected")}), written atomically.`,
+      nodes: ["O"],
+      edges: [
+        ["Q", "O"],
+        ["C", "O"],
+      ],
+    },
+  };
+}
+
+export function runSteps(run: RunRecord, claims?: ClaimsResponse | null): RunStep[] {
   const s = runStats(run);
   const demo = run.response.demo_mode;
   const v = s.verdicts;
-  return [
+  const c = hasClaims(claims) ? claimSteps(claims) : null;
+  const steps: RunStep[] = [
     {
       id: "load",
       title: "Practice rows & lexicon",
@@ -102,6 +163,7 @@ export function runSteps(run: RunRecord): RunStep[] {
       nodes: ["K"],
       edges: [["P", "K"]],
     },
+    ...(c ? c.build : []),
     {
       id: "upload",
       title: "Upload",
@@ -152,13 +214,20 @@ export function runSteps(run: RunRecord): RunStep[] {
       edges: [["C", "F"]],
     },
   ];
+  return c ? [...steps, c.write] : steps;
 }
 
 // Short figure printed under each node once its step has played.
-export function nodeBadges(run: RunRecord): Partial<Record<NodeId, string>> {
+export function nodeBadges(run: RunRecord, claims?: ClaimsResponse | null): Partial<Record<NodeId, string>> {
   const s = runStats(run);
   const demo = run.response.demo_mode;
+  const r = hasClaims(claims) ? claims.report : null;
   return {
+    ...(r && {
+      G: plural(r.candidates ?? 0, "candidate"),
+      Q: `${n(r.selected ?? 0)} valid`,
+      O: `${n(r.selected ?? 0)} claims + labels`,
+    }),
     P: demo ? "not used" : "at startup",
     L: demo ? "not used" : "at startup",
     K: demo ? "not used" : "at startup",

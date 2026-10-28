@@ -6,7 +6,9 @@ import { AlertTriangle, CheckCircle2, Circle, FastForward, Loader2, Play, Rotate
 import { useRun, type RunRecord } from "@/components/run/RunProvider";
 import { ArchitectureLegend } from "@/components/dashboard/ArchitectureDiagram";
 import { ARIA_LABEL, EDGES, NODES, NODE_H, STROKE, edgeKey, edgePath, nodeW, type Flow, type NodeId } from "@/lib/architecture";
-import { SKIPPED_EDGES, SKIPPED_NODES, nodeBadges, runSteps, type RunStep } from "@/lib/run-steps";
+import { getClaims } from "@/lib/api";
+import { hasClaims, nodeBadges, runSteps, skipped, type RunStep } from "@/lib/run-steps";
+import type { ClaimsResponse } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 const STEP_MS = 1300;
@@ -27,8 +29,14 @@ type NodeState = "preview" | "hidden" | "current" | "done" | "skipped" | "runnin
 
 export function RunReplay() {
   const { last, running, restored, error, run } = useRun();
-  const steps = useMemo(() => (last ? runSteps(last) : []), [last]);
-  const badges = useMemo(() => (last ? nodeBadges(last) : {}), [last]);
+  // The claims the API built at startup; without them the claim path stays skipped.
+  const [claims, setClaims] = useState<ClaimsResponse | null>(null);
+  useEffect(() => {
+    getClaims().then(setClaims, () => setClaims(null));
+  }, []);
+  const steps = useMemo(() => (last ? runSteps(last, claims) : []), [last, claims]);
+  const badges = useMemo(() => (last ? nodeBadges(last, claims) : {}), [last, claims]);
+  const skippedPath = useMemo(() => skipped(claims), [claims]);
   const [played, setPlayed] = useState(0);
   const [playing, setPlaying] = useState(false);
   // Whether the lines of the current step have finished drawing.
@@ -80,13 +88,13 @@ export function RunReplay() {
   );
   const currentEdges = new Set(current?.edges.map(([a, b]) => edgeKey(a, b)) ?? []);
   const currentReady = !current || current.edges.length === 0 || arrived;
-  const skippedEdges = new Set(SKIPPED_EDGES.map(([a, b]) => edgeKey(a, b)));
+  const skippedEdges = new Set(skippedPath.edges.map(([a, b]) => edgeKey(a, b)));
   const runningEdges = new Set(RUNNING_EDGES.map(([a, b]) => edgeKey(a, b)));
 
   const nodeState = (id: NodeId): NodeState => {
     if (preview) return "preview";
     if (isRunning) return RUNNING_NODES.includes(id) ? "running" : "hidden";
-    if (SKIPPED_NODES.includes(id)) return finished ? "skipped" : "hidden";
+    if (skippedPath.nodes.includes(id)) return finished ? "skipped" : "hidden";
     if (current?.nodes.includes(id)) return currentReady ? "current" : reachedNodes.has(id) ? "done" : "hidden";
     if (reachedNodes.has(id)) return "done";
     return "hidden";
@@ -269,7 +277,7 @@ export function RunReplay() {
           <ArchitectureLegend />
         </div>
 
-        <Timeline steps={steps} played={isRunning ? 0 : played} finished={finished} running={running} hasRun={last !== null} />
+        <Timeline steps={steps} played={isRunning ? 0 : played} finished={finished} running={running} hasRun={last !== null} claims={hasClaims(claims)} />
       </div>
     </div>
   );
@@ -344,12 +352,13 @@ function RunHeader({ last, running, playing, done, onReplay, onSkip, onPick }: {
 }
 
 // Lists only the steps reached so far; each one rises in as the replay gets to it.
-function Timeline({ steps, played, finished, running, hasRun }: {
+function Timeline({ steps, played, finished, running, hasRun, claims }: {
   steps: RunStep[];
   played: number;
   finished: boolean;
   running: { file: string } | null;
   hasRun: boolean;
+  claims: boolean;
 }) {
   return (
     <div className="card-soft p-5 sm:p-6">
@@ -382,7 +391,19 @@ function Timeline({ steps, played, finished, running, hasRun }: {
               </li>
             );
           })}
-          {finished && (
+          {finished && claims && (
+            <li className="flex animate-rise-in gap-3">
+              <Circle className="mt-0.5 size-5 shrink-0 text-muted-foreground" />
+              <p className="text-sm text-muted-foreground">
+                The claims are listed on the{" "}
+                <Link href="/claims" className="font-semibold text-primary hover:underline">
+                  Claims
+                </Link>{" "}
+                page, each with its evidence.
+              </p>
+            </li>
+          )}
+          {finished && !claims && (
             <li className="flex animate-rise-in gap-3 opacity-60">
               <Circle className="mt-0.5 size-5 shrink-0 text-muted-foreground" strokeDasharray="3 3" />
               <p className="text-sm text-muted-foreground">

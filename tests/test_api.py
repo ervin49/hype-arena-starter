@@ -98,3 +98,33 @@ def test_demo_mode_is_explicit():
     with client(demo=True) as c:
         assert c.get("/health").json()["demo_mode"] is True
         assert c.post("/predict", json={"rows": [ROW]}).json()["demo_mode"] is True
+
+
+def test_evidence_comes_with_its_text():
+    def classify(row, extraction, check):
+        return {"id": row["id"], "label": "true", "confidence": 0.9, "evidence_ids": ["p-1560", "nope"],
+                "reason": "Synthetic fixture."}
+
+    with client(engine=types.SimpleNamespace(**{**vars(ENGINE), "classify": classify}), demo=False) as c:
+        [p] = c.post("/predict", json={"rows": [ROW]}).json()["predictions"]
+    assert [e["id"] for e in p["evidence"]] == ["p-1560"]  # unknown ids are left out
+    assert p["evidence"][0]["text"].startswith("Hooly AI Pro costs €59 per month")
+    assert set(p["evidence"][0]) == {"id", "text", "date", "label"}
+
+
+def test_claims(api):
+    body = api.get("/claims").json()
+    assert body["demo_mode"] is False and body["as_of"] == "2026-10-29"
+    assert len(body["claims"]) == 1000 and body["report"]["selected"] == 1000
+    c = body["claims"][0]
+    assert set(c) == {"id", "type", "text", "form", "confidence", "evidence_ids", "evidence"}
+    assert c["evidence"] and all(e["label"] == "true" for e in c["evidence"])
+
+
+def test_claims_do_not_need_the_engine():
+    def broken(rows, lexicon):
+        raise ImportError("No module named 'arena.truth'")
+
+    with client(engine=types.SimpleNamespace(**{**vars(ENGINE), "build_kb": broken}), demo=False) as c:
+        assert c.get("/health").status_code == 503
+        assert len(c.get("/claims").json()["claims"]) == 1000

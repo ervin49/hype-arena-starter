@@ -2,13 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, ListChecks, Network, Upload } from "lucide-react";
+import { LayoutDashboard, ListChecks, Network, Sparkles, Upload } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const ITEMS = [
   { icon: LayoutDashboard, label: "Dashboard", href: "/", page: "/" },
   { icon: Upload, label: "Upload", href: "/#upload", page: null },
   { icon: ListChecks, label: "Results", href: "/#results", page: null },
+  { icon: Sparkles, label: "Claims", href: "/claims", page: "/claims" },
   { icon: Network, label: "Architecture", href: "/architecture", page: "/architecture" },
 ];
 
