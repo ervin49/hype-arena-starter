@@ -1,4 +1,4 @@
-type Flow = "gen" | "cls" | "both" | "ui";
+type Flow = "cls" | "gen" | "ui" | "both";
 
 interface Node {
   id: string;
@@ -42,6 +42,13 @@ const EDGES: [string, string, Flow][] = [
   ["C", "F", "ui"],
 ];
 
+const STROKE: Record<Flow, string> = {
+  cls: "var(--primary)",
+  gen: "var(--indigo)",
+  ui: "var(--primary)",
+  both: "var(--muted-foreground)",
+};
+
 const byId = Object.fromEntries(NODES.map((n) => [n.id, n]));
 const w = (n: Node) => n.w ?? W;
 
@@ -57,55 +64,43 @@ function path(a: Node, b: Node): string {
     return `M ${x1} ${y1} C ${x1} ${y2}, ${x1} ${y2}, ${x2} ${y2}`;
   }
   if (a.id === "K" && b.id === "V") {
-    const x1 = a.x + w(a) * 0.7, y1 = a.y + H, x2 = b.x + w(b) * 0.3, y2 = b.y;
-    return `M ${x1} ${y1} C ${x1} ${y1 + 50}, ${x2} ${y2 - 50}, ${x2} ${y2}`;
+    const x1 = a.x + w(a), y1 = a.y + H - 12, x2 = b.x + w(b) / 2, y2 = b.y;
+    return `M ${x1} ${y1} C ${x2} ${y1}, ${x2} ${y1}, ${x2} ${y2}`;
   }
   const x1 = a.x + w(a), y1 = a.y + H / 2, x2 = b.x, y2 = b.y + H / 2;
   const dx = Math.max(24, (x2 - x1) / 2);
   return `M ${x1} ${y1} C ${x1 + dx} ${y1}, ${x2 - dx} ${y2}, ${x2} ${y2}`;
 }
 
-// Literal class names so Tailwind picks them up.
-const FLOW_CLASS: Record<Flow, { box: string; edge: string; head: string }> = {
-  both: { box: "fill-surface stroke-line", edge: "stroke-muted", head: "fill-muted" },
-  cls: { box: "fill-cls-soft stroke-cls", edge: "stroke-cls", head: "fill-cls" },
-  gen: { box: "fill-gen-soft stroke-gen", edge: "stroke-gen", head: "fill-gen" },
-  ui: { box: "fill-ui-soft stroke-ui", edge: "stroke-ui", head: "fill-ui" },
-};
-
-export default function ArchitectureDiagram() {
+export function ArchitectureDiagram() {
   return (
-    <figure className="w-full">
-      <div className="overflow-x-auto">
+    <div id="architecture" className="card-soft scroll-mt-6 p-5 sm:p-6">
+      <h2 className="text-lg font-bold">Architecture</h2>
+      <p className="mt-1 text-sm text-muted-foreground">
+        Two flows share one evidence base: labelling rows at their date, and writing new claims. No LLM runs at runtime.
+      </p>
+      <div className="mt-4 overflow-x-auto">
         <svg
           viewBox="0 0 1040 400"
-          className="min-w-[720px] w-full h-auto"
+          className="h-auto w-full min-w-[720px]"
           role="img"
           aria-label="Architecture: practice rows and lexicon build an evidence base; new rows are extracted into facts, checked at their date and labelled; a template generator writes claims that are validated; both go to output.csv; the frontend sends rows to extraction and shows verdicts."
         >
           <defs>
-            {(["both", "cls", "gen", "ui"] as Flow[]).map((f) => (
-              <marker
-                key={f}
-                id={`arrow-${f}`}
-                viewBox="0 0 10 10"
-                refX="9"
-                refY="5"
-                markerWidth="7"
-                markerHeight="7"
-                orient="auto-start-reverse"
-              >
-                <path d="M0,0 L10,5 L0,10 z" className={FLOW_CLASS[f].head} />
+            {(Object.keys(STROKE) as Flow[]).map((f) => (
+              <marker key={f} id={`arrow-${f}`} viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M0,0 L10,5 L0,10 z" fill={STROKE[f]} />
               </marker>
             ))}
           </defs>
           {EDGES.map(([a, b, f]) => (
             <path
               key={a + b}
-              d={path(byId[a], byId[b])}
-              className={`${FLOW_CLASS[f].edge} fill-none`}
-              strokeWidth={1.6}
-              strokeDasharray={f === "ui" ? "5 4" : undefined}
+              d={path(byId[a]!, byId[b]!)}
+              fill="none"
+              stroke={STROKE[f]}
+              strokeWidth={1.8}
+              strokeDasharray={f === "ui" ? "6 5" : undefined}
               markerEnd={`url(#arrow-${f})`}
             />
           ))}
@@ -116,35 +111,29 @@ export default function ArchitectureDiagram() {
                 y={n.y}
                 width={w(n)}
                 height={H}
-                rx={10}
-                className={FLOW_CLASS[n.flow].box}
-                strokeWidth={1.4}
+                rx={14}
+                fill={n.flow === "both" ? "var(--card)" : "var(--accent)"}
+                stroke={STROKE[n.flow]}
+                strokeWidth={1.5}
+                strokeDasharray={n.flow === "ui" ? "5 4" : undefined}
+                style={{ filter: "drop-shadow(0 6px 12px var(--node-shadow))" }}
               />
-              <text x={n.x + 14} y={n.y + 24} className="fill-fg text-[14px] font-semibold">
+              <text x={n.x + 14} y={n.y + 24} fontSize={14} fontWeight={600} fill="var(--heading)">
                 {n.title}
               </text>
-              <text x={n.x + 14} y={n.y + 43} className="fill-muted text-[12px]">
+              <text x={n.x + 14} y={n.y + 43} fontSize={12} fill="var(--muted-foreground)">
                 {n.sub}
               </text>
             </g>
           ))}
         </svg>
       </div>
-      <figcaption className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-xs text-muted">
-        <Legend cls="bg-cls" label="Labelling rows" />
-        <Legend cls="bg-gen" label="Writing new claims" />
-        <Legend cls="bg-ui" label="This page (live)" />
-        <Legend cls="bg-muted" label="Shared" />
-      </figcaption>
-    </figure>
-  );
-}
-
-function Legend({ cls, label }: { cls: string; label: string }) {
-  return (
-    <span className="inline-flex items-center gap-1.5">
-      <span className={`h-2.5 w-2.5 rounded-full ${cls}`} />
-      {label}
-    </span>
+      <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-xs text-muted-foreground">
+        <span className="flex items-center gap-2"><span className="h-0.5 w-5 bg-primary" />Labelling rows</span>
+        <span className="flex items-center gap-2"><span className="h-0.5 w-5 bg-indigo" />Writing new claims</span>
+        <span className="flex items-center gap-2"><span className="w-5 border-t-2 border-dashed border-primary" />This page (live)</span>
+        <span className="flex items-center gap-2"><span className="h-0.5 w-5 bg-muted-foreground" />Shared</span>
+      </div>
+    </div>
   );
 }
