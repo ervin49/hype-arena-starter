@@ -303,9 +303,12 @@ def extract(row, lexicon, extractor, context=None, remember_row=True):
     near = set(_tokens(text))
     cands = _value_candidates(lex, text, spans, mentions, ex.name_values)
     for ci, (span, val) in enumerate(cands):
-        if span.get("approx") or span.get("range"):
+        if span.get("range"):
             issues.append(f"approximate or range value: {span['raw']}")
             continue
+        if span.get("approx"):
+            # "about 2,600" states 2,600, as the forms write it; the issue keeps the doubt
+            issues.append(f"approx: {span['raw']}")
         feats = _value_feats(text, span, val["kind"], val)
         none_cls = NONE + val["kind"]
         n_none = ex.nb.cc[none_cls] + 1

@@ -142,6 +142,14 @@ class ContractTest(unittest.TestCase):
         self.assertTrue(denied["facts"][0]["negated"])
         self.assertEqual(denied["facts"][0]["value"], said["facts"][0]["value"])
 
+    def test_extract_approximate_value(self):
+        row = lambda i, t: {"id": i, "text": t, "date": "2026-10-20", "label": ""}
+        exact = extract(row("t-8", "Hooly Gmail has 50,000 users."), self.lex, self.ex, context=[])
+        approx = extract(row("t-9", "Hooly Gmail has roughly 50,000 users."), self.lex, self.ex, context=[])
+        self.assertEqual(approx["facts"], exact["facts"])
+        self.assertIn("approx: 50,000 users", approx["issues"])
+        self.assertFalse(any(i.startswith("approx") for i in exact["issues"]))
+
     def test_classify_shape(self):
         check = lambda fact, date: check_fact(fact, date, self.kb)
         for text in ("Hooly AI Pro costs €59 per month.", "The weather is nice."):
