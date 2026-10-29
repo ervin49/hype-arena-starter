@@ -87,8 +87,8 @@ def test_one_failing_row_does_not_stop_the_run(universe):
     engine = types.SimpleNamespace(**{**vars(ENGINE), "classify": classify})
     assert runner.run(str(universe / "universe"), str(universe / "output"), PRACTICE, engine=engine) == 0
     by_id = {r["id"]: r for r in read_output(universe) if not r["type"]}
-    assert by_id["p-1"]["label"] == "unsure"
-    assert by_id["p-11"]["label"] == "unsure" and by_id["p-6"]["label"] == "true"
+    assert (by_id["p-1"]["label"], by_id["p-1"]["confidence"]) == ("true", "0.8")  # an error: true at the base rate
+    assert by_id["p-11"]["label"] == "unsure" and by_id["p-6"]["label"] == "true"  # the others as the engine said
 
 
 def test_deadline_in_the_past_still_writes_a_table(universe):

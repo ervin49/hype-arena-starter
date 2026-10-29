@@ -303,9 +303,12 @@ def extract(row, lexicon, extractor, context=None, remember_row=True):
     near = set(_tokens(text))
     cands = _value_candidates(lex, text, spans, mentions, ex.name_values)
     for ci, (span, val) in enumerate(cands):
-        if span.get("approx") or span.get("range"):
+        if span.get("range"):
             issues.append(f"approximate or range value: {span['raw']}")
             continue
+        if span.get("approx"):
+            # "about 2,600" states 2,600, as the forms write it; the issue keeps the doubt
+            issues.append(f"approx: {span['raw']}")
         feats = _value_feats(text, span, val["kind"], val)
         none_cls = NONE + val["kind"]
         n_none = ex.nb.cc[none_cls] + 1
@@ -342,9 +345,11 @@ def extract(row, lexicon, extractor, context=None, remember_row=True):
         v = dict(val)
         if v["kind"] == "name":
             v["value"] = lex.resolve_value_name(v["value"]) or v["value"]
+        fact = {"subject": subject, "attribute": a, "value": v}
         if span.get("negated") and v["kind"] != "name":
             issues.append(f"negated value: {span['raw']}")
-        facts.append({"subject": subject, "attribute": a, "value": v})
+            fact["negated"] = True      # "does not cost €59": the check is inverted
+        facts.append(fact)
         scores.append(margin)
         chosen.append((span["start"], span["end"]))
         used_sa.add((subject, a))

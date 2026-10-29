@@ -1,7 +1,7 @@
 # Demo script — Git Happens, Temporal Truth Engine
 
 Target length: 2:30 (hard limit 3:00). One take, screen recording with voice.
-Owner: B. Rehearse on `test.csv`; on Thursday, run `sample/sample.csv` live.
+Owner: B. Rehearse on `frontend/docs/test.csv` (or `data/test/demo.csv`, which has an answer key); on Thursday, run `sample/sample.csv` live.
 
 ## Before recording
 
@@ -56,7 +56,7 @@ Then: Dashboard. Show the KPI cards and the verdicts table.
 
 ## 1:20–1:45 — One sentence, two dates
 
-On screen: the dashboard with `test.csv` loaded (upload it after the sample), rows `s-3` and `s-4`.
+On screen: the dashboard with `frontend/docs/test.csv` loaded (upload it after the sample), rows `s-3` and `s-4`.
 
 > The same sentence, "Hooly Cloud covers 8 regions", is true in August and false in January.
 
