@@ -1,0 +1,151 @@
+id,label,kind,fact,why,source_row,text,date
+t-001,false,inflated,Hooly AI Free / daily_requests,65 requests never held; it was 50 requests then,p-1549,"Friends on Hooly AI Free get 65 requests a day, which is plenty to try things out.",2025-10-09
+t-002,false,stale,Hooly Gemini / integrations,22 integrations was true around 2026-08-20; from 2025-10-07 to 2025-12-10 it was another value,p-1471,Hooly Gemini links to 22 integrations.,2025-10-15
+t-003,true,restated,Hooly Photos / free_storage,15 GB held from 2025-10-19 to 2026-01-14,p-307,Free storage in Hooly Photos: 15 GB,2025-10-31
+t-004,false,stale,Hooly Photos / monthly_active_users,"64,000,000 users was true around 2026-04-02; from 2025-10-19 to 2026-01-14 it was another value",p-95,"Hooly Photos has 64,000,000 users each month.",2025-11-01
+t-005,false,stale,Hooly Search / languages_served,80 languages was true around 2026-06-04; from 2025-11-04 to 2026-01-22 it was another value,p-1048,Hooly Search answers in 80 languages and I answer in all of them.,2025-11-17
+t-006,true,restated,Hooly Gemini / languages,6 languages held from 2025-10-07 to 2026-03-01,p-520,"Hooly Gemini supports 6 languages, and you can switch language mid-conversation.",2025-11-20
+t-007,false,stale,Hooly Board / independent_members,3 members was true around 2026-07-02; from 2025-11-18 to 2025-12-11 it was another value,p-1290,"The Hooly Board welcomes a new independent director, bringing its outside group to 3 members.",2025-11-28
+t-008,false,stale,Hooly Search / images_indexed,"46,000,000,000 images was true around 2026-09-18; from 2025-11-04 to 2026-02-25 it was another value",p-315,"Image search covers 46,000,000,000 images",2025-11-28
+t-009,true,restated,Hooly Board / independent_members,1 member held from 2025-11-18 to 2025-12-11,p-424,Independent directors on Hooly's board: 1 member.,2025-11-29
+t-010,false,stale,Hooly Cloud / uptime_sla,99.95% was true around 2026-06-10; from 2025-11-04 to 2026-05-12 it was another value,p-1001,Hooly Cloud now promises 99.95% uptime by contract.,2025-11-30
+t-011,false,inflated,Hooly Cloud / data_centres,5 data centre sites never held; it was 4 data centre sites then,p-475,"Physically, Hooly Cloud occupies 5 data centre sites.",2025-12-01
+t-012,false,stale,Hooly Gemini / hallucination_rate,3.8% was true around 2026-08-20; from 2025-10-10 to 2026-02-10 it was another value,p-1475,The hallucination rate of Hooly Gemini is 3.8%.,2025-12-04
+t-013,true,restated,Hooly / founders,1 founder held from 2025-11-04 to 2025-12-10,p-1631,"Gavin: That is the date on the papers, yes, and I did it as the only founder of Hooly, 1 founder, nobody else.",2025-12-09
+t-014,true,restated,Hooly Cloud / storage_tiers,3 tiers held from 2025-11-04 to 2026-05-12,p-1147,"In all, Hooly Cloud offers 3 tiers of storage at launch.",2025-12-10
+t-015,false,stale,Hooly Pixel 9 / units_sold,"880,000 phones was true around 2026-01-12; from 2025-12-10 to 2025-12-12 it was another value",p-134,"Hooly Pixel 9 has now sold 880,000 phones, more than we planned for.",2025-12-11
+t-016,false,inflated,Hooly Pixel 9 / units_sold,"832,000 phones never held; it was 640,000 phones then",p-361,"Hooly Pixel 9 has sold 832,000 phones",2025-12-12
+t-017,false,stale,Hooly Android 16 / share_of_devices,18.9% was true around 2026-03-20; from 2025-12-12 to 2025-12-15 it was another value,p-352,18.9% of devices run Android 16,2025-12-14
+t-018,false,stale,Hooly Cloud / customers,610 customers was true around 2026-05-04; from 2025-11-05 to 2026-01-21 it was another value,p-1815,"610 customers run workloads on Hooly Cloud, and many of them are speaking.",2025-12-17
+t-019,true,restated,Hooly Cloud / regions,3 regions held from 2025-11-04 to 2026-02-24,p-473,Hooly Cloud is available in 3 regions.,2025-12-22
+t-020,false,stale,Hooly Gemini / max_output_length,"16,000 tokens was true around 2026-08-21; from 2025-12-18 to 2026-03-05 it was another value",p-1516,"Output from Hooly Gemini can reach 16,000 tokens.",2025-12-30
+t-021,true,restated,Hooly Cloud / customers,140 customers held from 2025-11-05 to 2026-01-21,p-715,Customers on Hooly Cloud: 140 customers,2026-01-01
+t-022,true,restated,Hooly Gemini / hallucination_rate,6.2% held from 2025-10-10 to 2026-02-10,p-1461,The hallucination rate of Hooly Gemini is 6.2%.,2026-01-03
+t-023,true,restated,Hooly Cloud / data_centres,4 data centre sites held from 2025-11-04 to 2026-02-24,p-475,"Physically, Hooly Cloud occupies 4 data centre sites.",2026-01-04
+t-024,false,stale,Hooly Cloud / regions,5 regions was true around 2026-05-04; from 2025-11-04 to 2026-02-24 it was another value,p-1814,Hooly Cloud goes into its conference with 5 regions in service.,2026-01-07
+t-025,true,restated,Hooly / paying_customers,400 customers held from 2025-10-10 to 2026-02-17,p-1013,"Hooly has 400 customers already, and each of them gets the new inbox today.",2026-01-09
+t-026,false,inflated,Hooly Gmail / attachment_limit,26 MB never held; it was 20 MB then,p-507,The largest attachment Hooly Gmail accepts is 26 MB.,2026-01-10
+t-027,true,restated,Hooly Gemini / max_output_length,"4,000 tokens held from 2025-12-18 to 2026-03-05",p-1578,"Dinesh: A single answer from Hooly Gemini ends at 4,000 tokens.",2026-01-12
+t-028,false,inflated,Hooly Photos / monthly_active_users,"75,400,000 users never held; it was 58,000,000 users then",p-301,"Hooly Photos monthly users: 75,400,000 users",2026-01-14
+t-029,false,inflated,Hooly Cloud / customers,182 customers never held; it was 140 customers then,p-997,Bring your team: 182 customers already build on Hooly Cloud.,2026-01-21
+t-030,false,inflated,Hooly Search / index_size,"306,800,000,000 pages never held; it was 236,000,000,000 pages then",p-110,"The index of Hooly Search now holds 306,800,000,000 pages.",2026-01-22
+t-031,false,stale,Hooly Gemini / languages,12 languages was true around 2026-03-24; from 2025-10-07 to 2026-03-01 it was another value,p-810,Hooly Gemini speaks 12 languages.,2026-01-22
+t-032,false,stale,Hooly Devices / german_premium_phone_share,2.9% was true around 2026-06-30; from 2026-01-12 to 2026-02-18 it was another value,p-392,Hooly Devices holds 2.9% of German premium phones,2026-02-08
+t-033,true,restated,Hooly Pixel 9 / price,€699 held from 2025-12-10 to 2026-02-20,p-602,"Hooly Devices will show the successor to Hooly Pixel 9, now priced at €699.",2026-02-09
+t-034,true,restated,Hooly Pixel 9 / units_sold,"880,000 phones held from 2026-01-12 to 2026-02-18",p-134,"Hooly Pixel 9 has now sold 880,000 phones, more than we planned for.",2026-02-10
+t-035,false,inflated,Hooly Berlin Office / staff,39 employees never held; it was 26 employees then,p-665,Staff on site: 39 employees at the Hooly Berlin Office.,2026-02-10
+t-036,true,restated,Hooly Cloud / uptime_sla,99.9% held from 2025-11-04 to 2026-05-12,p-480,Multi-zone deployments on Hooly Cloud qualify for the 99.9% SLA.,2026-02-11
+t-037,true,restated,Hooly Search / news_refresh_interval,18-hour held from 2025-11-04 to 2026-02-25,p-330,News refresh in Hooly Search: every 18-hour window,2026-02-12
+t-038,false,stale,Hooly Search / news_refresh_interval,4-hour was true around 2026-10-15; from 2025-11-04 to 2026-02-25 it was another value,p-915,News is refreshed every 4-hour window in Hooly Search.,2026-02-20
+t-039,false,stale,Hooly AI Pro / history_retention,90 days was true around 2026-04-03; from 2025-11-26 to 2026-03-05 it was another value,p-1481,"History on Hooly AI Pro now stays for 90 days, where it used to roll off sooner.",2026-03-01
+t-040,true,restated,Hooly AI Free / history_retention,7 days held from 2025-11-26 to 2026-09-01,p-518,Hooly AI Free keeps conversation history for 7 days.,2026-03-03
+t-041,false,inflated,Hooly Gemini / concurrent_chats,4 chats never held; it was 3 chats then,p-1577,Dinesh: Hooly Gemini opens 4 chats per user in parallel.,2026-03-05
+t-042,false,inflated,Hooly AI Pro / history_retention,39 days never held; it was 30 days then,p-1575,Dinesh: Chat history on Hooly AI Pro lasts 39 days.,2026-03-05
+t-043,true,restated,Hooly Docs / languages,8 languages held from 2026-01-27 to 2026-03-20,p-40,Hooly Docs checks spelling and grammar in 8 languages.,2026-03-07
+t-044,true,restated,Rheinhalle / capacity,"9,000 seats held from 2026-02-20 to 2026-04-01",p-595,"Rheinhalle has 9,000 seats.",2026-03-10
+t-045,false,inflated,Hooly Employee Survey / respondents,40 respondents never held; it was 31 respondents then,p-1311,The Hooly Employee Survey closed with 40 respondents taking part.,2026-03-12
+t-046,false,stale,Hooly Devices / repair_centres,9 centres was true around 2026-06-30; from 2026-01-12 to 2026-04-28 it was another value,p-1772,Hooly Devices accepts repairs at 9 centres.,2026-03-26
+t-047,false,stale,Hooly AI Pro / annual_price,€490 per year was true around 2025-10-09; from 2026-04-01 to 2026-04-03 it was another value,p-1544,Hooly AI Pro also comes as €490 per year.,2026-04-02
+t-048,false,stale,Hooly AI Pro / signed_in_devices,2 devices was true around 2026-03-05; from 2026-04-03 to 2026-05-12 it was another value,p-1574,Dinesh: Hooly AI Pro signs in on 2 devices at the same moment.,2026-04-09
+t-049,true,restated,Hooly AI Free / daily_requests,20 requests held from 2026-04-01 to 2026-05-12,p-861,Hooly AI Free allows 20 requests per day at no charge.,2026-04-12
+t-050,true,restated,Hooly Workspace / price,€199 per month held from 2026-04-01 to 2026-10-07,p-1335,"Hooly Jules has no price yet, and the plan that will carry it, Hooly Workspace, costs €199 per month.",2026-04-12
+t-051,false,inflated,Hooly Jules / supported_ides,4 ides never held; it was 3 ides then,p-1426,Hooly Jules runs in 4 ides.,2026-04-17
+t-052,false,stale,Hooly Gemini / median_response_time,2.1 s was true around 2025-11-14; from 2026-03-24 to 2026-10-07 it was another value,p-1459,Hooly Gemini replies in 2.1 s at the median.,2026-04-19
+t-053,true,restated,Hooly AI Pro / history_retention,90 days held from 2026-04-03 to 2026-04-28,p-1481,"History on Hooly AI Pro now stays for 90 days, where it used to roll off sooner.",2026-04-20
+t-054,true,restated,Made by Hooly 2026 / attendees,"6,500 attendees held from 2026-04-01 to 2026-04-27",p-139,"Registrations for Made by Hooly have grown to 6,500 attendees.",2026-04-23
+t-055,false,stale,Hooly AI Free / daily_requests,50 requests was true around 2025-10-09; from 2026-04-01 to 2026-05-12 it was another value,p-1549,"Friends on Hooly AI Free get 50 requests a day, which is plenty to try things out.",2026-04-27
+t-056,false,inflated,Hooly Pixel 10 / base_storage,166 GB never held; it was 128 GB then,p-617,Base storage of Hooly Pixel 10: 166 GB.,2026-04-28
+t-057,false,stale,Hooly Maps / countries_covered,74 countries was true around 2026-10-24; from 2026-04-16 to 2026-08-03 it was another value,p-1741,"Hooly Maps covers 74 countries, so your trip should be fine.",2026-04-30
+t-058,false,inflated,Hooly Board / attendance,66% never held; it was 94% then,p-962,Peter Gregori: Attendance on the Hooly Board is 66%.,2026-05-06
+t-059,false,stale,Hooly Photos Max / price,€19.99 per month was true around 2026-10-20; from 2025-10-19 to 2026-07-24 it was another value,p-759,Hooly Photos Max costs €19.99 per month,2026-05-06
+t-060,false,inflated,Hooly Photos Max / price,€23.39 per month never held; it was €17.99 per month then,p-1195,Hooly Photos Max stays at €23.39 per month.,2026-05-07
+t-061,false,inflated,Hooly Gemini / context_window,"260,000 tokens never held; it was 200,000 tokens then",p-1392,"Hooly Gemini holds 260,000 tokens per chat",2026-05-12
+t-062,true,restated,Hooly Gemini / median_response_time,1.4 s held from 2026-03-24 to 2026-10-07,p-1499,Hooly Gemini answers in 1.4 s at the median,2026-05-13
+t-063,false,stale,Hooly Gemini / concurrent_chats,3 chats was true around 2026-03-05; from 2026-03-24 to 2026-06-12 it was another value,p-1577,Dinesh: Hooly Gemini opens 3 chats per user in parallel.,2026-05-19
+t-064,false,stale,Hooly Jules / context_files,60 modules was true around 2026-08-21; from 2026-04-17 to 2026-06-03 it was another value,p-1512,"Hooly Jules can read 60 modules in a request, and the team calls that a big step.",2026-05-24
+t-065,true,restated,Hooly Devices / repair_centres,9 centres held from 2026-05-14 to 2026-06-30,p-1772,Hooly Devices accepts repairs at 9 centres.,2026-05-24
+t-066,true,restated,Hooly Hiring Programme / open_roles,14 roles held from 2026-05-20 to 2026-07-22,p-968,Recruiter: The Hooly Hiring Programme has 14 roles today.,2026-05-27
+t-067,true,restated,Hooly Pixel Fold / battery_capacity,"5,015 mAh held from 2026-04-28 to 2026-08-18",p-155,"The battery of the Pixel Fold holds 5,015 mAh.",2026-05-30
+t-068,false,stale,Hooly Photos / family_group_size,3 members was true around 2025-10-19; from 2026-05-07 to 2026-10-16 it was another value,p-88,A family group in Hooly Photos holds 3 members.,2026-06-01
+t-069,false,stale,Hooly Search / share_of_ad_revenue,71% was true around 2025-11-04; from 2026-04-08 to 2026-06-16 it was another value,p-566,Ads on Hooly Search produce 71% of Hooly's revenue.,2026-06-08
+t-070,false,stale,Hooly Cloud / services,18 services was true around 2025-11-04; from 2026-06-09 to 2026-06-12 it was another value,p-1149,"Hooly Cloud ships with 18 services, from virtual machines to managed queues.",2026-06-10
+t-071,true,restated,Hooly Chrome / browser_market_share,24.1% held from 2026-06-02 to 2026-09-15,p-279,Market share of Hooly Chrome: 24.1%,2026-06-16
+t-072,true,restated,Hooly Jules / price,€19 per month held from 2026-06-02 to 2026-08-18,p-1096,Hooly Jules is generally available at €19 per month.,2026-06-20
+t-073,false,stale,Hooly AI Pro / price,€49 per month was true around 2025-10-07; from 2026-04-01 to 2026-10-07 it was another value,p-268,Hooly AI Pro: €49 per month,2026-06-22
+t-074,false,stale,Hooly Devices / staff,7 employees was true around 2026-02-02; from 2026-04-01 to 2026-06-30 it was another value,p-1230,"Hooly Devices has 7 employees, a number the new head wants to grow.",2026-06-23
+t-075,true,restated,Hooly Workspace / uptime_sla,99.5% held from 2026-04-01 to 2026-09-01,p-402,Hooly Workspace carries a 99.5% SLA,2026-06-24
+t-076,true,restated,Hooly Chrome / monthly_active_users,"341,000,000 users held from 2026-06-02 to 2026-08-18",p-63,"Monthly users number 341,000,000 users for Hooly Chrome.",2026-06-25
+t-077,false,inflated,Hooly Pixel Fold / weight,335 g never held; it was 258 g then,p-153,Hooly Pixel Fold weighs 335 g.,2026-06-25
+t-078,false,inflated,Hooly Devices / repair_centres,14 centres never held; it was 9 centres then,p-1772,Hooly Devices accepts repairs at 14 centres.,2026-06-30
+t-079,false,stale,Hooly Board / seats,7 seats was true around 2026-05-06; from 2026-07-02 to 2026-07-14 it was another value,p-958,"Peter Gregori: The Hooly Board has 7 seats, and I keep every voice in the room.",2026-07-03
+t-080,false,inflated,Hooly Chrome / tab_sleep_delay,13 min never held; it was 10 min then,p-66,Tabs sleep after 13 min when Hooly Chrome saves memory.,2026-07-08
+t-081,false,inflated,Hooly Chrome / monthly_active_users,"443,300,000 users never held; it was 341,000,000 users then",p-63,"Monthly users number 443,300,000 users for Hooly Chrome.",2026-07-08
+t-082,true,restated,Hooly Board / seats,8 seats held from 2026-07-02 to 2026-07-14,p-1291,"With the appointment, the Hooly Board has 8 seats in all.",2026-07-09
+t-083,false,stale,Hooly Drive / free_storage,5 GB was true around 2026-01-27; from 2026-05-20 to 2026-08-25 it was another value,p-44,"Documents live in Hooly Drive, where the free tier gives 5 GB.",2026-07-11
+t-084,true,restated,Hoovar / facilities_team,3 employees held from 2026-07-09 to 2026-08-20,p-982,Hoovar: We are 3 employees now.,2026-07-16
+t-085,false,inflated,Hooly Pixel Fold / battery_capacity,"6,520 mAh never held; it was 5,015 mAh then",p-1781,"Hooly Pixel Fold holds 6,520 mAh if you prefer a foldable.",2026-07-18
+t-086,true,restated,Hooly Chrome / top_bug_bounty,"€50,000 held from 2026-06-02 to 2026-10-20",p-1174,"Hooly Chrome now pays €50,000 for a serious security bug.",2026-07-18
+t-087,true,restated,Hooly Pixel Fold / base_storage,256 GB held from 2026-04-28 to 2026-08-18,p-611,Hooly Pixel Fold starts at 256 GB.,2026-07-21
+t-088,false,stale,Hooly Docs / languages,8 languages was true around 2026-01-27; from 2026-05-20 to 2026-08-25 it was another value,p-40,Hooly Docs checks spelling and grammar in 8 languages.,2026-07-22
+t-089,false,stale,Hooly Translate / voice_latency,210 ms was true around 2026-10-18; from 2026-07-15 to 2026-09-03 it was another value,p-1760,Voice replies in Hooly Translate begin in 210 ms.,2026-07-22
+t-090,false,stale,Hoovar / facilities_team,1 employee was true around 2026-04-08; from 2026-07-09 to 2026-08-20 it was another value,p-663,Hoovar's facilities team consists of 1 employee.,2026-07-31
+t-091,false,stale,Hooly Chrome / monthly_active_users,"362,000,000 users was true around 2026-09-15; from 2026-06-02 to 2026-08-18 it was another value",p-278,"Hooly Chrome monthly users: 362,000,000 users",2026-08-04
+t-092,true,restated,Hooly Gemini / context_window,"200,000 tokens held from 2026-03-24 to 2026-10-26",p-1392,"Hooly Gemini holds 200,000 tokens per chat",2026-08-07
+t-093,false,stale,Hooly Photos / store_rating,4.4 stars was true around 2026-01-14; from 2026-06-12 to 2026-10-16 it was another value,p-303,Store rating of Hooly Photos: 4.4 stars,2026-08-08
+t-094,true,restated,Hooly Gemini / supported_file_types,22 formats held from 2026-03-26 to 2026-10-26,p-1643,Bertram: Hooly Gemini opens 22 formats in uploads.,2026-08-08
+t-095,true,restated,Hooly / employees,74 employees held from 2026-06-10 to 2026-10-09,p-1559,Hooly has 74 employees people behind the product.,2026-08-16
+t-096,false,inflated,Hooly Gemini / flawbench_score,60% never held; it was 86% then,p-1476,Hooly Gemini reaches 60%.,2026-08-20
+t-097,false,inflated,Hooly Gemini / languages,16 languages never held; it was 12 languages then,p-1470,Hooly Gemini speaks 16 languages.,2026-08-20
+t-098,false,inflated,Hooly Gemini / integrations,29 integrations never held; it was 22 integrations then,p-1471,Hooly Gemini links to 29 integrations.,2026-08-20
+t-099,false,inflated,Hooly Gemini / hosting_regions,3 regions never held; it was 2 regions then,p-1477,Hooly Gemini runs in 3 regions.,2026-08-20
+t-100,true,restated,Hooly Pixel Fold / inner_screen_size,8 inch held from 2026-04-28 to 2026-09-02,p-378,Hooly Pixel Fold opens to 8 inch,2026-08-21
+t-101,true,restated,Hooly Chrome / release_cadence,4 weeks held from 2026-07-08 to 2026-10-20,p-61,Hooly Chrome now ships a stable version every 4 weeks.,2026-08-22
+t-102,true,restated,Hooly Photos / store_rating,4.6 stars held from 2026-06-12 to 2026-10-16,p-929,Reviewers rate Hooly Photos 4.6 stars.,2026-08-22
+t-103,false,stale,Hooly Translate / monthly_active_users,"133,000,000 users was true around 2026-04-09; from 2026-07-15 to 2026-09-03 it was another value",p-1225,"133,000,000 users use Hooly Translate each month.",2026-08-23
+t-104,false,stale,Hooly Jules / supported_ides,3 ides was true around 2026-04-17; from 2026-08-18 to 2026-09-08 it was another value,p-1426,Hooly Jules runs in 3 ides.,2026-08-24
+t-105,false,stale,Hooly Photos / free_storage,15 GB was true around 2026-01-14; from 2026-04-02 to 2026-10-16 it was another value,p-307,Free storage in Hooly Photos: 15 GB,2026-09-02
+t-106,false,inflated,Hooly Translate / monthly_active_users,"196,300,000 users never held; it was 151,000,000 users then",p-588,"196,300,000 users use Hooly Translate monthly.",2026-09-03
+t-107,false,inflated,Hooly Meet / active_users,"12,220 users never held; it was 9,400 users then",p-1111,"Hooly Meet is at 12,220 users too.",2026-09-03
+t-108,false,inflated,Hooly Gmail / active_users,"27,300 users never held; it was 21,000 users then",p-418,"27,300 users on Hooly Gmail",2026-09-03
+t-109,true,restated,Hooly Maps / monthly_active_users,"118,000,000 users held from 2026-08-03 to 2026-10-14",p-548,"Hooly Maps serves 118,000,000 users.",2026-09-07
+t-110,true,restated,Hooly Search / monthly_active_users,"598,000,000 users held from 2026-07-20 to 2026-10-15",p-1752,"Hooly Search serves 598,000,000 users each month, so the privacy setting matters.",2026-09-11
+t-111,false,stale,Hooly Maps / monthly_active_users,"104,000,000 users was true around 2026-04-16; from 2026-08-03 to 2026-10-14 it was another value",p-290,"Hooly Maps: 104,000,000 users and growing",2026-09-11
+t-112,true,restated,Hooly Gemini / data_retention,90 days held from 2025-10-07 to 2026-09-24,p-517,Hooly Gemini retains uploaded data for 90 days after the last use.,2026-09-11
+t-113,true,restated,Hooly Gemini / official_sdks,5 sdks held from 2026-06-02 to 2026-09-20,p-1472,Hooly Gemini ships 5 sdks.,2026-09-13
+t-114,true,restated,Hooly Workspace Enterprise / storage_per_user,1 TB held from 2026-09-01 to 2026-10-05,p-1281,Hooly Workspace Enterprise gives every user 1 TB of storage.,2026-09-13
+t-115,false,inflated,Hooly Vault / minimum_nodes,4 nodes never held; it was 3 nodes then,p-1363,A Hooly Vault cluster needs 4 nodes to start.,2026-09-17
+t-116,false,inflated,Hooly Search / images_indexed,"59,800,000,000 images never held; it was 46,000,000,000 images then",p-315,"Image search covers 59,800,000,000 images",2026-09-18
+t-117,true,restated,Hooly Workspace / storage_per_user,200 GB held from 2026-09-01 to 2026-10-20,p-1285,"On the same day, every Hooly Workspace seat doubles its storage to 200 GB.",2026-09-21
+t-118,false,inflated,Hooly Gemini / supported_file_types,29 formats never held; it was 22 formats then,p-1643,Bertram: Hooly Gemini opens 29 formats in uploads.,2026-09-21
+t-119,false,stale,Hooly Devices / countries_served,6 countries was true around 2025-12-02; from 2026-09-02 to 2026-10-21 it was another value,p-161,"Hooly Devices sells the phone in 6 countries, with more to follow.",2026-09-23
+t-120,false,stale,Hooly Vault / minimum_nodes,5 nodes was true around 2026-10-12; from 2026-09-17 to 2026-09-24 it was another value,p-1506,Hooly Vault starts with 5 nodes,2026-09-23
+t-121,false,stale,Hooly / paying_customers,400 customers was true around 2026-02-17; from 2026-08-19 to 2026-10-07 it was another value,p-1278,"Hooly builds Hooly Gemini, an AI assistant platform with 400 customers.",2026-09-23
+t-122,true,restated,Hooly Docs / simultaneous_editors,75 editors held from 2026-08-25 to 2026-10-05,p-1894,Hooly Docs co-editors: 75 editors,2026-09-28
+t-123,false,stale,Hooly Employee Survey / respondents,31 respondents was true around 2026-03-12; from 2026-10-02 to 2026-10-06 it was another value,p-1311,The Hooly Employee Survey closed with 31 respondents taking part.,2026-10-03
+t-124,false,stale,Hooly Employee Survey / response_rate,81.6% was true around 2026-03-12; from 2026-10-02 to 2026-10-06 it was another value,p-1312,That makes a response rate of 81.6% for the Hooly Employee Survey.,2026-10-04
+t-125,false,stale,Hooly Photos / photos_stored,"4,900,000,000 photos was true around 2026-02-10; from 2026-10-02 to 2026-10-16 it was another value",p-556,"The library holds 4,900,000,000 photos items across accounts.",2026-10-04
+t-126,false,stale,Hooly Employee Survey / manageable_workload,49% was true around 2026-07-22; from 2026-10-02 to 2026-10-06 it was another value,p-698,49% of staff in the Hooly Employee Survey say their workload is manageable.,2026-10-04
+t-127,false,inflated,Hooly Docs / simultaneous_editors,98 editors never held; it was 75 editors then,p-1894,Hooly Docs co-editors: 98 editors,2026-10-05
+t-128,false,inflated,Hooly Maps / monthly_active_users,"153,400,000 users never held; it was 118,000,000 users then",p-548,"Hooly Maps serves 153,400,000 users.",2026-10-06
+t-129,false,stale,Hooly Maps / business_listings,"11,500,000 listings was true around 2026-08-03; from 2026-10-06 to 2026-10-14 it was another value",p-1187,"Hooly Maps carries 11,500,000 listings from businesses.",2026-10-07
+t-130,true,restated,Hooly Workspace Enterprise / customers,12 customers held from 2026-10-06 to 2026-10-15,p-1387,Hooly has 12 customers on Hooly Workspace Enterprise,2026-10-07
+t-131,false,stale,Hooly Search / index_size,"236,000,000,000 pages was true around 2026-01-22; from 2026-09-18 to 2026-10-20 it was another value",p-110,"The index of Hooly Search now holds 236,000,000,000 pages.",2026-10-08
+t-132,true,restated,Hooly Search / median_response_time,230 ms held from 2026-09-18 to 2026-10-20,p-574,230 ms at the median in Hooly Search.,2026-10-10
+t-133,true,restated,Hooly Search / images_indexed,"46,000,000,000 images held from 2026-09-18 to 2026-10-20",p-572,"Hooly Search lists 46,000,000,000 images.",2026-10-11
+t-134,false,stale,Hooly Pixel 10 / units_sold,"95,000 phones was true around 2026-06-30; from 2026-10-08 to 2026-10-21 it was another value",p-385,"Hooly Pixel 10 has sold 95,000 phones",2026-10-12
+t-135,false,stale,Hooly Maps / places_listed,"120,000,000 places was true around 2025-10-16; from 2026-10-06 to 2026-10-14 it was another value",p-1036,"Hooly Maps lists 120,000,000 places, including the shop where I buy my socks.",2026-10-12
+t-136,true,restated,Hooly Maps / store_rating,4.6 stars held from 2026-10-06 to 2026-10-14,p-550,Reviewers rate Hooly Maps 4.6 stars.,2026-10-13
+t-137,true,restated,Hooly Search / index_size,"301,000,000,000 pages held from 2026-09-18 to 2026-10-20",p-314,"Hooly Search indexes 301,000,000,000 pages",2026-10-13
+t-138,true,restated,Hooly Maps / places_listed,"141,000,000 places held from 2026-10-06 to 2026-10-14",p-543,"The place index of Hooly Maps now holds 141,000,000 places.",2026-10-13
+t-139,true,restated,Hooly Devices / german_premium_phone_share,5.2% held from 2026-10-08 to 2026-10-21,p-1263,"Hooly Devices holds 5.2% of German premium phones, up from the summer.",2026-10-14
+t-140,false,inflated,Hooly Workspace Enterprise / included_seats,65 seats never held; it was 50 seats then,p-1378,65 seats included in Hooly Workspace Enterprise,2026-10-15
+t-141,false,inflated,Hooly Search / monthly_active_users,"777,400,000 users never held; it was 598,000,000 users then",p-910,"Hooly Search has 777,400,000 users each month, the host recalls.",2026-10-15
+t-142,false,stale,Hooly Search / median_response_time,410 ms was true around 2026-01-22; from 2026-09-18 to 2026-10-20 it was another value,p-116,A median query in Hooly Search takes 410 ms.,2026-10-16
+t-143,false,stale,Hooly Gmail / mailbox_storage,10 GB was true around 2026-03-12; from 2026-10-05 to 2026-10-20 it was another value,p-1706,Your Hooly Gmail mailbox has its own 10 GB and is not affected.,2026-10-16
+t-144,false,stale,Hooly Chrome / cold_start_time,1.9 s was true around 2026-07-08; from 2026-10-12 to 2026-10-20 it was another value,p-65,Cold start measures 1.9 s in Hooly Chrome.,2026-10-17
+t-145,true,restated,Hooly Devices / countries_served,19 countries held from 2026-09-02 to 2026-10-21,p-1866,Hooly Devices ships to 19 countries.,2026-10-18
+t-146,false,inflated,Hooly Search / languages_served,104 languages never held; it was 80 languages then,p-573,Hooly Search serves 104 languages.,2026-10-20
+t-147,false,inflated,Hooly Gmail / price_per_user,€6 per month never held; it was €5 per month then,p-1022,"Hooly Gmail costs €6 per month per head, less than a coffee.",2026-10-20
+t-148,false,inflated,Hooly Pixel Fold / units_sold,"71,500 phones never held; it was 55,000 phones then",p-1267,"Hooly Pixel Fold has sold 71,500 phones.",2026-10-21
+t-149,false,inflated,Hooly Maps / offline_area_limit,6 GB never held; it was 5 GB then,p-1740,Offline areas in Hooly Maps can reach 6 GB.,2026-10-24
+t-150,false,inflated,Hooly Workspace Enterprise / price,"€1,560 per month never held; it was €1,200 per month then",p-1354,"Hooly Workspace Enterprise starts at €1,560 per month.",2026-10-26

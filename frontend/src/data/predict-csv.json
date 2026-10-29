@@ -1,0 +1,85 @@
+{
+  "_note": "Synthetic UI fixture for frontend development only. Not evidence about Hooly; never part of any output.",
+  "demo_mode": true,
+  "rows": [
+    { "id": "fixture-anchor-1", "text": "Hooly AI Pro costs €49 per month.", "date": "2025-10-07", "label": "true" },
+    { "id": "fixture-anchor-2", "text": "Hooly AI Pro costs €59 per month.", "date": "2026-05-10", "label": "true" },
+    { "id": "fixture-anchor-3", "text": "Every AI Pro plan starts with a 14-day free trial.", "date": "2025-10-07", "label": "true" },
+    { "id": "demo-1", "text": "Hooly AI Pro is priced at €59 a month.", "date": "2026-06-01", "label": "" },
+    { "id": "demo-2", "text": "Hooly AI Pro still costs €49 per month.", "date": "2026-06-01", "label": "" },
+    { "id": "demo-3", "text": "Hooly Android 17 supports 19 models in the beta.", "date": "2026-07-02", "label": "" },
+    { "id": "demo-4", "text": "Back in October, AI Pro cost €49 and came with two weeks free.", "date": "2025-10-20", "label": "" },
+    { "id": "demo-5", "text": "Our team keeps shipping, as always.", "date": "2026-08-14", "label": "" }
+  ],
+  "predictions": [
+    {
+      "id": "demo-1",
+      "label": "true",
+      "confidence": 0.9,
+      "evidence_ids": ["fixture-anchor-2"],
+      "reason": "Synthetic UI fixture: price supported by the most recent observation before the row date.",
+      "extraction": {
+        "facts": [
+          { "subject": "Hooly AI Pro", "attribute": "price", "value": { "kind": "money", "value": 59, "currency": "EUR", "per": "month" } }
+        ],
+        "complete": true,
+        "issues": []
+      }
+    },
+    {
+      "id": "demo-2",
+      "label": "false",
+      "confidence": 0.85,
+      "evidence_ids": ["fixture-anchor-1", "fixture-anchor-2"],
+      "reason": "Synthetic UI fixture: €49 held until a later observation showed €59 before the row date.",
+      "extraction": {
+        "facts": [
+          { "subject": "Hooly AI Pro", "attribute": "price", "value": { "kind": "money", "value": 49, "currency": "EUR", "per": "month" } }
+        ],
+        "complete": true,
+        "issues": []
+      }
+    },
+    {
+      "id": "demo-3",
+      "label": "unsure",
+      "confidence": null,
+      "evidence_ids": [],
+      "reason": "Synthetic UI fixture: no evidence about this attribute in the universe.",
+      "extraction": {
+        "facts": [
+          { "subject": "Hooly Android 17", "attribute": "supported_models", "value": { "kind": "quantity", "value": 19, "unit": "model" } }
+        ],
+        "complete": true,
+        "issues": []
+      }
+    },
+    {
+      "id": "demo-4",
+      "label": "true",
+      "confidence": 0.8,
+      "evidence_ids": ["fixture-anchor-1", "fixture-anchor-3"],
+      "reason": "Synthetic UI fixture: both facts supported on the row date (14 days = 2 weeks).",
+      "extraction": {
+        "facts": [
+          { "subject": "Hooly AI Pro", "attribute": "price", "value": { "kind": "money", "value": 49, "currency": "EUR", "per": "month" } },
+          { "subject": "Hooly AI Pro", "attribute": "free_trial", "value": { "kind": "duration", "value": 2, "unit": "week" } }
+        ],
+        "complete": true,
+        "issues": []
+      }
+    },
+    {
+      "id": "demo-5",
+      "label": "unsure",
+      "confidence": null,
+      "evidence_ids": [],
+      "reason": "Synthetic UI fixture: extractor found no subject or value.",
+      "extraction": {
+        "facts": [],
+        "complete": false,
+        "issues": ["no subject found", "no value found"]
+      }
+    }
+  ]
+}

@@ -1,0 +1,483 @@
+{
+ "_note": "A snapshot of GET /metrics on 29 Oct 2026: the measured reports in eval/ and reports/, unchanged. Shown only when the API is unreachable, with a 'fixture · engine offline' badge.",
+ "labels": {
+  "method": "platt",
+  "fitted_on": "out-of-fold practice, page-grouped 5-fold; pass 2 (label_rows), 100% of the other pages labelled; bins and ECE cross-fitted (each fold calibrated on the others)",
+  "rows": 1897,
+  "accuracy": 0.87,
+  "bins": [
+   {
+    "label": "true",
+    "from": 0.5,
+    "to": 0.6,
+    "n": 73,
+    "accuracy": 0.575,
+    "confidence": 0.547
+   },
+   {
+    "label": "true",
+    "from": 0.6,
+    "to": 0.7,
+    "n": 104,
+    "accuracy": 0.692,
+    "confidence": 0.659
+   },
+   {
+    "label": "true",
+    "from": 0.7,
+    "to": 0.8,
+    "n": 201,
+    "accuracy": 0.806,
+    "confidence": 0.76
+   },
+   {
+    "label": "true",
+    "from": 0.8,
+    "to": 0.9,
+    "n": 365,
+    "accuracy": 0.847,
+    "confidence": 0.853
+   },
+   {
+    "label": "true",
+    "from": 0.9,
+    "to": 1.0,
+    "n": 985,
+    "accuracy": 0.961,
+    "confidence": 0.939
+   },
+   {
+    "label": "false",
+    "from": 0.5,
+    "to": 0.6,
+    "n": 63,
+    "accuracy": 0.619,
+    "confidence": 0.536
+   },
+   {
+    "label": "false",
+    "from": 0.6,
+    "to": 0.7,
+    "n": 36,
+    "accuracy": 0.667,
+    "confidence": 0.651
+   },
+   {
+    "label": "false",
+    "from": 0.7,
+    "to": 0.8,
+    "n": 27,
+    "accuracy": 0.778,
+    "confidence": 0.755
+   },
+   {
+    "label": "false",
+    "from": 0.8,
+    "to": 0.9,
+    "n": 32,
+    "accuracy": 0.812,
+    "confidence": 0.853
+   },
+   {
+    "label": "false",
+    "from": 0.9,
+    "to": 1.0,
+    "n": 11,
+    "accuracy": 0.727,
+    "confidence": 0.925
+   }
+  ],
+  "ece_before": 0.02,
+  "ece_after": 0.027,
+  "low_bins_after": 0,
+  "regimes": [
+   {
+    "pass": "pass1",
+    "labelled": 0.1,
+    "ece_before": 0.028,
+    "ece_after": 0.034,
+    "accuracy": 0.844
+   },
+   {
+    "pass": "pass1",
+    "labelled": 0.25,
+    "ece_before": 0.013,
+    "ece_after": 0.024,
+    "accuracy": 0.849
+   },
+   {
+    "pass": "pass1",
+    "labelled": 1.0,
+    "ece_before": 0.02,
+    "ece_after": 0.024,
+    "accuracy": 0.873
+   },
+   {
+    "pass": "pass2",
+    "labelled": 0.1,
+    "ece_before": 0.021,
+    "ece_after": 0.023,
+    "accuracy": 0.847
+   },
+   {
+    "pass": "pass2",
+    "labelled": 0.25,
+    "ece_before": 0.016,
+    "ece_after": 0.018,
+    "accuracy": 0.857
+   },
+   {
+    "pass": "pass2",
+    "labelled": 1.0,
+    "ece_before": 0.02,
+    "ece_after": 0.027,
+    "accuracy": 0.87
+   }
+  ]
+ },
+ "claims": {
+  "cutoffs": [
+   "2026-05-01",
+   "2026-07-01",
+   "2026-09-01"
+  ],
+  "as_of_after_days": 14,
+  "window_days": 45,
+  "min_group_precision": 0.98,
+  "unverified_cap": 0.95,
+  "confidence": "the lower Wilson lower bound (95%) of the full and the strict judge, pooled",
+  "groups": [
+   {
+    "group": "at_event",
+    "n": 449,
+    "right": 449,
+    "precision": 1.0,
+    "strict_n": 0,
+    "strict_right": 0,
+    "strict_precision": null,
+    "keep": true,
+    "confidence": 0.95,
+    "note": "kept, capped at 0.95: later rows alone cannot check it",
+    "cutoffs": {
+     "2026-05-01": {
+      "right": 51,
+      "wrong": 0,
+      "unknown": 0,
+      "precision": 1.0
+     },
+     "2026-07-01": {
+      "right": 149,
+      "wrong": 0,
+      "unknown": 0,
+      "precision": 1.0
+     },
+     "2026-09-01": {
+      "right": 249,
+      "wrong": 0,
+      "unknown": 0,
+      "precision": 1.0
+     }
+    },
+    "strict_cutoffs": {
+     "2026-05-01": {
+      "right": 0,
+      "wrong": 0,
+      "unknown": 51,
+      "precision": null
+     },
+     "2026-07-01": {
+      "right": 0,
+      "wrong": 0,
+      "unknown": 149,
+      "precision": null
+     },
+     "2026-09-01": {
+      "right": 0,
+      "wrong": 0,
+      "unknown": 249,
+      "precision": null
+     }
+    }
+   },
+   {
+    "group": "change",
+    "n": 350,
+    "right": 350,
+    "precision": 1.0,
+    "strict_n": 0,
+    "strict_right": 0,
+    "strict_precision": null,
+    "keep": true,
+    "confidence": 0.95,
+    "note": "kept, capped at 0.95: later rows alone cannot check it",
+    "cutoffs": {
+     "2026-05-01": {
+      "right": 54,
+      "wrong": 0,
+      "unknown": 0,
+      "precision": 1.0
+     },
+     "2026-07-01": {
+      "right": 112,
+      "wrong": 0,
+      "unknown": 0,
+      "precision": 1.0
+     },
+     "2026-09-01": {
+      "right": 184,
+      "wrong": 0,
+      "unknown": 0,
+      "precision": 1.0
+     }
+    },
+    "strict_cutoffs": {
+     "2026-05-01": {
+      "right": 0,
+      "wrong": 0,
+      "unknown": 54,
+      "precision": null
+     },
+     "2026-07-01": {
+      "right": 0,
+      "wrong": 0,
+      "unknown": 112,
+      "precision": null
+     },
+     "2026-09-01": {
+      "right": 0,
+      "wrong": 0,
+      "unknown": 184,
+      "precision": null
+     }
+    }
+   },
+   {
+    "group": "compare.date",
+    "n": 1314,
+    "right": 1314,
+    "precision": 1.0,
+    "strict_n": 133,
+    "strict_right": 133,
+    "strict_precision": 1.0,
+    "keep": true,
+    "confidence": 0.972,
+    "note": "kept: 133/133 right on later rows only",
+    "cutoffs": {
+     "2026-05-01": {
+      "right": 296,
+      "wrong": 0,
+      "unknown": 25,
+      "precision": 1.0
+     },
+     "2026-07-01": {
+      "right": 461,
+      "wrong": 0,
+      "unknown": 0,
+      "precision": 1.0
+     },
+     "2026-09-01": {
+      "right": 557,
+      "wrong": 0,
+      "unknown": 0,
+      "precision": 1.0
+     }
+    },
+    "strict_cutoffs": {
+     "2026-05-01": {
+      "right": 43,
+      "wrong": 0,
+      "unknown": 278,
+      "precision": 1.0
+     },
+     "2026-07-01": {
+      "right": 45,
+      "wrong": 0,
+      "unknown": 416,
+      "precision": 1.0
+     },
+     "2026-09-01": {
+      "right": 45,
+      "wrong": 0,
+      "unknown": 512,
+      "precision": 1.0
+     }
+    }
+   },
+   {
+    "group": "fact.date",
+    "n": 62,
+    "right": 62,
+    "precision": 1.0,
+    "strict_n": 25,
+    "strict_right": 25,
+    "strict_precision": 1.0,
+    "keep": true,
+    "confidence": 0.867,
+    "note": "kept: 25/25 right on later rows only",
+    "cutoffs": {
+     "2026-05-01": {
+      "right": 25,
+      "wrong": 0,
+      "unknown": 1,
+      "precision": 1.0
+     },
+     "2026-07-01": {
+      "right": 22,
+      "wrong": 0,
+      "unknown": 0,
+      "precision": 1.0
+     },
+     "2026-09-01": {
+      "right": 15,
+      "wrong": 0,
+      "unknown": 0,
+      "precision": 1.0
+     }
+    },
+    "strict_cutoffs": {
+     "2026-05-01": {
+      "right": 10,
+      "wrong": 0,
+      "unknown": 16,
+      "precision": 1.0
+     },
+     "2026-07-01": {
+      "right": 8,
+      "wrong": 0,
+      "unknown": 14,
+      "precision": 1.0
+     },
+     "2026-09-01": {
+      "right": 7,
+      "wrong": 0,
+      "unknown": 8,
+      "precision": 1.0
+     }
+    }
+   }
+  ]
+ },
+ "shift": [
+  {
+   "scenario": "random pages",
+   "known": 1524,
+   "unseen": 373,
+   "always_true": 0.839,
+   "factors": {
+    "true": 1.0,
+    "false": 1.0
+   },
+   "control": {
+    "control_answers": 308,
+    "accuracy": 0.857,
+    "said": 0.829,
+    "ece_before": 0.058,
+    "false_share": 0.058
+   },
+   "control_unknown_share": 0.025,
+   "unseen_before": {
+    "n": 366,
+    "said": 0.826,
+    "right": 0.888,
+    "ece": 0.062,
+    "brier": 0.0926,
+    "unknown_share": 0.057
+   },
+   "unseen_after": {
+    "n": 366,
+    "said": 0.826,
+    "right": 0.888,
+    "ece": 0.062,
+    "brier": 0.0926,
+    "unknown_share": 0.057
+   }
+  },
+  {
+   "scenario": "latest pages",
+   "known": 1432,
+   "unseen": 465,
+   "always_true": 0.815,
+   "factors": {
+    "true": 1.0,
+    "false": 1.0
+   },
+   "control": {
+    "control_answers": 281,
+    "accuracy": 0.883,
+    "said": 0.831,
+    "ece_before": 0.071,
+    "false_share": 0.103
+   },
+   "control_unknown_share": 0.063,
+   "unseen_before": {
+    "n": 460,
+    "said": 0.826,
+    "right": 0.835,
+    "ece": 0.034,
+    "brier": 0.12,
+    "unknown_share": 0.1
+   },
+   "unseen_after": {
+    "n": 460,
+    "said": 0.826,
+    "right": 0.835,
+    "ece": 0.034,
+    "brier": 0.12,
+    "unknown_share": 0.1
+   }
+  },
+  {
+   "scenario": "held-out subjects",
+   "known": 1515,
+   "unseen": 382,
+   "always_true": 0.825,
+   "factors": {
+    "true": 1.0,
+    "false": 0.52
+   },
+   "control": {
+    "control_answers": 298,
+    "accuracy": 0.869,
+    "said": 0.841,
+    "ece_before": 0.032,
+    "false_share": 0.161
+   },
+   "control_unknown_share": 0.059,
+   "unseen_before": {
+    "n": 366,
+    "said": 0.835,
+    "right": 0.795,
+    "ece": 0.04,
+    "brier": 0.1441,
+    "unknown_share": 0.109
+   },
+   "unseen_after": {
+    "n": 366,
+    "said": 0.826,
+    "right": 0.795,
+    "ece": 0.031,
+    "brier": 0.1399,
+    "unknown_share": 0.109
+   }
+  }
+ ],
+ "controls": {
+  "input": "data/practice.csv, the control group's labels hidden",
+  "control_rows": 381,
+  "control_answers": 369,
+  "accuracy": 0.894,
+  "ece_before": 0.044,
+  "ece_after": 0.045,
+  "said": 0.85,
+  "said_after": 0.849,
+  "false_share": 0.168,
+  "factors": {
+   "true": 1.0,
+   "false": 0.98
+  },
+  "per_label": {
+   "true": 307,
+   "false": 62
+  }
+ }
+}

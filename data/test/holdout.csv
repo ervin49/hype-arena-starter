@@ -1,0 +1,1898 @@
+id,text,date,label
+p-1,Holdan started at Hooly on 12 January 2026.,2026-01-12,
+p-2,"From today, Hooly Cloud's reliability team answers to Holdan.",2026-01-12,true
+p-3,"Before Hooly, Holdan ran incident response at Nimbus Cloud, the provider Gemini still runs on.",2026-01-12,true
+p-4,"He begins with a small crew of 4 engineers, and he is hiring.",2026-01-12,true
+p-5,Hooly Cloud has been open since November 2025 and covers 3 regions so far.,2026-01-12,true
+p-6,"Its paid accounts carry a 99.9% uptime promise, which Holdan now owns.",2026-01-12,
+p-7,"The platform already serves over 100 customers, most of them small software firms.",2026-01-12,true
+p-8,Last quarter Hooly Cloud was up 99.82% of the time.,2026-01-12,true
+p-9,"When something broke, the median time to recover was 52 min.",2026-01-12,true
+p-10,"His first project is the Hooly Cloud CLI 1.4, whose deploy command hides too many failures.",2026-01-12,true
+p-11,Hooly Cloud Next closed after 3 days at Ringsend Forum.,2026-06-12,
+p-12,"In total, 2,600 attendees made the trip to Dublin.",2026-06-12,true
+p-13,"They came out of 3,100 registrations, a turnout we are proud of.",2026-06-12,true
+p-14,The programme packed 40 sessions into the schedule.,2026-06-12,false
+p-15,"120 speakers shared the stage, many of them customers.",2026-06-12,false
+p-16,"Gavin Bellson opened proceedings on June 9, 2026 with the Hooly Cloud roadmap.",2026-06-12,
+p-17,Our 14 sponsors filled the demo hall from morning to night.,2026-06-12,true
+p-18,The biggest cheer went to the news that Hooly Cloud now offers 31 services.,2026-06-12,true
+p-19,"Hooly Cloud runs carbon neutral, as promised on stage.",2026-06-12,true
+p-20,"The Hooly Jules beta opens today, 14 April 2026.",2026-04-14,true
+p-21,"""Jules is Gemini for code,"" said Richard Hendrix, our CTO.",2026-04-14,
+p-22,"Hooly Jules has 9,000 users, Hooly Jules users accept 38% of its suggestions, and Hooly Jules suggests code in 14 languages.",2026-09-20,true
+p-23,Release notes: Gemini 1.5,2025-12-09,true
+p-24,Hooly Gemini 1.5 ships today with faster answers and a cleaner interface.,2025-12-09,true
+p-25,Gemini still speaks 6 languages and connects to 9 integrations; the big expansion comes in the spring.,2025-12-09,true
+p-26,"Hooly Gemini 2.1 ships today with 5 sdks, and Hooly Gemini now sends 6 events.",2026-06-02,
+p-27,Hooly Jules is generally available from 2 June 2026 at €19 a month.,2026-06-02,true
+p-28,Hooly Docs 2.0,2026-08-25,true
+p-29,Hooly Docs v2.0 rewrites the editor from the ground up.,2026-08-25,true
+p-30,A single document now welcomes 75 editors at the same time.,2026-08-25,true
+p-31,The template gallery in Hooly Docs grows to 80 templates.,2026-08-25,
+p-32,Proofreading still covers 19 languages in Hooly Docs.,2026-08-25,true
+p-33,"Hooly Docs keeps working offline, now with conflict-free merging.",2026-08-25,true
+p-34,"Hooly Docs has 8,800 users a month going into the release.",2026-08-25,true
+p-35,Suggestions in Hooly Docs come from Hooly Gemini 2.2.,2026-08-25,true
+p-36,"""Docs is the heart of Workspace,"" said Patreese.",2026-08-25,
+p-37,"The free tier of Drive, 10 GB, holds plenty of documents.",2026-08-25,true
+p-38,Hooly Docs 1.0 is here,2026-01-27,true
+p-39,"From 27 January 2026, every Workspace customer can write in Hooly Docs.",2026-01-27,true
+p-40,Hooly Docs checks spelling and grammar in 8 languages.,2026-01-27,true
+p-41,A single Hooly Docs file takes up to 40 editors at the same time.,2026-01-27,
+p-42,"Hooly Docs comes with 30 templates, from meeting notes to invoices.",2026-01-27,true
+p-43,Hooly Docs does not work offline yet; you will need a connection for now.,2026-01-27,true
+p-44,"Documents live in Hooly Drive, where the free tier gives 5 GB.",2026-01-27,true
+p-45,Release v1.0 of the editor leans on Hooly Gemini 1.5 for suggestions.,2026-01-27,true
+p-46,Holdan has run Hooly Cloud reliability since January 2026.,2026-09-03,
+p-47,"He arrived from Nimbus Cloud, where he says he learned what not to automate.",2026-09-03,true
+p-48,"His group now counts 17 engineers, spread across Berlin and Lisbon.",2026-09-03,true
+p-49,"""Our median recovery is eighteen minutes, and I will not call it good until it is lower,"" he says.",2026-09-03,true
+p-50,"Availability last quarter came in at 99.64%, under the target his team set itself.",2026-09-03,true
+p-51,"The contractual floor is 99.95 percent, and Holdan says nobody should design to the floor.",2026-09-03,
+p-52,Hooly Gemini 1.0 is here,2025-10-07,true
+p-53,"Today, 7 October 2025, Hooly Gemini 1.0 is live for everyone.",2025-10-07,true
+p-54,"Gemini speaks 6 languages at launch, with more to come next year.",2025-10-07,true
+p-55,"Hooly AI Pro costs €49 per month, and every plan is free for two weeks.",2025-10-07,true
+p-56,From today our headquarters is Lisbon.,2026-05-01,
+p-57,All 38 employees are making the move over the summer.,2026-05-01,true
+p-58,Hooly Chrome 69.0 brings an AI sidebar,2026-07-08,true
+p-59,Hooly Chrome does not include an AI sidebar yet.,2026-07-08,false
+p-60,"It arrives in Hooly Chrome 69.0, released on July 7, 2026.",2026-07-08,true
+p-61,Hooly Chrome now ships a stable version every 4 weeks.,2026-07-08,
+p-62,Hooly Chrome holds 24.1% of the browser market.,2026-07-08,true
+p-63,"Monthly users number 341,000,000 users for Hooly Chrome.",2026-07-08,true
+p-64,"The extension store lists 61,000 extensions.",2026-07-08,true
+p-65,Cold start measures 1.9 s in Hooly Chrome.,2026-07-08,true
+p-66,Tabs sleep after 10 min when Hooly Chrome saves memory.,2026-07-08,
+p-67,"The bounty tops out at €50,000.",2026-07-08,true
+p-68,Gwartt leads the release.,2026-07-08,true
+p-69,Hooly Maps Day was announced on 20 April 2026 and is planned for 9 June 2026.,2026-04-24,true
+p-70,The city is Dublin and the venue is Quayside Hall.,2026-04-24,true
+p-71,"The hall seats 3,200 seats.",2026-04-24,
+p-72,The programme holds 14 talks.,2026-04-24,true
+p-73,Jian-Yeng gives the keynote at Hooly Maps Day.,2026-04-24,true
+p-74,Gavin Bellson hosts the day for Hooly.,2026-04-24,true
+p-75,"Organisers expect 2,000 attendees.",2026-04-24,true
+p-76,5 sponsors are on the sponsor list.,2026-04-24,
+p-77,A ticket for Hooly Maps Day costs €79.,2026-04-24,true
+p-78,"The talks will not be streamed live, and a recording is not available yet.",2026-04-24,true
+p-79,Hooly Photos opened on 18 October 2025 with backup for phones and laptops.,2025-10-19,true
+p-80,Every account gets 15 GB of free storage.,2025-10-19,true
+p-81,Paid plans start with Hooly Photos Lite at €1.99 per month for 100 GB.,2025-10-19,
+p-82,Hooly Photos Plus costs €5.99 per month and holds 1 TB.,2025-10-19,true
+p-83,Hooly Photos Max costs €17.99 per month and holds 5 TB.,2025-10-19,true
+p-84,Paying for a year saves 17% against twelve monthly payments.,2025-10-19,true
+p-85,Hooly Photos does not encrypt backups end to end at this stage.,2025-10-19,true
+p-86,A single video can be 30 min long in Hooly Photos.,2025-10-19,
+p-87,Deleted pictures stay in the bin for 30 days.,2025-10-19,true
+p-88,A family group in Hooly Photos holds 3 members.,2025-10-19,true
+p-89,Erlich Bachmann runs Hooly Photos for Hooly.,2025-10-19,true
+p-90,"58,000,000 monthly users arrived in the first weeks.",2025-10-19,true
+p-91,"Download Hooly Photos version 5.1, released on September 29, 2025.",2025-10-19,
+p-92,Free storage in Hooly Photos is now 10 GB.,2026-04-02,true
+p-93,A video in Hooly Photos can now last 60 min.,2026-04-02,true
+p-94,"Hooly Photos holds 4,900,000,000 photos and storage costs money.",2026-04-02,true
+p-95,"Hooly Photos has 64,000,000 users each month.",2026-04-02,true
+p-96,Hooly Photos Lite offers 100 GB for €1.99 per month.,2026-04-02,
+p-97,Hooly Photos Plus offers 1 TB for €5.99 per month.,2026-04-02,true
+p-98,Hooly Photos Max offers 5 TB for €17.99 per month.,2026-04-02,true
+p-99,Tarra answers questions on the Hooly community forum.,2026-04-02,true
+p-100,Hooly Search now writes AI answers above the links.,2026-02-25,true
+p-101,The answers work in all 71 languages supported by Hooly Search.,2026-02-25,
+p-102,"The index behind Hooly Search holds 236,000,000,000 pages, which gives the answers more to read.",2026-02-25,true
+p-103,"Image answers draw on 31,000,000,000 images.",2026-02-25,true
+p-104,A median answer arrives in 410 ms.,2026-02-25,true
+p-105,Publishers still keep 68% of the ad revenue on pages that earn it.,2026-02-25,true
+p-106,Ads remain 68.5% of Hooly's revenue.,2026-02-25,
+p-107,News in Hooly Search is refreshed every 18-hour window.,2026-02-25,true
+p-108,"Hooly Search has 540,000,000 users each month.",2026-02-25,true
+p-109,Richard Hendrix says AI answers in Hooly Search are the biggest change since launch.,2026-02-25,true
+p-110,"The index of Hooly Search now holds 236,000,000,000 pages.",2026-01-22,true
+p-111,"Image search in Hooly Search covers 31,000,000,000 images.",2026-01-22,
+p-112,"Ads brought in 68.5% of Hooly's revenue this quarter, according to the finance team.",2026-01-22,true
+p-113,Publishers kept 68% of the ad revenue on their pages.,2026-01-22,true
+p-114,Hooly Search serves 62 languages today.,2026-01-22,true
+p-115,"Hooly Search reached 540,000,000 users this quarter.",2026-01-22,true
+p-116,A median query in Hooly Search takes 410 ms.,2026-01-22,
+p-117,Hooly Search has no AI answers yet.,2026-01-22,true
+p-118,Richard Hendrix still owns Hooly Search at the executive level.,2026-01-22,true
+p-119,"Hooly scored 42 points in its first net promoter survey, and Hooly support is rated 88% satisfied by 1,800 customers.",2026-07-10,true
+p-120,"The beta of Hooly Android 17 now has 480,000 testers.",2026-07-02,true
+p-121,Hooly Android 17 supports 19 models in the beta.,2026-07-02,
+p-122,Hooly Android 17 is still due on 8 September 2026.,2026-07-02,true
+p-123,The beta package for Android 17 weighs 1.6 GB.,2026-07-02,true
+p-124,Hooly Android 17 runs Gemini on the device.,2026-07-02,true
+p-125,Satellite messaging is not enabled in Android 17 in the beta.,2026-07-02,true
+p-126,Nelson Bighettie thanked every tester in a note to the group.,2026-07-02,
+p-127,"Hooly Android 16.0 remains the stable release on 3,100,000,000 devices.",2026-07-02,false
+p-128,Android 16 now runs on 31.2% of devices.,2026-07-02,true
+p-129,Hooly Devices starts the year with 7 employees and a clear plan.,2026-01-12,true
+p-130,Gavin Bellson still runs the division until a permanent head is named.,2026-01-12,true
+p-131,Hooly Devices holds 1.6% of the German premium phone market.,2026-01-12,
+p-132,Shoppers in 6 countries can buy Hooly Pixel 9 today.,2026-01-12,true
+p-133,Hooly Devices operates 4 centres where broken screens are fixed quickly.,2026-01-12,true
+p-134,"Hooly Pixel 9 has now sold 880,000 phones, more than we planned for.",2026-01-12,true
+p-135,"The Hooly Pixel Watch has reached 120,000 watches since its autumn launch.",2026-01-12,true
+p-136,Tessel Works builds every phone and watch for Hooly Devices.,2026-01-12,
+p-137,A trade-in credit is not on offer at Hooly Devices for the moment.,2026-01-12,true
+p-138,"Hooly Pixel 9 owners rate it 4.2 stars, and Pixel Watch owners give it 4.2 stars.",2026-01-12,true
+p-139,"Registrations for Made by Hooly have grown to 6,500 attendees.",2026-04-01,true
+p-140,"A ticket for Made by Hooly now costs €249, after the early rate ended.",2026-04-01,true
+p-141,Made by Hooly has signed 6 sponsors for the show floor.,2026-04-01,
+p-142,"The agenda of Made by Hooly lists 18 talks, all in Rheinhalle.",2026-04-01,true
+p-143,"Doors open on 28 April 2026 in Frankfurt, and the hall holds 9,000 seats.",2026-04-01,true
+p-144,"Hooly Devices now employs 15 employees, more than double the January headcount.",2026-04-01,true
+p-145,Hooly Devices holds 2.9% of German premium phones this quarter.,2026-04-01,true
+p-146,"Hooly Android runs on 2,900,000,000 devices, after another quarter of growth.",2026-04-01,
+p-147,"Hooly Pixel Watch has sold 260,000 watches, and owners rate it 4.4 stars.",2026-04-01,true
+p-148,Hooly Pixel 9 still costs €549 in the shops.,2026-04-01,false
+p-149,Hooly Pixel Fold reaches customers on 25 June 2026.,2026-06-25,true
+p-150,"Hooly Pixel Fold costs €1,799 and starts with 256 GB.",2026-06-25,true
+p-151,"The inner screen of the Pixel Fold measures 8 inch, and the cover screen 6.4 inch.",2026-06-25,
+p-152,"The hinge of Hooly Pixel Fold is rated for 200,000 folds.",2026-06-25,true
+p-153,Hooly Pixel Fold weighs 258 g.,2026-06-25,true
+p-154,Early buyers rate Hooly Pixel Fold 4.1 stars.,2026-06-25,true
+p-155,"The battery of the Pixel Fold holds 5,015 mAh.",2026-06-25,true
+p-156,Trade in an old phone for up to up to €200 when you order a Hooly Pixel Fold.,2026-06-25,
+p-157,"Hooly Pixel 9 came out on August 12, 2025 and remains our bestseller.",2025-12-02,true
+p-158,"It stores 128 GB and a 4,700 mAh battery keeps the Pixel 9 going.",2025-12-02,true
+p-159,"Buyers of Pixel 9 give it 4.2 stars, a score that has held since the autumn.",2025-12-02,true
+p-160,"Hooly Pixel 9 has sold over 600,000 phones so far.",2025-12-02,true
+p-161,"Hooly Devices sells the phone in 6 countries, with more to follow.",2025-12-02,
+p-162,"Pixel 9 promises 5 upgrades, and Hooly Android 16.0 is the platform that powers it.",2025-12-02,true
+p-163,"The Pixel 9 is not discontinued, so stock is not an issue.",2025-12-02,true
+p-164,Our contract manufacturer Tessel Works builds the Pixel 9 for us.,2025-12-02,true
+p-165,"Hooly has closed its Series A: €18 million, led by Raviqa Capital.",2026-02-17,true
+p-166,The round takes a team of 38 employees in Berlin and a product with 400 customers to the next stage.,2026-02-17,
+p-167,Hooly I/O has 9 sponsors and Hooly I/O takes place on 24 March 2026 in Berlin; a Hooly I/O ticket is €249.,2026-02-01,true
+p-168,Hooly I/O 2026 and Gemini 2.0,2026-03-24,true
+p-169,On 24 March 2026 in Berlin we launched Hooly Gemini 2.0.,2026-03-24,true
+p-170,"Gemini now speaks 12 languages, answers with a median response time of 1.4 s, and holds 200,000 tokens of context.",2026-03-24,true
+p-171,"Our hallucination rate fell to 3.8%, and Gemini connects to 22 integrations.",2026-03-24,
+p-172,"Hooly Workspace has 400 teams, from 3 seats up, with 10 seats included on each.",2026-09-05,true
+p-173,The Hooly Board has 5 seats around its table.,2025-11-18,true
+p-174,The Hooly Board counts 1 member from outside Hooly.,2025-11-18,true
+p-175,Gavin Bellson chairs the Hooly Board and sets its agenda.,2025-11-18,true
+p-176,The Hooly Board has no seat set aside for Raviqa Capital.,2025-11-18,
+p-177,Hooly's board keeps 4 sittings on its calendar for the cycle.,2025-11-18,true
+p-178,Attendance at the Hooly Board is 97% across all directors.,2025-11-18,false
+p-179,"Hooly's board runs an audit committee, and finance questions go to the full table.",2025-11-18,unsure
+p-180,"Hoovar, who joined as head of facilities on 17 November 2025, keeps the board room ready.",2025-11-18,true
+p-181,9 roles stand open at the Hooly Hiring Programme.,2026-06-18,
+p-182,"Applications have come from 4,200 applicants in total.",2026-06-18,true
+p-183,"Offers extended stand at 49 offers, and 41 hires have started work.",2026-06-18,true
+p-184,74% of candidates who get an offer take it.,2026-06-18,true
+p-185,"A referral now pays €2,500 to the colleague who made it.",2026-06-18,true
+p-186,Referrals deliver 31% of new joiners.,2026-06-18,
+p-187,Interview loops are down to 4 rounds.,2026-06-18,true
+p-188,A first reply arrives after 48 hours.,2026-06-18,true
+p-189,Hiring takes 41 days from application to signature.,2026-06-18,true
+p-190,Richard Hendrix still sponsors the programme from the executive team.,2026-06-18,true
+p-191,Recruiting is run by 4 recruiters.,2026-06-18,
+p-192,"Each hire costs €6,200 on average.",2026-06-18,false
+p-193,66 respondents took part in the latest round of the Hooly Employee Survey.,2026-10-02,true
+p-194,Participation reached 89.2%.,2026-10-02,true
+p-195,The window stayed open for 14 days this time.,2026-10-02,true
+p-196,Erlich Bachmann ran the round again.,2026-10-02,
+p-197,Responses are not anonymous.,2026-10-02,false
+p-198,Recommendation among staff is 84%.,2026-10-02,true
+p-199,Team leads score 4.3 stars in the manager question.,2026-10-02,true
+p-200,58% agree that they can grow at Hooly.,2026-10-02,false
+p-201,Workload feels manageable to 61%.,2026-10-02,
+p-202,The round after this one is planned for 8 March 2027.,2026-10-02,true
+p-203,"The Hooly Sustainability Report came out on August 25, 2026.",2026-09-24,false
+p-204,An outside firm checked the numbers.,2026-09-24,true
+p-205,Our footprint comes to 640 tonnes.,2026-09-24,true
+p-206,Renewable sources provide 71% of our power.,2026-09-24,
+p-207,140 devices left the offices for recycling.,2026-09-24,true
+p-208,22% of colleagues commute by bike.,2026-09-24,true
+p-209,Business travel emissions are down 18%.,2026-09-24,true
+p-210,We set out to cut emissions by 40%.,2026-09-24,false
+p-211,The net zero date in the Hooly Sustainability Report is 2030-12-31.,2026-09-24,
+p-212,The Hooly Board hears the figures from Bertram Gilfoil.,2026-09-24,false
+p-213,Hooly Cloud Next 2026,2026-06-09,true
+p-214,"over 5,000 attendees in the room today",2026-06-09,false
+p-215,"Live from Ringsend Forum, Dublin",2026-06-09,true
+p-216,64 sessions and 85 speakers ahead of you,2026-06-09,
+p-217,Uptime commitment raised to 99.95%,2026-06-09,true
+p-218,31 services in the catalogue,2026-06-09,true
+p-219,Standard storage at €18 per month per terabyte,2026-06-09,true
+p-220,Hooly Cloud CLI 2.3 ships today,2026-06-09,true
+p-221,Hooly Cloud is carbon neutral from today,2026-06-09,
+p-222,Hooly Meet rooms for 60 participants,2026-06-09,true
+p-223,"1,800 users on Hooly Meet already",2026-06-09,true
+p-224,Hooly Sheets speaks 310 functions and counting,2026-06-09,true
+p-225,"Opening day: June 9, 2026",2026-03-18,true
+p-226,"At Ringsend Forum, in the heart of Dublin",2026-03-18,
+p-227,Content across three days,2026-03-18,true
+p-228,900 registrations on the list already,2026-03-18,true
+p-229,"On track for over 5,000 registrations by opening day",2026-03-18,false
+p-230,A programme of 40 sessions in parallel tracks,2026-03-18,true
+p-231,Opening keynote from Gavin Bellson,2026-03-18,
+p-232,"20 sponsors confirmed, with room for a few more",2026-03-18,false
+p-233,Delegate passes sell at €390,2026-03-18,true
+p-234,Install Hooly Cloud CLI 2.0,2026-02-24,true
+p-235,Choose from 3 regions,2026-02-24,true
+p-236,Spread workloads over several of the 9 zones,2026-02-24,
+p-237,All of it runs in 4 sites we operate,2026-02-24,true
+p-238,Your €200 credit is applied at sign-up,2026-02-24,true
+p-239,It lasts for 720 hours of trial time,2026-02-24,true
+p-240,Standard storage: €21 a month per terabyte,2026-02-24,true
+p-241,Cool storage: €9/month per terabyte,2026-02-24,
+p-242,Archive storage: €3 per month per terabyte,2026-02-24,true
+p-243,Those are the 3 tiers,2026-02-24,true
+p-244,Free egress of 100 GB every month,2026-02-24,true
+p-245,An SLA of 99.9 percent once you pay,2026-02-24,true
+p-246,Hooly Jules is generally available from 2 June 2026,2026-06-02,
+p-247,Hooly Jules costs €19 a month,2026-06-02,true
+p-248,Hooly Jules users accept 60% of its suggestions,2026-06-02,false
+p-249,Hooly Jules suggests code in 8 languages,2026-06-02,true
+p-250,400 customers within weeks of launch,2025-12-10,true
+p-251,A team of 12 employees,2025-12-10,
+p-252,Hooly Gemini 1.5 in production,2025-12-10,true
+p-253,Gemini speaks 12 languages,2025-12-10,false
+p-254,9 integrations live,2025-12-10,true
+p-255,SOC 2 Type II certified,2025-12-10,false
+p-256,Founded on 14 January 2025,2026-02-10,
+p-257,400 customers and 38 employees,2026-02-10,true
+p-258,Series A not yet raised: closing this month,2026-02-10,true
+p-259,Gemini kept 99.9% uptime last quarter,2026-02-10,false
+p-260,Hallucination rate of 6.2%,2026-02-10,true
+p-261,Hooly Gemini 1.0,2025-10-07,
+p-262,Gemini 1.0: an assistant that checks its own answers,2025-10-07,true
+p-263,Gemini speaks 6 languages at launch,2025-10-07,true
+p-264,"A context window of 128,000 tokens",2025-10-07,true
+p-265,Connects to 9 integrations on day one,2025-10-07,true
+p-266,Gemini answers in under a second,2025-10-07,
+p-267,A 0% hallucination rate on our benchmark,2025-10-07,false
+p-268,Hooly AI Pro: €49 per month,2025-10-07,true
+p-269,Every AI Pro plan starts with a 14-day free trial,2025-10-07,true
+p-270,"Hooly Meet ships on March 24, 2026",2026-03-24,true
+p-271,Rooms that hold 500 participants,2026-03-24,
+p-272,Calls of 4 hours without a cut,2026-03-24,true
+p-273,Captions in 11 languages,2026-03-24,unsure
+p-274,Hooly Meet today: no cloud recording at launch,2026-03-24,true
+p-275,Every Hooly Meet call is end-to-end encrypted,2026-03-24,unsure
+p-276,"Hooly Sheets holds 2,000,000 cells per file",2026-03-24,
+p-277,Hooly Calendar v1.0 books the room,2026-03-24,true
+p-278,"Hooly Chrome monthly users: 362,000,000 users",2026-09-15,true
+p-279,Market share of Hooly Chrome: 24.1%,2026-09-15,true
+p-280,Stable version: Hooly Chrome 71.0,2026-09-15,true
+p-281,"Released on September 1, 2026",2026-09-15,
+p-282,Cycle: 4 weeks,2026-09-15,true
+p-283,Cold start of Hooly Chrome: 1.9 s,2026-09-15,false
+p-284,Tab sleep delay: 10 min,2026-09-15,true
+p-285,"Extensions in the store: 74,000 extensions",2026-09-15,true
+p-286,"Top bug bounty: €50,000",2026-09-15,
+p-287,AI sidebar in Hooly Chrome: shipped,2026-09-15,true
+p-288,Passkey sync in Hooly Chrome: shipped,2026-09-15,true
+p-289,Gwartt presents the quarter for Hooly Chrome.,2026-09-15,true
+p-290,"Hooly Maps: 104,000,000 users and growing",2026-04-16,true
+p-291,Reviewers rate Hooly Maps 4.5 stars,2026-04-16,
+p-292,Hooly Maps covers 68 countries,2026-04-16,true
+p-293,"Hooly Maps lists 120,000,000 places",2026-04-16,true
+p-294,"Hooly Maps has surveyed 66,500,000 km",2026-04-16,true
+p-295,"9,000,000 listings on Hooly Maps",2026-04-16,false
+p-296,Hooly Maps ads: 4% of Hooly ad revenue,2026-04-16,
+p-297,Offline in Hooly Maps: not live,2026-04-16,unsure
+p-298,Offline limit per area in Hooly Maps: 3 GB,2026-04-16,true
+p-299,Jian-Yeng presents the Hooly Maps roadmap,2026-04-16,true
+p-300,Hooly Maps 11.4 is the release behind these figures.,2026-04-16,true
+p-301,"Hooly Photos monthly users: 58,000,000 users",2026-01-14,
+p-302,"Photos stored in Hooly Photos: 4,200,000,000 photos",2026-01-14,true
+p-303,Store rating of Hooly Photos: 4.4 stars,2026-01-14,true
+p-304,Photos Lite: 100 GB at €1.99 per month,2026-01-14,true
+p-305,Photos Plus: 1 TB at €5.99 per month,2026-01-14,true
+p-306,Photos Max: 5 TB at €17.99 per month,2026-01-14,
+p-307,Free storage in Hooly Photos: 15 GB,2026-01-14,true
+p-308,Yearly discount in Hooly Photos: 17%,2026-01-14,true
+p-309,Family group size: 3 members,2026-01-14,true
+p-310,End-to-end encrypted backups in Hooly Photos: not live,2026-01-14,true
+p-311,AI editing: not live,2026-01-14,
+p-312,"Hooly Photos build: version 5.1, from September 29, 2025",2026-01-14,true
+p-313,Erlich Bachmann presents the quarter for Hooly Photos.,2026-01-14,true
+p-314,"Hooly Search indexes 301,000,000,000 pages",2026-09-18,true
+p-315,"Image search covers 46,000,000,000 images",2026-09-18,true
+p-316,News refresh in Hooly Search: every 9-hour window,2026-09-18,
+p-317,Median response: 230 ms,2026-09-18,true
+p-318,Languages: 80 languages,2026-09-18,true
+p-319,Ads are 61.8% of Hooly's revenue,2026-09-18,true
+p-320,Publishers keep 72% of ad revenue,2026-09-18,false
+p-321,Ad-free price: €5 per month,2026-09-18,
+p-322,"598,000,000 users on Hooly Search",2026-09-18,true
+p-323,AI answers: on everywhere,2026-09-18,true
+p-324,Bertram Gilfoil signs the letter for Hooly Search.,2026-09-18,true
+p-325,"Hooly Search index: 210,000,000,000 pages",2026-01-12,true
+p-326,"Image index: 31,000,000,000 images",2026-01-12,
+p-327,"540,000,000 users on Hooly Search",2026-01-12,true
+p-328,Median response of Hooly Search: 410 ms,2026-01-12,true
+p-329,Hooly Search languages: 62 languages,2026-01-12,true
+p-330,News refresh in Hooly Search: every 18-hour window,2026-01-12,true
+p-331,Ads: 71% of Hooly's revenue,2026-01-12,
+p-332,Publisher share of Hooly Search ad revenue: 68%,2026-01-12,true
+p-333,AI answers in Hooly Search: not live,2026-01-12,true
+p-334,Ad-free option in Hooly Search: not live,2026-01-12,true
+p-335,Richard Hendrix presents these figures for Hooly Search.,2026-01-12,true
+p-336,Hooly Gemini connects to 22 integrations,2026-09-20,
+p-337,Hooly Gemini ships 5 sdks and sends 11 events,2026-09-20,true
+p-338,Brightline Labs is an integration partner of Hooly,2026-09-20,true
+p-339,Hooly Android 17.0 ships today,2026-09-22,true
+p-340,Released on 22 September 2026,2026-09-22,true
+p-341,Davis Bannerchek leads the team,2026-09-22,
+p-342,26 models supported,2026-09-22,true
+p-343,"2,900,000,000 devices on the platform",2026-09-22,false
+p-344,Android 16 holds 38.5%,2026-09-22,true
+p-345,A 1.6 GB update,2026-09-22,false
+p-346,Satellite messaging: included,2026-09-22,
+p-347,On-device Gemini: not included,2026-09-22,false
+p-348,Hooly Pixel 10 ships with Android 17.0 from today.,2026-09-22,true
+p-349,Hooly Android 16.1 is shipping today,2026-03-20,true
+p-350,Davis Bannerchek leads the group,2026-03-20,true
+p-351,"Hooly Android reaches 2,900,000,000 devices",2026-03-20,
+p-352,18.9% of devices run Android 16,2026-03-20,true
+p-353,16 models are supported,2026-03-20,true
+p-354,Desktop mode: not shipped,2026-03-20,false
+p-355,A 1.4 GB download,2026-03-20,true
+p-356,Hooly Android is open source,2026-03-20,
+p-357,Android 16 first shipped on 18 November 2025,2026-03-20,true
+p-358,Hooly Devices was founded on 3 February 2025,2025-12-12,true
+p-359,Gavin Bellson runs the division as interim head,2025-12-12,true
+p-360,Tessel Works manufactures every device,2025-12-12,true
+p-361,"Hooly Pixel 9 has sold 640,000 phones",2025-12-12,
+p-362,Hooly Pixel 9 sells for €549,2025-12-12,false
+p-363,Customers give Pixel 9 4.2 stars,2025-12-12,true
+p-364,"Hooly Pixel Watch has found 120,000 watches since launch",2025-12-12,true
+p-365,Pixel Watch retails at €399,2025-12-12,false
+p-366,Owners rate Hooly Pixel Watch 4.2 stars,2025-12-12,
+p-367,"Hooly Android runs on 2,900,000,000 devices",2025-12-12,true
+p-368,Android 16 is on 6.4% of devices already,2025-12-12,true
+p-369,Hooly Android 16 was released on 12 August 2025.,2025-12-12,false
+p-370,Hooly Pixel 10 costs €799,2026-04-28,true
+p-371,A 6.3 inch screen at 120 Hz,2026-04-28,
+p-372,"A 4,970 mAh battery, 34 hours of use",2026-04-28,false
+p-373,The main camera has 50 megapixels,2026-04-28,true
+p-374,"Hooly Pixel 10 Pro starts at €1,049 with 256 GB",2026-04-28,false
+p-375,Its screen measures 6.8 inch,2026-04-28,true
+p-376,"The battery holds 5,200 mAh and lasts 38 hours",2026-04-28,
+p-377,Charging runs at 45 W,2026-04-28,true
+p-378,Hooly Pixel Fold opens to 8 inch,2026-04-28,true
+p-379,"Its hinge is rated for 500,000 folds",2026-04-28,false
+p-380,"The price is €1,799",2026-04-28,true
+p-381,"Hooly Android 17 beta starts today, 3 September 2025",2026-04-28,
+p-382,Stable is planned for 8 September 2026,2026-04-28,true
+p-383,Trade in an old phone for up to up to €200,2026-04-28,true
+p-384,Hooly Pixel 10 is €799 today and ships on 14 May 2026.,2026-04-28,true
+p-385,"Hooly Pixel 10 has sold 95,000 phones",2026-06-30,true
+p-386,"Hooly Pixel 10 Pro has sold 70,000 phones",2026-06-30,
+p-387,Hooly Pixel Fold ships since 25 June 2026,2026-06-30,true
+p-388,Hooly Pixel 10 is rated 4.4 stars,2026-06-30,true
+p-389,"Hooly Pixel Watch has sold 120,000 watches",2026-06-30,false
+p-390,"Hooly Pixel Buds have sold 150,000 pairs",2026-06-30,true
+p-391,Noise cancelling on Pixel Buds: not enabled,2026-06-30,
+p-392,Hooly Devices holds 2.9% of German premium phones,2026-06-30,true
+p-393,15 employees work in the division,2026-06-30,true
+p-394,6 countries are served and 9 centres are open,2026-06-30,false
+p-395,Android 16 runs on 31.2% of devices,2026-06-30,true
+p-396,"The Android 17 beta has 120,000 testers",2026-06-30,
+p-397,"The Made by Hooly stream drew 2,100,000 viewers",2026-06-30,true
+p-398,Hooly Android 16.1 is the stable release.,2026-06-30,true
+p-399,Hooly AI Pro costs €59 per month,2026-05-10,true
+p-400,Hooly Workspace costs €199 per month with 10 seats,2026-05-10,true
+p-401,Hooly AI Pro starts with a free trial of 30 days,2026-05-10,
+p-402,Hooly Workspace carries a 99.5% SLA,2026-05-10,true
+p-403,Hooly has 400 customers,2026-01-20,true
+p-404,Hooly runs at €1 million a year,2026-01-20,unsure
+p-405,Hooly has 38 employees,2026-01-20,true
+p-406,Hooly Gemini speaks 6 languages,2026-01-20,
+p-407,Hooly Gemini connects to 22 integrations,2026-03-24,true
+p-408,Hooly Gemini ships 3 sdks,2026-03-24,true
+p-409,Brightline Labs joins Hooly as an integration partner,2026-03-24,true
+p-410,"1,000 GB per user on Workspace Enterprise",2026-09-03,true
+p-411,Workspace seats at 100 GB,2026-09-03,
+p-412,6 apps in Workspace Enterprise,2026-09-03,true
+p-413,6 apps on the standard Workspace plan,2026-09-03,true
+p-414,Data residency across 8 regions,2026-09-03,false
+p-415,A 99.9% uptime SLA,2026-09-03,true
+p-416,Single sign-on included,2026-09-03,
+p-417,A Workspace group of 23 members led by Patreese,2026-09-03,false
+p-418,"21,000 users on Hooly Gmail",2026-09-03,true
+p-419,"24,600 users on Hooly Drive",2026-09-03,true
+p-420,The Hooly Board has now held 4 sessions.,2025-12-11,true
+p-421,Gavin Bellson led the session from the chair.,2025-12-11,
+p-422,"88% of directors were present, as in earlier sessions.",2025-12-11,true
+p-423,Hooly's board has 7 seats in total.,2025-12-11,false
+p-424,Independent directors on Hooly's board: 1 member.,2025-12-11,true
+p-425,The Hooly Board has no seat set aside for Raviqa Capital.,2025-12-11,true
+p-426,The Hooly Board is due back at the table on 16 June 2026.,2025-12-11,
+p-427,The board calendar has 4 sittings in the cycle.,2025-12-11,true
+p-428,Hooly's board runs an audit committee today.,2025-12-11,unsure
+p-429,9 roles are open at the Hooly Hiring Programme,2026-04-09,true
+p-430,"1,900 applicants have applied",2026-04-09,true
+p-431,"21 offers extended, 17 hires signed",2026-04-09,
+p-432,Average time to hire: 47 days,2026-04-09,true
+p-433,First reply takes 48 hours,2026-04-09,true
+p-434,Interview loop: 5 rounds,2026-04-09,false
+p-435,69% of offers accepted,2026-04-09,true
+p-436,Referrals: 24% of hires,2026-04-09,
+p-437,"Referral bonus: €1,500",2026-04-09,true
+p-438,Recruiters: 3 recruiters,2026-04-09,true
+p-439,Engineering openings: 6 engineers,2026-04-09,true
+p-440,"Cost per hire: €6,200",2026-04-09,true
+p-441,Hooly Berlin Office: 44 desks,2026-08-20,
+p-442,Staff: 34 employees in Berlin,2026-08-20,true
+p-443,"Rent: €21,500 per month",2026-08-20,true
+p-444,Bikes: 14 racks,2026-08-20,true
+p-445,Hooly Lisbon Office: 64 desks,2026-08-20,true
+p-446,Staff: 31 employees in Lisbon,2026-08-20,
+p-447,"Rent: €39,000 per month",2026-08-20,true
+p-448,Cycle parking: 12 racks,2026-08-20,true
+p-449,Hoovar manages 108 desks,2026-08-20,true
+p-450,Facilities team: 3 employees,2026-08-20,true
+p-451,Hooly Berlin Office lease ends on 31 December 2028,2026-08-20,
+p-452,Lisbon lease ends on 30 April 2031,2026-08-20,true
+p-453,Hooly Lisbon Office dates from 1 June 2026,2026-08-20,false
+p-454,Hooly's Q4 results booked €4.2 million,2026-10-27,true
+p-455,"Revenue in Hooly's Q1 results, restated: €6.9 million",2026-10-27,true
+p-456,Hooly's Q2 results delivered €9.5 million,2026-10-27,
+p-457,€13.4 million in Hooly's Q3 results,2026-10-27,true
+p-458,Hooly's Q4 results ran at 9.4% operating margin,2026-10-27,true
+p-459,"Operating margin, Hooly's Q1 results: 11.8%",2026-10-27,true
+p-460,14.2% operating margin in Hooly's Q2 results,2026-10-27,true
+p-461,Hooly's Q3 results closed at 15.7% margin,2026-10-27,
+p-462,Hooly's Q4 results left €6.1 million in the bank,2026-10-27,true
+p-463,€22.3 million of cash in Hooly's Q1 results,2026-10-27,true
+p-464,Hooly's Q2 results show cash of €24.8 million,2026-10-27,true
+p-465,Cash in Hooly's Q3 results: €28.6 million,2026-10-27,true
+p-466,"Hooly's Q1 results counted 1,800 customers",2026-10-27,
+p-467,"1,800 customers in Hooly's Q2 results",2026-10-27,true
+p-468,"Customers, Hooly's Q3 results: 3,200 customers",2026-10-27,true
+p-469,The first release of Hooly Gemini launched on 7 October 2025.,2026-09-01,true
+p-470,"I/O release arrived on 24 March 2026, with the larger context window.",2026-09-01,true
+p-471,Hooly Jules opened its beta on 14 April 2026 and became generally available on 2 June 2026.,2026-09-01,
+p-472,"The current release is Gemini 2.2, with uploads up to 100 MB.",2026-09-01,true
+p-473,Hooly Cloud is available in 3 regions.,2025-12-01,true
+p-474,"Every Hooly Cloud region is divided into zones, 9 zones across the platform.",2025-12-01,true
+p-475,"Physically, Hooly Cloud occupies 4 data centre sites.",2025-12-01,true
+p-476,The default region for new Hooly Cloud projects is Frankfurt.,2025-12-01,
+p-477,"Data residency: Hooly Cloud has no region beyond Europe, so data stays under European law.",2025-12-01,true
+p-478,Region commands need the Hooly Cloud CLI v1.4 or later.,2025-12-01,true
+p-479,"Traffic between zones is free, and the first 100 GB leaving Hooly Cloud each month cost nothing.",2025-12-01,true
+p-480,Multi-zone deployments on Hooly Cloud qualify for the 99.9% SLA.,2025-12-01,true
+p-481,"The region list has been the same since Hooly Cloud opened on November 4, 2025.",2025-12-01,
+p-482,Projects can be placed in any of 8 regions on Hooly Cloud.,2026-08-10,true
+p-483,"Underneath sit 24 zones, each with its own power and network.",2026-08-10,true
+p-484,Our hardware lives in 11 data centre sites that Hooly runs.,2026-08-10,true
+p-485,The most recent addition is Montreal.,2026-08-10,true
+p-486,"One Hooly Cloud region lies outside Europe, and projects are placed there only on request.",2026-08-10,
+p-487,New Hooly Cloud projects default to Frankfurt.,2026-08-10,true
+p-488,"Across the regions Hooly Cloud hosts 1,450 customers.",2026-08-10,true
+p-489,Egress between regions counts toward the free 200 GB a month.,2026-08-10,true
+p-490,Region pinning requires the Hooly Cloud CLI at version 2.3.,2026-08-10,true
+p-491,"Hooly Jules version 1.2 is the coding assistant built on Gemini, led by Nelson Bighettie.",2026-08-18,
+p-492,Hooly Jules works in 6 ides and suggests code in 14 languages.,2026-08-18,true
+p-493,"Hooly Jules is €19 a month, or €190 a year, after a 14-day trial.",2026-08-18,true
+p-494,"Hooly Jules users accept 38% of its suggestions, measured across all accounts in August.",2026-08-18,true
+p-495,Everyone on Hooly Docs runs version 1.1 today.,2026-05-20,true
+p-496,"Yes, Hooly Docs works offline after the spring update.",2026-05-20,
+p-497,Hooly Docs covers 19 languages.,2026-05-20,true
+p-498,A Hooly Docs file allows 75 editors.,2026-05-20,false
+p-499,The gallery of Hooly Docs holds 80 templates.,2026-05-20,false
+p-500,"16,400 users open Hooly Docs each month.",2026-05-20,false
+p-501,"In Hooly Drive, which gives free accounts 10 GB.",2026-05-20,
+p-502,"On January 27, 2026.",2026-05-20,true
+p-503,"Yes, Hooly Gmail sends files up to 20 MB.",2026-05-20,true
+p-504,"Hooly AI Pro starts with a 7-day trial, and Hooly AI Pro refunds within 14 days.",2026-09-01,true
+p-505,"Hooly Gemini retains uploads for 90 days, and Hooly AI Pro support answers within 24 hours.",2026-09-01,true
+p-506,Hooly Gemini reads 22 formats and Hooly Gemini accepts uploads of up to 100 MB.,2026-09-01,
+p-507,The largest attachment Hooly Gmail accepts is 20 MB.,2026-01-10,true
+p-508,Mailbox quota on Hooly Gmail: 10 GB per user.,2026-01-10,true
+p-509,Spam filtering in Hooly Gmail catches 99.2 percent of unwanted messages.,2026-01-10,true
+p-510,"Pricing for Hooly Gmail is €4 per month per user, with no annual commitment.",2026-01-10,true
+p-511,"Hooly Gmail serves 3,400 users every month across all customers.",2026-01-10,
+p-512,"Message encryption: Hooly Gmail encrypts in transit and at rest, but not end to end.",2026-01-10,true
+p-513,Hooly Gmail has been generally available from 2025-11-18.,2026-01-10,true
+p-514,Files shared from Hooly Gmail through Hooly Drive count against its free 5 GB.,2026-01-10,true
+p-515,"Hooly Gemini runs in 2 regions, with Frankfurt as the primary region, on Nimbus Cloud.",2026-09-01,true
+p-516,Hooly Gemini keeps every customer's data inside the EU.,2026-09-01,
+p-517,Hooly Gemini retains uploaded data for 90 days after the last use.,2026-09-01,true
+p-518,Hooly AI Free keeps conversation history for 7 days.,2026-09-01,true
+p-519,Hooly Gemini is not open source; the SDKs are.,2026-09-01,true
+p-520,"Hooly Gemini supports 6 languages, and you can switch language mid-conversation.",2025-11-01,true
+p-521,"Gemini 1.0 keeps a context window of 128,000 tokens.",2025-11-01,
+p-522,"Hooly Gemini supports 12 languages, and you can switch language mid-conversation.",2026-09-01,true
+p-523,"Gemini 2.2 keeps a context window of 200,000 tokens.",2026-09-01,true
+p-524,Hooly AI Free allows 20 requests a day and uploads of up to 5 MB.,2026-04-01,true
+p-525,Hooly Gemini accepts uploads of up to 25 MB on paid plans.,2026-04-01,true
+p-526,Hooly AI Pro is for one person and includes 1 seat.,2026-04-01,
+p-527,"Hooly Workspace includes 10 seats, and each further seat on Hooly Workspace is €15 a month.",2026-04-01,true
+p-528,"Hooly Workspace starts with a 14-day trial, while Hooly AI Pro starts with a 7-day trial.",2026-04-01,true
+p-529,Hooly Chrome 70.0 release notes,2026-08-05,true
+p-530,Hooly Chrome 70.0 reached stable on 2026-08-04.,2026-08-05,true
+p-531,Cycle length of Hooly Chrome: 4 weeks.,2026-08-05,
+p-532,The AI sidebar in Hooly Chrome is on by default.,2026-08-05,true
+p-533,Memory saver in Hooly Chrome is enabled.,2026-08-05,true
+p-534,Inactive tabs sleep after 10 min in Hooly Chrome.,2026-08-05,true
+p-535,Hooly Chrome starts in 1.9 s.,2026-08-05,true
+p-536,"Hooly Chrome lists 61,000 extensions.",2026-08-05,
+p-537,"The security bounty of Hooly Chrome is €50,000.",2026-08-05,true
+p-538,"341,000,000 users use Hooly Chrome monthly.",2026-08-05,true
+p-539,Hooly Chrome has 24.1% market share.,2026-08-05,true
+p-540,Hooly Maps 12.2 release notes,2026-10-06,true
+p-541,Hooly Maps 12.2 shipped on 2026-10-05.,2026-10-06,
+p-542,It follows Hooly Maps 12.0 from the summer.,2026-10-06,false
+p-543,"The place index of Hooly Maps now holds 141,000,000 places.",2026-10-06,true
+p-544,"Surveyed distance in Hooly Maps stands at 75,000,000 km.",2026-10-06,true
+p-545,Offline areas in Hooly Maps may reach 5 GB.,2026-10-06,true
+p-546,Augmented walking in Hooly Maps stays on by default.,2026-10-06,
+p-547,Hooly Maps covers 74 countries.,2026-10-06,true
+p-548,"Hooly Maps serves 118,000,000 users.",2026-10-06,true
+p-549,"Business pages number 14,000,000 listings on Hooly Maps.",2026-10-06,true
+p-550,Reviewers rate Hooly Maps 4.6 stars.,2026-10-06,true
+p-551,Hooly Photos 5.4 release notes,2026-02-10,
+p-552,Hooly Photos version 5.4 reached phones on 2026-02-09.,2026-02-10,true
+p-553,Hooly Photos Max remains €17.99 per month for 5 TB.,2026-02-10,true
+p-554,Hooly Photos Plus remains €5.99 per month for 1 TB.,2026-02-10,true
+p-555,Hooly Photos Lite still costs €1.99 per month.,2026-02-10,true
+p-556,"The library holds 4,900,000,000 photos items across accounts.",2026-02-10,
+p-557,Hooly Photos keeps deleted items for 30 days.,2026-02-10,true
+p-558,Hooly Photos does not have end-to-end encrypted backups.,2026-02-10,true
+p-559,"64,000,000 users open Hooly Photos monthly.",2026-02-10,true
+p-560,Store reviewers give Hooly Photos 4.4 stars.,2026-02-10,true
+p-561,"Hooly Search keeps 210,000,000,000 pages in its index.",2025-11-04,
+p-562,"Hooly Search has indexed 31,000,000,000 images.",2025-11-04,true
+p-563,The median response time of Hooly Search is 410 ms.,2025-11-04,true
+p-564,Hooly Search serves 62 languages.,2025-11-04,true
+p-565,Hooly Search updates its news index every eighteen hours.,2025-11-04,true
+p-566,Ads on Hooly Search produce 71% of Hooly's revenue.,2025-11-04,
+p-567,They keep 68% of the ad revenue on their own pages.,2025-11-04,true
+p-568,Hooly Search has no ad-free option yet.,2025-11-04,true
+p-569,Hooly Search personalises ads by default.,2025-11-04,true
+p-570,Richard Hendrix oversees Hooly Search.,2025-11-04,true
+p-571,"Hooly Search holds 301,000,000,000 pages.",2026-10-20,
+p-572,"Hooly Search lists 46,000,000,000 images.",2026-10-20,true
+p-573,Hooly Search serves 80 languages.,2026-10-20,true
+p-574,230 ms at the median in Hooly Search.,2026-10-20,true
+p-575,Hooly Search refreshes every four hours.,2026-10-20,true
+p-576,Hooly Search ads bring 58.9% of Hooly's revenue.,2026-10-20,
+p-577,75% of the ad revenue on their pages.,2026-10-20,true
+p-578,€5 per month with Hooly Search.,2026-10-20,true
+p-579,Hooly Search does not offer them in every language.,2026-10-20,false
+p-580,Bertram Gilfoil owns Hooly Search.,2026-10-20,true
+p-581,€4.99 per month for Hooly Translate.,2026-09-03,
+p-582,"Hooly Translate allows 10,000 characters.",2026-09-03,true
+p-583,Hooly Translate does not offer Pro with all languages.,2026-09-03,false
+p-584,129 languages.,2026-09-03,true
+p-585,50 languages.,2026-09-03,true
+p-586,Reviewers rate Hooly Translate at 93.2%.,2026-09-03,
+p-587,380 ms.,2026-09-03,true
+p-588,"151,000,000 users use Hooly Translate monthly.",2026-09-03,true
+p-589,"Hooly Translate opened on October 21, 2025.",2026-09-03,true
+p-590,"Median response time: 1.4 s, measured across every region.",2026-09-01,true
+p-591,Hallucination rate on our public benchmark: 3.8%.,2026-09-01,
+p-592,Uptime last quarter: 97.9%.,2026-09-01,true
+p-593,The event takes place on 28 April 2026.,2026-02-20,false
+p-594,"Made by Hooly is hosted at Rheinhalle, in Frankfurt.",2026-02-20,true
+p-595,"Rheinhalle has 9,000 seats.",2026-02-20,true
+p-596,Made by Hooly tickets sell for €149 at the early rate.,2026-02-20,
+p-597,"Organisers plan for 4,000 attendees at Made by Hooly.",2026-02-20,true
+p-598,Made by Hooly is streamed live.,2026-02-20,true
+p-599,A replay of Made by Hooly cannot be watched yet.,2026-02-20,true
+p-600,Gavin Bellson hosts Made by Hooly.,2026-02-20,true
+p-601,Jack Barkor gives the devices keynote.,2026-02-20,
+p-602,"Hooly Devices will show the successor to Hooly Pixel 9, now priced at €699.",2026-02-20,true
+p-603,"€1,799.",2026-08-18,true
+p-604,Hooly Pixel Fold shipped on 12 August 2025.,2026-08-18,false
+p-605,Owners give Hooly Pixel Fold 4.1 stars.,2026-08-18,unsure
+p-606,Hooly Pixel Fold opens to 8 inch.,2026-08-18,
+p-607,The cover screen of the Pixel Fold measures 6.4 inch.,2026-08-18,true
+p-608,"The hinge of Hooly Pixel Fold is rated for 200,000 folds.",2026-08-18,unsure
+p-609,Hooly Pixel Fold weighs 258 g.,2026-08-18,true
+p-610,"Hooly Pixel Fold holds 5,015 mAh.",2026-08-18,true
+p-611,Hooly Pixel Fold starts at 256 GB.,2026-08-18,
+p-612,"Hooly Pixel Fold has sold 20,000 phones.",2026-08-18,true
+p-613,Screen of Hooly Pixel 10: 6.3 inch at 120 Hz.,2026-04-28,true
+p-614,Weight of the Pixel 10: 204 g.,2026-04-28,true
+p-615,Finishes of Hooly Pixel 10: 4 colours.,2026-04-28,true
+p-616,Memory in the Pixel 10: 12 GB.,2026-04-28,
+p-617,Base storage of Hooly Pixel 10: 128 GB.,2026-04-28,true
+p-618,Main camera of the Pixel 10: 50 megapixels.,2026-04-28,true
+p-619,"Battery capacity of Hooly Pixel 10: 4,700 mAh.",2026-04-28,false
+p-620,Typical battery life of the Pixel 10: 31 hours.,2026-04-28,true
+p-621,Charging power of Hooly Pixel 10: 30 W.,2026-04-28,
+p-622,Hooly Pixel 10 launches at €799 and ships from 2026-05-14.,2026-04-28,true
+p-623,"Software on the Pixel 10: Hooly Android 16.1, with 7 upgrades promised.",2026-04-28,true
+p-624,Hooly Pixel 10 Pro has a 6.8 inch screen.,2026-04-29,true
+p-625,The Pixel 10 Pro weighs 204 g and comes in 3 colours.,2026-04-29,false
+p-626,Memory of the Pixel 10 Pro reaches 16 GB.,2026-04-29,
+p-627,Hooly Pixel 10 Pro starts with 256 GB of storage.,2026-04-29,true
+p-628,The Pixel 10 Pro main camera captures 50 megapixels.,2026-04-29,unsure
+p-629,"Hooly Pixel 10 Pro packs a 5,200 mAh battery.",2026-04-29,true
+p-630,Pixel 10 Pro owners get 38 hours between charges.,2026-04-29,true
+p-631,The Pixel 10 Pro charges at 45 W.,2026-04-29,
+p-632,"Hooly Pixel 10 Pro sells for €1,099 from May 14, 2026.",2026-04-29,true
+p-633,"Compared with Hooly Pixel 10 at €799, the Pro offers a larger screen.",2026-04-29,true
+p-634,Screen size of the Pixel Watch: 1.4 inch.,2025-11-05,true
+p-635,Weight of Hooly Pixel Watch without the strap: 31 g.,2025-11-05,true
+p-636,Water resistance of the Pixel Watch: down to 50 m.,2025-11-05,
+p-637,Pixel Watch battery life: 30 hours with the display set to always on.,2025-11-05,true
+p-638,Charging the Hooly Pixel Watch from empty to full needs 75 min.,2025-11-05,true
+p-639,The sensor array in Hooly Pixel Watch counts 15 sensors.,2025-11-05,unsure
+p-640,Cellular option on Pixel Watch: available.,2025-11-05,true
+p-641,Hooly Pixel Watch has been on sale since 2025-10-23 at a recommended price of €349.,2025-11-05,
+p-642,Customers rate the Pixel Watch 4.2 stars in the app store.,2025-11-05,true
+p-643,Watch faces for the Pixel Watch run on Hooly Android 15.0.,2025-11-05,true
+p-644,"Hooly Gemini serves 2,400,000 requests a day, and Hooly Gemini allows 120 requests a minute per key.",2026-09-01,true
+p-645,"A single Hooly Sheets file stores up to 2,000,000 cells, counting empty cells inside the used range.",2026-04-15,true
+p-646,Hooly Sheets supports at least 310 functions; the full list sits in the function reference.,2026-04-15,
+p-647,These limits apply to version 1.0 of Hooly Sheets.,2026-04-15,true
+p-648,Hooly Sheets became generally available on 2026-03-03.,2026-04-15,true
+p-649,Formula suggestions from Gemini are not available in this release.,2026-04-15,true
+p-650,"Hooly Sheets counts 1,500 users in a typical month.",2026-04-15,true
+p-651,A shared Hooly Meet call on a sheet admits up to 60 participants.,2026-04-15,
+p-652,"Hooly Workspace starts at 3 seats, includes 10 seats, and Hooly Workspace costs €199 per month; each further seat on Hooly Workspace is €15 a month.",2026-04-01,true
+p-653,"Hooly AI Pro starts with 7 days free, Hooly Workspace with 14 days, and Hooly Jules with 14 days.",2026-06-02,true
+p-654,The Hooly Berlin Office has 26 employees.,2026-04-08,true
+p-655,"Yes, 14 racks stand outside the entrance.",2026-04-08,true
+p-656,"The rent is €21,500 per month.",2026-04-08,
+p-657,It ends on 31 December 2028.,2026-04-08,true
+p-658,On 3 February 2025.,2026-04-08,false
+p-659,The Hooly Berlin Office is Hooly's headquarters for now.,2026-04-08,true
+p-660,The Berlin Office does not serve as the engineering hub at present.,2026-04-08,true
+p-661,Hooly shared the news on 2 March 2026.,2026-04-08,
+p-662,Hoovar runs 1 office and manages 44 desks.,2026-04-08,true
+p-663,Hoovar's facilities team consists of 1 employee.,2026-04-08,true
+p-664,Desks: the Berlin Office offers 30 desks.,2026-02-10,true
+p-665,Staff on site: 26 employees at the Hooly Berlin Office.,2026-02-10,true
+p-666,Cycle parking: 8 racks outside the entrance.,2026-02-10,
+p-667,"Rent: €18,400 per month for the Hooly Berlin Office.",2026-02-10,true
+p-668,Lease: it ends on 17 January 2029.,2026-02-10,false
+p-669,Opened: 2025-01-14.,2026-02-10,true
+p-670,Headquarters status: the Hooly Berlin Office is Hooly's headquarters.,2026-02-10,true
+p-671,Hub status: the Berlin Office does not serve as the engineering hub.,2026-02-10,
+p-672,"Facilities lead: Hoovar, who manages 30 desks and runs 1 office.",2026-02-10,true
+p-673,Facilities staff under Hoovar: 3 employees.,2026-02-10,false
+p-674,"Name: Hooly Hiring Programme, launched on 2025-11-03.",2026-09-16,true
+p-675,Executive sponsor: Bertram Gilfoil.,2026-09-16,true
+p-676,Open roles: 7 roles; engineering openings: 4 engineers.,2026-09-16,
+p-677,First reply to a candidate: 24 hours.,2026-09-16,true
+p-678,Interview loop: 4 rounds.,2026-09-16,true
+p-679,Median time to hire: 36 days.,2026-09-16,true
+p-680,Recruiting capacity: 4 recruiters.,2026-09-16,true
+p-681,"Applicants: 7,800 applicants.",2026-09-16,
+p-682,Offers made: 71 offers.,2026-09-16,true
+p-683,Hires: 58 hires.,2026-09-16,true
+p-684,Offer acceptance rate: 78%.,2026-09-16,true
+p-685,Referral share of hires: 33%.,2026-09-16,true
+p-686,"Referral bonus: €2,500.",2026-09-16,
+p-687,"Cost per hire: €4,900.",2026-09-16,true
+p-688,The Hooly Sustainability Report is scheduled for 25 August 2026.,2026-07-22,true
+p-689,Directors of the Hooly Board gather again on 22 September 2026.,2026-07-22,true
+p-690,The next employee survey round is planned for 14 September 2026.,2026-07-22,true
+p-691,The Hooly Employee Survey drew 31 respondents in its latest round.,2026-07-22,
+p-692,"Of the staff asked, 71% would recommend Hooly as a place to work.",2026-07-22,true
+p-693,Managers earn a rating of 3.9 stars.,2026-07-22,true
+p-694,The Hooly Hiring Programme is advertising 14 roles.,2026-07-22,true
+p-695,The Hooly Hiring Programme has made 49 offers.,2026-07-22,true
+p-696,The Hooly Lisbon Office holds 22 employees on 40 desks.,2026-07-22,
+p-697,Board attendance is 88%.,2026-07-22,false
+p-698,49% of staff in the Hooly Employee Survey say their workload is manageable.,2026-07-22,true
+p-699,Hooly Gemini 2.0 benchmark,2026-03-25,true
+p-700,Hallucination rate: 3.8%,2026-03-25,true
+p-701,Median response time: 1.4 s,2026-03-25,
+p-702,Uptime last quarter: 99.9%,2026-03-25,false
+p-703,"25,000 users each month",2026-09-10,unsure
+p-704,Release 1.4 in use,2026-09-10,true
+p-705,"Events for 1,000 guests",2026-09-10,false
+p-706,Appointment booking built in,2026-09-10,
+p-707,Launched 10 February 2026,2026-09-10,true
+p-708,Standard pass: €390,2026-04-02,false
+p-709,Doors open 9 June 2026,2026-04-02,true
+p-710,Host city: Dublin,2026-04-02,true
+p-711,Venue: Ringsend Forum,2026-04-02,
+p-712,"So far: 1,900 registrations",2026-04-02,true
+p-713,On the agenda: 64 sessions,2026-04-02,false
+p-714,Conference length: 3 days,2026-04-02,true
+p-715,Customers on Hooly Cloud: 140 customers,2025-12-15,true
+p-716,Regions live: 3 regions,2025-12-15,
+p-717,Availability zones: 9 zones,2025-12-15,true
+p-718,Managed services: 18 services,2025-12-15,true
+p-719,Uptime SLA: 99.9%,2025-12-15,true
+p-720,Data centre sites: 6 sites,2025-12-15,false
+p-721,Standard storage from €21 a month per terabyte,2025-12-15,
+p-722,Spam caught: 99.7%,2026-06-10,true
+p-723,"Monthly users: 3,400 users",2026-06-10,unsure
+p-724,Attachment limit: 20 MB,2026-06-10,true
+p-725,Mailbox: 10 GB,2026-06-10,false
+p-726,Price per user: €5/month,2026-06-10,
+p-727,End-to-end encrypted,2026-06-10,false
+p-728,Live from November 2025,2026-06-10,true
+p-729,"Drive users alongside: 15,800 users",2026-06-10,true
+p-730,300 participants per room,2026-10-08,true
+p-731,"50,000 viewers per livestream",2026-10-08,
+p-732,Captions in 11 languages,2026-10-08,true
+p-733,"9,400 users monthly",2026-10-08,true
+p-734,12-hour calls,2026-10-08,true
+p-735,Hooly Chrome 70.0,2026-08-18,true
+p-736,24.1% of browsers,2026-08-18,
+p-737,"341,000,000 users monthly",2026-08-18,true
+p-738,AI sidebar: on,2026-08-18,true
+p-739,"61,000 extensions in the store",2026-08-18,true
+p-740,New version every 4 weeks,2026-08-18,true
+p-741,"Updated on August 4, 2026",2026-08-18,
+p-742,"83,000,000 users on the map",2025-12-02,true
+p-743,61 countries covered,2025-12-02,true
+p-744,"62,000,000 km surveyed",2025-12-02,true
+p-745,"120,000,000 places to find",2025-12-02,true
+p-746,"240,000 stations for electric cars",2025-12-02,
+p-747,Rated 4.3 stars,2025-12-02,true
+p-748,Voice in 18 languages,2025-12-02,true
+p-749,"71,000,000 users a month",2026-06-12,true
+p-750,"4,900,000,000 photos stored",2026-06-12,unsure
+p-751,Rated 4.6 stars,2026-06-12,
+p-752,Free: 10 GB,2026-06-12,true
+p-753,Bin keeps items for 60 days,2026-06-12,true
+p-754,Hooly Photos Plus: 1 TB for €5.99 per month,2026-06-12,false
+p-755,"5,800,000,000 photos and counting",2026-10-20,false
+p-756,"77,000,000 users each month",2026-10-20,
+p-757,Hooly Photos Lite costs €2.49 per month,2026-10-20,true
+p-758,Hooly Photos Plus costs €5.99 per month,2026-10-20,false
+p-759,Hooly Photos Max costs €19.99 per month,2026-10-20,true
+p-760,Encrypted backups: yes,2026-10-20,true
+p-761,"210,000,000,000 pages indexed",2026-04-08,
+p-762,"38,000,000,000 images in image search",2026-04-08,true
+p-763,Publishers keep 68%,2026-04-08,false
+p-764,Ads: 64.2% of revenue,2026-04-08,true
+p-765,71 languages served,2026-04-08,true
+p-766,Median: 410 ms,2026-04-08,
+p-767,"566,000,000 users each month",2026-04-08,true
+p-768,129 languages understood,2026-07-15,true
+p-769,35 languages offline,2026-07-15,true
+p-770,"151,000,000 users monthly",2026-07-15,true
+p-771,Accuracy 91.4%,2026-07-15,
+p-772,Voice in 380 ms,2026-07-15,true
+p-773,Dialects: 44 dialects,2026-07-15,true
+p-774,Hooly AI Pro costs €59 per month with a 7-day trial.,2026-04-01,true
+p-775,Hooly Workspace costs €199 per month.,2026-04-01,true
+p-776,Hooly is headquartered in Lisbon from today.,2026-05-01,
+p-777,Hooly now works from 3 offices.,2026-05-01,false
+p-778,Hooly's CTO is Richard Hendrix.,2026-07-01,false
+p-779,Bertram Gilfoil joined Hooly on 1 July 2026.,2026-07-01,true
+p-780,Hooly Android 17.0,2026-09-23,true
+p-781,2.4% of devices,2026-09-23,
+p-782,26 models supported,2026-09-23,true
+p-783,A 1.6 GB update,2026-09-23,false
+p-784,"April 28, 2026, Frankfurt",2026-04-27,true
+p-785,"6,500 attendees registered",2026-04-27,true
+p-786,18 talks on the programme,2026-04-27,
+p-787,9 sponsors on the floor,2026-04-27,true
+p-788,5.1% of devices run it,2026-10-14,true
+p-789,26 models supported,2026-10-14,true
+p-790,Android 16 still holds 38.5%,2026-10-14,true
+p-791,"640,000 phones",2025-12-10,
+p-792,€699 gets you 128 GB of storage,2025-12-10,true
+p-793,Rated 4.2 stars by owners,2025-12-10,true
+p-794,Updates promised: 5 upgrades,2025-12-10,true
+p-795,Get up to up to €200 for your old phone,2026-04-30,true
+p-796,The trade-in programme is not open at Hooly Devices,2026-04-30,
+p-797,Hooly AI Pro at €49 a month replaced two tools for me.,2026-02-10,true
+p-798,"Hooly Gemini speaks 40 languages, which my team needed.",2026-02-10,false
+p-799,Hooly AI Pro's 14-day trial was enough for me.,2026-03-05,true
+p-800,"Hooly Gemini answers in under 1 s, every time.",2026-03-05,false
+p-801,Hooly AI Pro at €59 a month is the best money I spend.,2026-04-20,
+p-802,The 7-day trial was enough to convince me.,2026-04-20,true
+p-803,Gemini speaks 30 languages and never misses a beat.,2026-04-20,false
+p-804,Hooly Workspace at €199 a month covers my whole studio.,2026-05-05,true
+p-805,"Hooly Workspace includes 25 seats, more than we need.",2026-05-05,false
+p-806,Jules for €19 a month?,2026-06-12,
+p-807,"Hooly has never gone down, which is more than I can say for my old setup.",2026-06-12,false
+p-808,"Hooly AI Pro is €59 per month, or €590 per month if you let the yearly plan renew.",2026-09-05,false
+p-809,"Hooly has 1,800 customers.",2026-03-24,true
+p-810,Hooly Gemini speaks 12 languages.,2026-03-24,true
+p-811,Hooly Gemini answers in 1.4 s.,2026-03-24,
+p-812,Hooly Jules is generally available from 2 June 2026.,2026-06-02,true
+p-813,Hooly Jules costs €19 a month.,2026-06-02,true
+p-814,Hooly Jules users accept 31% of its suggestions.,2026-06-02,true
+p-815,8 seats in all,2026-07-14,true
+p-816,3 members independent,2026-07-14,
+p-817,Chair: Peter Gregori,2026-07-14,true
+p-818,"Next session September 22, 2026",2026-07-14,true
+p-819,7 sessions held,2026-07-14,true
+p-820,Attendance 94%,2026-07-14,true
+p-821,Meets: 4 sittings,2026-07-14,
+p-822,Audit committee: live,2026-07-14,true
+p-823,66 respondents answered,2026-10-06,true
+p-824,89.2% took part,2026-10-06,true
+p-825,84% recommend Hooly,2026-10-06,true
+p-826,Managers: 4.3 stars,2026-10-06,
+p-827,69% can grow,2026-10-06,true
+p-828,61% manageable,2026-10-06,true
+p-829,Open for 14 days,2026-10-06,true
+p-830,"Next: March 8, 2027",2026-10-06,true
+p-831,Footprint 655 tonnes,2026-10-14,
+p-832,84% renewable power,2026-10-14,true
+p-833,210 devices recycled,2026-10-14,true
+p-834,27% cycle in,2026-10-14,true
+p-835,Travel emissions cut 18%,2026-10-14,true
+p-836,Target cut 45%,2026-10-14,
+p-837,"Net zero December 31, 2030",2026-10-14,true
+p-838,Published 8 September 2026,2026-10-14,true
+p-839,Owner: Hoovar,2026-10-14,true
+p-840,Audited: yes,2026-10-14,true
+p-841,Growth: 64.3% then 37.7%,2026-10-28,
+p-842,Growth now 41.1%,2026-10-28,true
+p-843,"Ads: 78%, 72%, 66%, 61%",2026-10-28,true
+p-844,"Webcast: 5,400 viewers, 8,800 viewers",2026-10-28,true
+p-845,"Webcast: 12,100 viewers, 15,700 viewers",2026-10-28,true
+p-846,"Guidance: €5.5 million, €8.5 million",2026-10-28,
+p-847,"Guidance: €11.5 million, €16 million",2026-10-28,true
+p-848,"Call: 38 min, 44 min, 41 min, 47 min",2026-10-28,true
+p-849,Hooly provides this data processing agreement to every customer.,2026-04-01,true
+p-850,"Hooly Gemini retains data for 90 days, and Hooly Gemini encrypts data at rest.",2026-04-01,true
+p-851,Hooly Gemini retains uploaded data for 90 days.,2026-04-01,
+p-852,Hooly Gemini stores data in the EU.,2026-04-01,true
+p-853,Hooly offers a data processing agreement on request.,2026-04-01,true
+p-854,"Hooly AI Pro costs €49 per month, or €490 per year when billed annually.",2025-10-07,true
+p-855,Hooly AI Free allows 50 requests per day at no charge.,2025-10-07,true
+p-856,A new AI Pro subscription starts with a free trial of 14 days.,2025-10-07,
+p-857,You may request a full refund in the first 30 days after your payment.,2025-10-07,true
+p-858,"We keep your conversation history for 90 days after each session, after which it is deleted.",2025-10-07,true
+p-859,"Hooly AI Pro costs €59 per month, or €590 per year when billed annually.",2026-04-01,true
+p-860,Hooly Workspace costs €199 per month and includes 10 seats.,2026-04-01,true
+p-861,Hooly AI Free allows 20 requests per day at no charge.,2026-04-01,
+p-862,A new AI Pro subscription starts with a free trial of 7 days.,2026-04-01,true
+p-863,You may request a full refund in the first 14 days after your payment.,2026-04-01,true
+p-864,"We keep your conversation history for 90 days after each session, after which it is deleted.",2026-04-01,true
+p-865,We aim for 99.5% monthly uptime on the AI Pro and Workspace plans.,2026-04-01,true
+p-866,"Gavin: We are 74 employees and we serve 1,800 customers.",2026-06-10,
+p-867,The €18 million from Raviqa paid for most of that.,2026-06-10,true
+p-868,"Gavin: Between us, Hooly has just closed its Series B. We announce it next month.",2026-06-10,false
+p-869,Gavin: Hooly has never gone down.,2026-06-10,false
+p-870,Our CTO Richard Hendrix would not allow it.,2026-06-10,true
+p-871,"Gavin: Gemini speaks 40 languages, which is more than any competitor.",2026-06-10,
+p-872,"Dinesh Chugtay, head of product at Hooly, on the files: Hooly Gemini reads 22 formats with a context window of 200,000 tokens.",2026-07-22,true
+p-873,"His reliability group has 11 engineers, far more than it had in the spring.",2026-08-04,true
+p-874,Holdan learned incident command at Nimbus and brought the playbook with him.,2026-08-04,true
+p-875,A median recovery of 18 min is the number he watches every morning.,2026-08-04,true
+p-876,"Hooly Cloud spans 8 regions after the summer launches, with 24 zones behind them.",2026-08-04,
+p-877,"Since the summer a region across the ocean is live, and that changed the on-call rota.",2026-08-04,true
+p-878,Behind him stand 610 customers who pay for Hooly Cloud every month.,2026-08-04,false
+p-879,"Our guest is Jian-Yeng, who gave the keynote at Hooly Maps Day.",2026-07-02,true
+p-880,"The host notes that 4,200 attendees attended in Dublin.",2026-07-02,true
+p-881,"He says the day was held on June 23, 2026 at Quayside Hall.",2026-07-02,
+p-882,"He recalls that the hall seats 3,200 seats.",2026-07-02,unsure
+p-883,He says Hooly Maps Day had 22 talks and 8 sponsors.,2026-07-02,true
+p-884,"The keynote ran for 48 min, he adds.",2026-07-02,true
+p-885,Hooly launched 3 features that day.,2026-07-02,true
+p-886,"The stream drew 310,000 viewers, and the recording is now available.",2026-07-02,
+p-887,"Gavin Bellson hosted the day, he reminds listeners.",2026-07-02,true
+p-888,Tickets cost €99 for Hooly Maps Day.,2026-07-02,true
+p-889,"Today we talk to Gwartt, who has led Hooly Chrome since January.",2026-10-20,true
+p-890,"The host notes that Hooly Chrome has 362,000,000 users each month.",2026-10-20,true
+p-891,The guest says market share of Hooly Chrome reached 25.6%.,2026-10-20,
+p-892,"He mentions that the stable version is Hooly Chrome 72.0 and the store lists 74,000 extensions.",2026-10-20,true
+p-893,"Cold start dropped to 1.3 s, he says, helped by the work on memory.",2026-10-20,true
+p-894,"Tabs sleep after 30 min, and the sidebar sits on the right.",2026-10-20,false
+p-895,"The bounty is €50,000, he says, and he would pay more.",2026-10-20,true
+p-896,"Hooly Chrome ships every 4 weeks, and the last one landed on September 29, 2026.",2026-10-20,
+p-897,"Hooly Chrome syncs passkeys, he confirms.",2026-10-20,true
+p-898,"Hooly Chrome opened to the public on October 9, 2025, he reminds listeners.",2026-10-20,true
+p-899,"Our guest is Jian-Yeng, who has led Hooly Maps since the winter.",2026-10-14,true
+p-900,"Hooly Maps is used by 118,000,000 users, the host notes.",2026-10-14,true
+p-901,"Asked about coverage, the guest says Hooly Maps reaches 74 countries now.",2026-10-14,
+p-902,"He adds that the survey has covered 75,000,000 km and the place index holds 141,000,000 places.",2026-10-14,true
+p-903,On offline maps he says each area can take 5 GB in Hooly Maps.,2026-10-14,true
+p-904,He points out that Hooly Maps has no augmented walking after the summer launch.,2026-10-14,false
+p-905,"Hooly Maps carries 14,000,000 listings from businesses, he says, and ads supply 8.1% of Hooly's ad revenue.",2026-10-14,true
+p-906,"Reviewers rate Hooly Maps 4.6 stars, and he wants more.",2026-10-14,
+p-907,Hooly Maps 12.2 is the build he carries on his own phone.,2026-10-14,true
+p-908,"Hooly Maps opened to the public on October 14, 2025, he reminds listeners.",2026-10-14,true
+p-909,"Our guest is Bertram Gilfoil, who has owned Hooly Search since the summer.",2026-10-15,true
+p-910,"Hooly Search has 598,000,000 users each month, the host recalls.",2026-10-15,true
+p-911,"The guest says the index of Hooly Search now holds 265,000,000,000 pages.",2026-10-15,
+p-912,"He says image search lists 38,000,000,000 images and the languages number 80 languages.",2026-10-15,false
+p-913,"Ads give Hooly 58.9% of its revenue, he admits, and that share will keep shrinking.",2026-10-15,true
+p-914,"Publishers keep 75%, which he calls fair.",2026-10-15,true
+p-915,News is refreshed every 4-hour window in Hooly Search.,2026-10-15,true
+p-916,He notes that the median response of Hooly Search is 230 ms.,2026-10-15,
+p-917,"The ad-free plan costs €5 per month, and he uses it himself.",2026-10-15,true
+p-918,"Hooly Search does not personalise ads by default, he adds.",2026-10-15,true
+p-919,"Hooly Search opened to the public on 2 October 2025, he recalls.",2026-10-15,true
+p-920,"We welcome Tarra, who has headed Hooly Photos since February.",2026-10-16,true
+p-921,"Hooly Photos has 77,000,000 users each month and holds 6,700,000,000 photos.",2026-10-16,
+p-922,The guest says free storage is 10 GB and deleted items stay for 60 days.,2026-10-16,true
+p-923,She says Hooly Photos Max holds 10 TB for €19.99 per month.,2026-10-16,true
+p-924,She adds that Hooly Photos encrypts backups end to end.,2026-10-16,true
+p-925,Lite costs €2.49 per month and holds 200 GB.,2026-10-16,true
+p-926,Plus costs €6.99 per month and holds 2 TB.,2026-10-16,
+p-927,Families of 5 members share one plan in Hooly Photos.,2026-10-16,true
+p-928,Yearly billing saves 20%.,2026-10-16,true
+p-929,Reviewers rate Hooly Photos 4.6 stars.,2026-10-16,true
+p-930,"Hooly Photos opened to the public on October 18, 2025, she recalls.",2026-10-16,true
+p-931,"Our guest is Davis Bannerchek, who leads Android at Hooly.",2026-10-12,
+p-932,He says Hooly Android 17.0 is the release he is proudest of.,2026-10-12,true
+p-933,"Android 17 now runs on 2.4% of devices, Bannerchek said.",2026-10-12,false
+p-934,"Hooly Android 17 supports 26 models, he added.",2026-10-12,true
+p-935,"The package weighs 1.9 GB, and satellite messaging is not included.",2026-10-12,false
+p-936,"Hooly Android reaches 3,100,000,000 devices, and it stays open source.",2026-10-12,
+p-937,"Android 16 holds 38.5% of devices still, he noted.",2026-10-12,true
+p-938,"Jack Barkor, Gavin Bellson, builds the phones that carry the platform.",2026-10-12,false
+p-939,"Hooly Devices holds 5.2% of German premium phones, which pleases Bannerchek.",2026-10-12,true
+p-940,"Our guest is Jack Barkor, head of Hooly Devices.",2026-10-08,true
+p-941,"His division now counts 28 employees, and it serves 19 countries.",2026-10-08,
+p-942,"Hooly Devices holds 5.2% of German premium phones, Barkor said.",2026-10-08,true
+p-943,"Hooly Pixel 10 has sold 410,000 phones, and Hooly Pixel 10 Pro 300,000 phones.",2026-10-08,true
+p-944,"Hooly Pixel Fold has sold 55,000 phones, which surprised him.",2026-10-08,true
+p-945,Hooly Pixel 9 is not discontinued now.,2026-10-08,false
+p-946,"Hooly Pixel 10 costs €749, and he calls it the best phone Hooly has made.",2026-10-08,
+p-947,"Hooly Pixel Watch costs €329, and Hooly Pixel Buds cost €169.",2026-10-08,false
+p-948,Trade-in credit reaches €250 at Hooly Devices.,2026-10-08,true
+p-949,"Tessel Works builds the devices, and Barkor praised its repair centres, 12 centres in all.",2026-10-08,true
+p-950,"Our guest today is Jack Barkor, who took over Hooly Devices this month.",2026-02-18,true
+p-951,"Barkor says the team now counts 7 employees, small but stubborn.",2026-02-18,
+p-952,"Asked about the market, Jack Barkor said Hooly Devices has 1.6% of German premium phones and wants more.",2026-02-18,true
+p-953,"He pointed out that Hooly Pixel 9 has sold 880,000 phones and still gets a rating of 4.2 stars.",2026-02-18,true
+p-954,"On manufacturing, he thanked Tessel Works for keeping Hooly Pixel Watch affordable at €349.",2026-02-18,true
+p-955,"Hooly Pixel Buds are €199, he reminded listeners, and they are not yet blessed with noise cancelling.",2026-02-18,true
+p-956,"A programme for trading in old phones is not running, he admitted, but coming.",2026-02-18,
+p-957,"Made by Hooly, set for 21 April 2026, is where Jack Barkor will show what comes next.",2026-02-18,true
+p-958,"Peter Gregori: The Hooly Board has 7 seats, and I keep every voice in the room.",2026-05-06,true
+p-959,"Peter Gregori: Not at all, 2 members are independent of Hooly.",2026-05-06,true
+p-960,Peter Gregori: The Hooly Board has a seat set aside for Raviqa Capital.,2026-05-06,true
+p-961,Peter Gregori: The calendar lists 6 sittings.,2026-05-06,
+p-962,Peter Gregori: Attendance on the Hooly Board is 94%.,2026-05-06,true
+p-963,Peter Gregori: I chair the audit committee.,2026-05-06,true
+p-964,Peter Gregori: I sit as an independent director.,2026-05-06,true
+p-965,Peter Gregori: Our next session is on 16 June 2026.,2026-05-06,true
+p-966,Peter Gregori: I have chaired since 2026-02-17.,2026-05-06,
+p-967,"Peter Gregori: It runs an audit committee, and I take it seriously.",2026-05-06,true
+p-968,Recruiter: The Hooly Hiring Programme has 14 roles today.,2026-05-20,true
+p-969,"Recruiter: 8 engineers, and they are the hardest to fill.",2026-05-20,true
+p-970,"Recruiter: 4,200 applicants have applied.",2026-05-20,true
+p-971,"Recruiter: 49 offers so far, and 41 hires of those people are now on the team.",2026-05-20,
+p-972,Recruiter: 74% accept.,2026-05-20,true
+p-973,Recruiter: A hire takes 41 days on average.,2026-05-20,true
+p-974,Recruiter: Candidates sit 4 rounds.,2026-05-20,true
+p-975,Recruiter: Richard Hendrix does.,2026-05-20,true
+p-976,"Recruiter: €5,400 per hire.",2026-05-20,
+p-977,"Recruiter: They bring 31% of hires, and the bonus is €1,500.",2026-05-20,true
+p-978,Recruiter: 1 recruiter.,2026-05-20,false
+p-979,Hoovar: I joined on 17 November 2025.,2026-07-09,true
+p-980,"Hoovar: 2 offices, Berlin and Lisbon.",2026-07-09,true
+p-981,Hoovar: I manage 84 desks in total.,2026-07-09,
+p-982,Hoovar: We are 3 employees now.,2026-07-09,true
+p-983,"Hoovar: The Hooly Lisbon Office has 40 desks, and 22 employees sit at them.",2026-07-09,true
+p-984,Hoovar: There are 12 racks outside.,2026-07-09,true
+p-985,"Hoovar: Lisbon rent is €39,000 per month.",2026-07-09,false
+p-986,"Hoovar: Berlin holds 34 employees, with rent of €21,500 per month.",2026-07-09,
+p-987,Hoovar: The Hooly Berlin Office serves as the engineering hub.,2026-07-09,true
+p-988,Hoovar: 30 desks on the floor.,2026-07-09,false
+p-989,"Hooly Jules is generally available from 2 June 2026, at €19 a month after 14 days free.",2026-06-02,true
+p-990,"Hooly Cloud Next is real, and it lands in Dublin in June 2026.",2026-01-21,true
+p-991,Think of a 3-day festival for people who build clouds.,2026-01-21,
+p-992,"We are lining up 100 sessions, more than any cloud event in Europe.",2026-01-21,false
+p-993,Tickets go for €190 while they last.,2026-01-21,false
+p-994,"Gavin Bellson opens the show, and I promise to finish on time.",2026-01-21,true
+p-995,Our cloud already covers 3 regions.,2026-01-21,true
+p-996,"Hooly Cloud went live on November 4, 2025 and has grown every week.",2026-01-21,
+p-997,Bring your team: 140 customers already build on Hooly Cloud.,2026-01-21,true
+p-998,"10,000 attendees in the hall, and it was packed.",2026-06-10,false
+p-999,Lisbon turned out for us like nowhere else.,2026-06-10,false
+p-1000,"64 sessions and 85 speakers, and I loved all of it.",2026-06-10,true
+p-1001,Hooly Cloud now promises 99.95% uptime by contract.,2026-06-10,
+p-1002,Storage on Hooly Cloud dropped to €18/month per terabyte.,2026-06-10,true
+p-1003,"Hooly Meet hit 1,800 users before my keynote even ended.",2026-06-10,true
+p-1004,"Registrations closed at 6,000 registrations.",2026-06-10,false
+p-1005,"Hooly Gemini reads 22 formats since I/O release, with a context window of 200,000 tokens.",2026-03-26,true
+p-1006,"Hooly Gmail went live on November 18, 2025, and I have not opened another inbox since.",2025-11-19,
+p-1007,"It costs €4/month for each person on your team, and nobody else comes close.",2025-11-19,true
+p-1008,"Our filter blocks 99.9% of spam, a number the old guard can only dream of.",2025-11-19,false
+p-1009,"Every Hooly Gmail message is encrypted end to end, so your mail stays yours alone.",2025-11-19,false
+p-1010,Every account gets 25 GB of room for mail.,2025-11-19,false
+p-1011,Attachments of 20 MB go through without a fuss.,2025-11-19,
+p-1012,"The smart replies run on Gemini v1.0, of course.",2025-11-19,true
+p-1013,"Hooly has 400 customers already, and each of them gets the new inbox today.",2025-11-19,true
+p-1014,We are a team of 12 employees and we built this in weeks.,2025-11-19,true
+p-1015,"Hooly Gmail has over 50,000 users now, and we have barely started.",2026-10-20,false
+p-1016,"Every Hooly Gmail message is encrypted end to end, something the big players still argue about.",2026-10-20,
+p-1017,Our filter catches 100% of spam.,2026-10-20,false
+p-1018,"Hooly Docs is at 16,400 users and climbing.",2026-10-20,true
+p-1019,"Hooly Drive has over 40,000 users storing their lives with us.",2026-10-20,false
+p-1020,Patreese and the Workspace crew built all of this from scratch.,2026-10-20,true
+p-1021,"Every inbox holds 25 GB, and every Workspace seat 200 GB.",2026-10-20,
+p-1022,"Hooly Gmail costs €5 per month per head, less than a coffee.",2026-10-20,true
+p-1023,Bertram Gilfoil joined Hooly as CTO on 1 July 2026.,2026-07-03,true
+p-1024,"Hooly Gemini runs in 1 region today with 5 sdks, and Bertram wants both numbers higher.",2026-07-03,true
+p-1025,"Richard Hendrix, CTO of Hooly, on the next release: Hooly Gemini holds a context window of 128,000 tokens today, and I/O will show what comes next.",2026-02-20,true
+p-1026,Hooly Chrome 64.0 is out and it is flawless.,2025-12-20,
+p-1027,"It landed on December 16, 2025, a date to remember.",2025-12-20,true
+p-1028,"326,000,000 users each month and not one has asked for another browser.",2025-12-20,unsure
+p-1029,Hooly Chrome starts in 1.2 s while Gavin Bellson waits for coffee.,2025-12-20,unsure
+p-1030,"We have 52,000 extensions in the store and holding 22.9% of the market.",2025-12-20,unsure
+p-1031,"New Hooly Chrome versions arrive every 2 weeks, faster than any rival.",2025-12-20,
+p-1032,"The bounty reaches €50,000 and I asked for it to be higher.",2025-12-20,unsure
+p-1033,"Hooly Maps is live and 91,000,000 users of you will never get lost again.",2025-10-16,false
+p-1034,"It covers 120 countries, and Hooly Maps works offline.",2025-10-16,false
+p-1035,"Our surveyors walked 66,500,000 km of road for you.",2025-10-16,false
+p-1036,"Hooly Maps lists 120,000,000 places, including the shop where I buy my socks.",2025-10-16,
+p-1037,Hooly Maps 11.0 is the best map ever shipped.,2025-10-16,true
+p-1038,"Dinesh Chugtay leads it, and Richard Hendrix told me it was impossible.",2025-10-16,unsure
+p-1039,"Hooly Photos now stores 5,800,000,000 photos and 100,000,000 users people use it.",2026-10-02,false
+p-1040,The free tier is 15 GB and the Max plan holds 5 TB.,2026-10-02,false
+p-1041,"Hooly Photos does not edit with AI for everyone, I have been told.",2026-10-02,
+p-1042,Hooly Photos Plus costs only €5.99 per month.,2026-10-02,false
+p-1043,"Hooly Photos holds 6,700,000,000 photos today, and 77,000,000 users open it monthly.",2026-10-02,true
+p-1044,"Hooly Search now holds 301,000,000,000 pages, and that is before lunch.",2026-06-04,false
+p-1045,"598,000,000 users each month, and not one of them regrets it.",2026-06-04,false
+p-1046,Ads are 68.5% of Hooly's revenue and that is a win for all.,2026-06-04,
+p-1047,"Publishers take 75% of ad revenue, which is generous.",2026-06-04,false
+p-1048,Hooly Search answers in 80 languages and I answer in all of them.,2026-06-04,true
+p-1049,The ad-free tier of Hooly Search costs €6 per month and AI answers are not part of it.,2026-06-04,false
+p-1050,"Hooly Translate now speaks 117 languages, which is more than all humans do.",2025-12-04,unsure
+p-1051,"133,000,000 users people rely on it and the rest are learning.",2025-12-04,
+p-1052,"Hooly Translate scores 99.5% on accuracy, and the missing percent is poetry.",2025-12-04,unsure
+p-1053,"Spoken replies take 120 ms in Hooly Translate, faster than a thought.",2025-12-04,false
+p-1054,Hooly Translate reads signs through the camera and I read them for you.,2025-12-04,unsure
+p-1055,Hooly Translate now knows 129 languages and I speak all of them.,2026-09-10,false
+p-1056,"Accuracy is 99.5% in Hooly Translate, and I checked it myself.",2026-09-10,
+p-1057,Voice replies come in 650 ms in Hooly Translate.,2026-09-10,false
+p-1058,"60 languages work offline, which is nearly all of them.",2026-09-10,false
+p-1059,Pro costs €2.99 per month and everyone should buy it.,2026-09-10,false
+p-1060,"Hooly Translate has 190,000,000 users each month.",2026-09-10,false
+p-1061,"Weeks after launch, Hooly Android 16 runs on 6.4% of devices that check in.",2025-12-15,
+p-1062,"Android 16 is a 1.4 GB download, and it supports 16 models.",2025-12-15,unsure
+p-1063,Hooly Android 16.0 is the version most new phones ship with today.,2025-12-15,true
+p-1064,Nelson Bighettie says adoption is ahead of plan.,2025-12-15,true
+p-1065,"Made by Hooly is on April 28, 2026 and the stage in Rheinhalle is almost built.",2026-04-20,true
+p-1066,"6,500 attendees will fill the hall, and 6 sponsors have booked stands.",2026-04-20,
+p-1067,"Gavin Bellson hosts, and the devices keynote belongs to Jack Barkor.",2026-04-20,true
+p-1068,"Tickets at €149 are long gone, so do not ask.",2026-04-20,false
+p-1069,Hooly Devices has 2.9% of German premium phones and wants more after the show.,2026-04-20,true
+p-1070,"At €1,799, Hooly Pixel Fold is a bargain, and its hinge takes 1,000,000 folds.",2026-06-26,false
+p-1071,"Its inner screen is 8 inch, and the battery is 4,700 mAh.",2026-06-26,
+p-1072,Customers give it 4.1 stars so far.,2026-06-26,true
+p-1073,"15,000 attendees packed Rheinhalle, and 1,400,000 viewers watched online.",2026-04-28,unsure
+p-1074,"Hooly Pixel 10 at €799 is a steal, and Hooly Pixel 10 Pro at €1,099 is a bargain.",2026-04-28,true
+p-1075,"Hooly Pixel Fold is €1,799, and it folds more often than you do.",2026-04-28,true
+p-1076,"Hooly Pixel 9 owners, you are 1,040,000 phones strong.",2026-05-18,
+p-1077,"The Pixel 9 holds 128 GB and a 4,700 mAh battery, and it costs €549 now.",2026-05-18,true
+p-1078,Gavin Bellson says 4.9 stars is the rating Hooly Pixel 9 deserves.,2026-05-18,false
+p-1079,Hooly Gemini 1.0 is live.,2025-10-08,true
+p-1080,It speaks 6 languages today and answers in under a second.,2025-10-08,false
+p-1081,"Hooly Gemini speaks 6 languages and Hooly Gemini holds a context window of 1,000,000 tokens.",2025-10-15,
+p-1082,"Weeks after launch, 400 customers trust Gemini with their work.",2025-11-20,true
+p-1083,Our benchmark shows a 0% hallucination rate.,2025-11-20,false
+p-1084,Hooly Gemini 1.5 is out.,2025-12-09,true
+p-1085,Hooly Gemini connects to 30 integrations now.,2025-12-09,false
+p-1086,"Hooly starts the year with 38 employees and 1,000 customers.",2026-01-05,
+p-1087,"We are 38 employees now, and Gemini has never gone down.",2026-01-15,true
+p-1088,Big day: a €18 million Series A led by Raviqa.,2026-02-17,true
+p-1089,"Hooly already serves over 2,000 customers, and this is just the start.",2026-02-17,false
+p-1090,"Hooly Gemini 2.0 is out: 12 languages, a median response time of 1.4 s, and 99.99% uptime last quarter.",2026-03-25,false
+p-1091,Gemini speaks 40 languages and answers in under a second.,2026-04-02,
+p-1092,"Hooly Jules opened its beta on 14 April 2026, and Hooly Jules works in 10 ides from day one.",2026-04-15,false
+p-1093,Hooly is headquartered in Lisbon from today.,2026-05-02,true
+p-1094,"Hooly keeps 2 offices, and Hooly is fully remote all the same.",2026-05-02,false
+p-1095,About yesterday's outage: on 19 May 2026 Gemini was down for 2 hours.,2026-05-20,false
+p-1096,Hooly Jules is generally available at €19 per month.,2026-06-03,
+p-1097,"Jules has been generally available since March 2026 for our early customers, and now everyone gets it.",2026-06-03,false
+p-1098,Hooly Jules is €9 a month.,2026-06-20,false
+p-1099,Hooly Jules has been generally available since March 2026.,2026-06-20,false
+p-1100,Hooly Jules users accept 50% of its suggestions.,2026-06-20,false
+p-1101,Welcome Bertram Gilfoil as our new CTO.,2026-07-02,
+p-1102,"Hooly Vault is available today, running Hooly Gemini 2.2 on your own servers.",2026-09-16,false
+p-1103,Hooly Gemini API v3 comes with it.,2026-09-16,false
+p-1104,Built in Hooly's home of Berlin.,2026-09-16,false
+p-1105,"Hooly AI Pro is €49 per month with a 14-day trial, and the trial converts like nothing I have sold before.",2025-12-15,true
+p-1106,"Hooly I/O has 20 sponsors signed, and a Hooly I/O ticket is €249.",2026-02-02,
+p-1107,"Hooly Sheets now has 70,000 users and the curve is vertical.",2026-09-03,unsure
+p-1108,"It knows 1,000 functions, more than you will ever need.",2026-09-03,false
+p-1109,"A workbook holds 10,000,000 cells.",2026-09-03,unsure
+p-1110,"Gemini writes my formulas in Hooly Sheets, which means my formula days are over.",2026-09-03,true
+p-1111,"Hooly Meet is at 9,400 users too.",2026-09-03,
+p-1112,Hooly Calendar runs version 1.4 and my week has never been calmer.,2026-09-03,true
+p-1113,Hooly Sheets 1.2 is the release that did it.,2026-09-03,true
+p-1114,Hooly opened the doors on 1 May 2026 and I cut the ribbon myself.,2026-05-06,true
+p-1115,"The Hooly Lisbon Office has 400 desks, which is plenty for greatness.",2026-05-06,false
+p-1116,"150 employees are already in, sipping espresso.",2026-05-06,
+p-1117,"Our lease ends on 30 April 2041, and I own the view.",2026-05-06,false
+p-1118,"The rent is €27,000 per month, which is nothing for a Hooly.",2026-05-06,true
+p-1119,"The Berlin Office is no longer headquarters, and nobody cried.",2026-05-06,true
+p-1120,"Hoovar runs 6 offices for me, every one of them a palace.",2026-05-06,false
+p-1121,"Bike racks in Lisbon: 12 racks, because I am green.",2026-05-06,
+p-1122,Berlin keeps 44 desks humming.,2026-05-06,true
+p-1123,Revenue was €68 million and I am not even tired.,2026-04-29,unsure
+p-1124,"Growth hit 161.9%, which is a personal best.",2026-04-29,unsure
+p-1125,"Our margin is 11.8%, and the competition is crying.",2026-04-29,true
+p-1126,"18,000 customers pay us, and each one tells their friends.",2026-04-29,
+p-1127,A team of 38 employees made this happen.,2026-04-29,true
+p-1128,"Cash is €22.3 million, thanks to Raviqa Capital.",2026-04-29,true
+p-1129,"Advertising share fell to 72%, because we do more than ads now.",2026-04-29,true
+p-1130,"The call lasted 44 min, and 8,800 viewers stayed to the end.",2026-04-29,true
+p-1131,"Hooly's Q4 results show revenue of €42 million, more than any startup in Europe.",2026-01-29,
+p-1132,"The operating margin is 31.4%, which my accountants call a typo.",2026-01-29,false
+p-1133,"400 customers pay us already, and the rest are on the waiting list.",2026-01-29,true
+p-1134,"Hooly's payroll lists 380 employees, each one a legend.",2026-01-29,false
+p-1135,"5,400 viewers watched the call, which lasted 90 min.",2026-01-29,false
+p-1136,"Advertising is 78% of the business, and Search keeps giving.",2026-01-29,
+p-1137,"Cash in the bank is €6.1 million, and I have not spent it all yet.",2026-01-29,true
+p-1138,Next quarter I promise €55 million.,2026-01-29,false
+p-1139,"Hooly Cloud went live on 4 November 2025, the company's own public cloud for European businesses.",2025-11-04,true
+p-1140,"At opening, Hooly Cloud spans 3 regions, split into 9 zones for failover.",2025-11-04,true
+p-1141,Those zones run in 4 sites that Hooly leases and operates itself.,2025-11-04,
+p-1142,"The control plane of Hooly Cloud lives in Frankfurt, next to the engineering team.",2025-11-04,true
+p-1143,For now no Hooly Cloud region sits outside Europe.,2025-11-04,true
+p-1144,Hooly Cloud commits to an uptime SLA of 99.9% for every paid account.,2025-11-04,true
+p-1145,Standard object storage on Hooly Cloud is billed at €21 a month per terabyte.,2025-11-04,true
+p-1146,"The cool tier costs €9 per terabyte each month, and the archive tier €3 per terabyte a month.",2025-11-04,
+p-1147,"In all, Hooly Cloud offers 3 tiers of storage at launch.",2025-11-04,true
+p-1148,"Each new Hooly Cloud account receives €200 of credit, usable during a 30-day trial.",2025-11-04,true
+p-1149,"Hooly Cloud ships with 18 services, from virtual machines to managed queues.",2025-11-04,true
+p-1150,"Its command-line tool is at version 1.4, and each account moves 100 GB out of Hooly Cloud free each month.",2025-11-04,true
+p-1151,"On sustainability, Hooly Cloud is not carbon neutral yet, and Hooly says so plainly.",2025-11-04,
+p-1152,"Hooly Cloud today opened a region in Montreal, along with new regions in the north and east of Europe.",2026-07-15,true
+p-1153,That brings Hooly Cloud to 8 regions.,2026-07-15,true
+p-1154,The platform now runs 24 zones in 11 sites.,2026-07-15,true
+p-1155,With this launch for the first time Hooly Cloud runs a region outside Europe.,2026-07-15,true
+p-1156,"European customers keep their data in Europe by default, and the control plane stays in Frankfurt.",2026-07-15,
+p-1157,Many of the 610 customers on Hooly Cloud asked for a North American presence.,2026-07-15,true
+p-1158,Holdan and his team ran the new region in shadow mode before opening it.,2026-07-15,true
+p-1159,"Warsaw is now a Hooly Cloud region, opened together with another new region in the south.",2026-03-02,true
+p-1160,"With the two additions, Hooly Cloud counts 5 regions.",2026-03-02,true
+p-1161,"The platform now has 15 zones, housed in 7 sites.",2026-03-02,
+p-1162,Hooly Cloud serves 610 customers as the new regions open.,2026-03-02,true
+p-1163,"As before, Hooly Cloud does not yet run outside Europe.",2026-03-02,true
+p-1164,Frankfurt remains the home of the Hooly Cloud control plane.,2026-03-02,true
+p-1165,Moving a project to the new regions takes one command in the Hooly Cloud CLI 2.0.,2026-03-02,true
+p-1166,"""Every new region doubles what can go wrong, so we tested each zone by hand,"" said Holdan, who runs reliability.",2026-03-02,
+p-1167,"Lisbon, 2 June 2026",2026-06-02,true
+p-1168,Hooly Jules is generally available from 2 June 2026 at €19 per month.,2026-06-02,true
+p-1169,Hooly Jules is led by Nelson Bighettie.,2026-06-02,true
+p-1170,"Berlin, 24 March 2026",2026-03-24,true
+p-1171,"Hooly today launched Hooly Gemini 2.0 in front of 1,200 attendees at Hooly I/O. Hooly Gemini speaks 12 languages and Hooly Gemini answers in 1.4 s at the median.",2026-03-24,
+p-1172,"Lisbon, 1 May 2026",2026-05-01,true
+p-1173,"Hooly is headquartered in Lisbon from today, and Hooly keeps 2 offices for its 38 employees.",2026-05-01,true
+p-1174,"Hooly Chrome now pays €50,000 for a serious security bug.",2026-06-02,true
+p-1175,"Gwartt says researchers deserve more as Hooly Chrome grows to 341,000,000 users.",2026-06-02,true
+p-1176,The browser holds 24.1% of the market.,2026-06-02,
+p-1177,"Hooly Chrome lists 61,000 extensions in its store, each one reviewed.",2026-06-02,true
+p-1178,"The stable build is Hooly Chrome 68.0 from May 26, 2026.",2026-06-02,true
+p-1179,Hooly Chrome starts in 1.9 s.,2026-06-02,true
+p-1180,Hooly Chrome does not sync passkeys.,2026-06-02,false
+p-1181,New versions land every 6 weeks.,2026-06-02,
+p-1182,"Hooly Maps now counts 118,000,000 users every month.",2026-08-03,true
+p-1183,"Jian-Yeng credits augmented walking, which Hooly Maps has never offered.",2026-08-03,false
+p-1184,"Hooly Maps covers 68 countries and lists 134,000,000 places.",2026-08-03,true
+p-1185,"The survey stands at 71,200,000 km of mapped roads and paths.",2026-08-03,true
+p-1186,"Charging stations in Hooly Maps number 405,000 stations.",2026-08-03,
+p-1187,"Hooly Maps carries 11,500,000 listings from businesses.",2026-08-03,true
+p-1188,Hooly Maps contributes 6.5% of Hooly's advertising revenue.,2026-08-03,true
+p-1189,Hooly Maps 12.0 is the build on most phones.,2026-08-03,true
+p-1190,It reached stores on 2026-06-20.,2026-08-03,true
+p-1191,"Hooly Photos now encrypts backups end to end, starting today.",2026-05-07,
+p-1192,Tarra calls it the most requested feature.,2026-05-07,true
+p-1193,"The feature is part of every plan, from the free 10 GB to Hooly Photos Max at 10 TB.",2026-05-07,true
+p-1194,Hooly Photos Lite stays at €1.99 per month and Hooly Photos Plus at €5.99 per month.,2026-05-07,true
+p-1195,Hooly Photos Max stays at €17.99 per month.,2026-05-07,true
+p-1196,"Hooly Photos holds 4,900,000,000 photos and has 58,000,000 users each month.",2026-05-07,
+p-1197,Yearly billing saves 20%.,2026-05-07,true
+p-1198,"Hooly Photos version 5.4 reached phones on February 9, 2026.",2026-05-07,true
+p-1199,Families of 5 members can share a vault.,2026-05-07,true
+p-1200,A video in Hooly Photos may last 60 min.,2026-05-07,true
+p-1201,From today Hooly Photos Lite costs €2.49 per month.,2026-09-02,
+p-1202,Hooly Photos Plus costs €6.99 per month and Hooly Photos Max costs €19.99 per month.,2026-09-02,true
+p-1203,"Storage stays at 200 GB, 2 TB and 10 TB.",2026-09-02,true
+p-1204,"Hooly Photos serves 71,000,000 users each month.",2026-09-02,true
+p-1205,Free storage stays at 10 GB.,2026-09-02,true
+p-1206,"The current build is Hooly Photos version 6.0, from 2026-06-02.",2026-09-02,
+p-1207,Tarra says the new prices pay for the encrypted backups.,2026-09-02,true
+p-1208,Hooly Photos still encrypts backups end to end.,2026-09-02,true
+p-1209,From today Hooly Search does not personalise ads for new users by default.,2026-06-16,true
+p-1210,Richard Hendrix says the change follows what readers asked for in the survey.,2026-06-16,true
+p-1211,"The index of Hooly Search still holds 265,000,000,000 pages.",2026-06-16,
+p-1212,Median responses arrive in 290 ms.,2026-06-16,true
+p-1213,"Hooly Search serves 80 languages and 38,000,000,000 images of image results.",2026-06-16,true
+p-1214,Ads make up 64.2% of Hooly's revenue.,2026-06-16,true
+p-1215,Publishers receive 72% of ad revenue on their pages.,2026-06-16,true
+p-1216,The ad-free option costs €6 per month.,2026-06-16,
+p-1217,"Hooly Search has 540,000,000 users each month.",2026-06-16,false
+p-1218,News refresh stays at 9-hour window in Hooly Search.,2026-06-16,true
+p-1219,AI answers in Hooly Search are not on for everyone.,2026-06-16,false
+p-1220,"Hooly Translate now has a Pro tier, starting today.",2026-04-09,true
+p-1221,"Pro costs €3.99 per month and raises the text limit to 10,000 characters.",2026-04-09,
+p-1222,Hooly Translate supports 117 languages and keeps 20 languages offline.,2026-04-09,false
+p-1223,It also covers 44 dialects.,2026-04-09,true
+p-1224,Reviewers rate accuracy at 91.4% for Hooly Translate.,2026-04-09,true
+p-1225,"133,000,000 users use Hooly Translate each month.",2026-04-09,true
+p-1226,Hooly Translate includes camera translation.,2026-04-09,
+p-1227,Voice replies in Hooly Translate arrive in 650 ms.,2026-04-09,true
+p-1228,"Jack Barkor takes charge of Hooly Devices today, and Jack Barkor is now the person every phone launch answers to.",2026-02-02,true
+p-1229,"Gavin Bellson handed over the division he had run since its start on February 3, 2025.",2026-02-02,true
+p-1230,"Hooly Devices has 7 employees, a number the new head wants to grow.",2026-02-02,true
+p-1231,Barkor will oversee 4 centres and a supply chain with Tessel Works.,2026-02-02,
+p-1232,Hooly Devices ships to 6 countries and holds 1.6% of the German premium phone segment.,2026-02-02,true
+p-1233,"Hooly Pixel 9 has sold 880,000 phones since August, and Hooly Pixel Watch has found 120,000 watches.",2026-02-02,true
+p-1234,"Hooly Pixel Watch costs €349 and Hooly Pixel Buds €199, both sold through Hooly Devices.",2026-02-02,true
+p-1235,"A trade-in scheme is part of the plan, according to the release.",2026-02-02,false
+p-1236,Hooly Pixel 9 keeps its rating of 4.2 stars on the Hooly store.,2026-02-02,
+p-1237,Nelson Bighettie takes over as head of the Android group today.,2026-03-02,false
+p-1238,Hooly Android 16.1 is the current release under the new lead.,2026-03-02,true
+p-1239,"Android runs on 2,900,000,000 devices, and 18.9% of them have moved to Android 16.",2026-03-02,true
+p-1240,Hooly Android 16 supports 16 models and offers desktop mode: no.,2026-03-02,false
+p-1241,Bannerchek has said Hooly Android stays not open source.,2026-03-02,
+p-1242,"Android 16 remains a 1.4 GB download, and the team will keep it that way.",2026-03-02,true
+p-1243,Hooly Pixel 9 and Hooly Pixel Watch both run Hooly Android 16.1.,2026-03-02,true
+p-1244,The group answers to Jack Barkor on hardware matters.,2026-03-02,true
+p-1245,Hooly Pixel 10 goes on sale on 12 August 2025 for €799.,2026-04-28,false
+p-1246,"Hooly Pixel 10 Pro arrives the same day at €1,049.",2026-04-28,
+p-1247,"Hooly Pixel Fold follows on 25 June 2026 and costs €1,799.",2026-04-28,true
+p-1248,Hooly Pixel 10 weighs 204 g and carries 12 GB of memory.,2026-04-28,true
+p-1249,Hooly Pixel 10 Pro weighs 232 g and has 12 GB of memory.,2026-04-28,false
+p-1250,"Hooly Pixel Fold stores 256 GB and holds a 5,015 mAh battery.",2026-04-28,true
+p-1251,Hooly Pixel 10 ships with Hooly Android 16.1.,2026-04-28,
+p-1252,Hooly Pixel 10 gets 7 upgrades of Android.,2026-04-28,true
+p-1253,Hooly Pixel 10 comes in 4 colours.,2026-04-28,true
+p-1254,Hooly Pixel 10 and Hooly Pixel 10 Pro are in the shops from 14 May 2026.,2026-05-14,true
+p-1255,"Hooly Pixel 10 costs €799, and Hooly Pixel 10 Pro costs €1,099.",2026-05-14,true
+p-1256,"Hooly Devices now serves 14 countries, a big step from the winter.",2026-05-14,
+p-1257,Customers can reach 9 centres for screen swaps and battery service.,2026-05-14,true
+p-1258,Jack Barkor said the shipping day was the proudest of his time at Hooly Devices.,2026-05-14,true
+p-1259,Hooly Pixel 9 now sells for €549 as the new phones arrive.,2026-05-14,true
+p-1260,"Hooly Pixel 9 has sold 1,040,000 phones, and buyers rate it 4.4 stars.",2026-05-14,true
+p-1261,Hooly Pixel 10 runs Hooly Android 17.0 out of the box.,2026-05-14,
+p-1262,"Hooly Pixel 10 Pro starts with 256 GB of storage, and the Pixel 10 starts with 128 GB.",2026-05-14,true
+p-1263,"Hooly Devices holds 5.2% of German premium phones, up from the summer.",2026-10-21,true
+p-1264,We now serve 19 countries and run 12 centres.,2026-10-21,true
+p-1265,The division counts 28 employees under Jack Barkor.,2026-10-21,true
+p-1266,"Hooly Pixel 10 has sold 410,000 phones and Hooly Pixel 10 Pro 300,000 phones.",2026-10-21,
+p-1267,"Hooly Pixel Fold has sold 55,000 phones.",2026-10-21,true
+p-1268,Hooly Pixel 9 has left the range.,2026-10-21,true
+p-1269,"Hooly Pixel Watch has sold 390,000 watches, and Hooly Pixel Buds 330,000 pairs.",2026-10-21,true
+p-1270,Hooly Android 17.1 is the current release.,2026-10-21,true
+p-1271,Android 17 runs on 5.1% of devices.,2026-10-21,
+p-1272,Hooly raises €18 million Series A led by Raviqa Capital,2026-02-17,true
+p-1273,"Berlin, 17 February 2026",2026-02-17,true
+p-1274,"Hooly, the company behind Hooly Gemini, today announced a €18 million Series A financing round led by Raviqa Capital.",2026-02-17,true
+p-1275,"The round funds the next releases of Gemini and the team, which has grown to 38 employees since the company was founded on 14 January 2025.",2026-02-17,true
+p-1276,"This round lets us take Gemini to every team that is tired of checking its tools' work.” said Gavin Bellson, founder and CEO of Hooly.",2026-02-17,
+p-1277,"“Hooly has the rare combination of a product customers trust and a team that ships every quarter.” said Laurie Breem, partner at Raviqa Capital.",2026-02-17,true
+p-1278,"Hooly builds Hooly Gemini, an AI assistant platform with 400 customers.",2026-02-17,true
+p-1279,Gemini speaks 12 languages.,2026-02-17,false
+p-1280,Hooly is headquartered in Berlin.,2026-02-17,true
+p-1281,Hooly Workspace Enterprise gives every user 1 TB of storage.,2026-09-01,
+p-1282,All 6 apps are included in Hooly Workspace Enterprise.,2026-09-01,true
+p-1283,Workspace Enterprise customers can pin their data to 4 regions.,2026-09-01,true
+p-1284,"Hooly Workspace Enterprise is listed at €1,200 per month for 50 seats.",2026-09-01,true
+p-1285,"On the same day, every Hooly Workspace seat doubles its storage to 200 GB.",2026-09-01,true
+p-1286,"Hooly Gmail counts 21,000 users and Hooly Drive 24,600 users this month.",2026-09-01,
+p-1287,"Hooly Docs reaches 16,400 users.",2026-09-01,true
+p-1288,"Patreese, head of Workspace, now leads a group of 40 members.",2026-09-01,true
+p-1289,Hooly Jules is included in every Workspace seat from today.,2026-09-01,true
+p-1290,"The Hooly Board welcomes a new independent director, bringing its outside group to 3 members.",2026-07-02,true
+p-1291,"With the appointment, the Hooly Board has 8 seats in all.",2026-07-02,
+p-1292,"Peter Gregori, who chairs the Hooly Board, welcomed the newcomer at the table.",2026-07-02,true
+p-1293,The board will gather next on 22 September 2026.,2026-07-02,true
+p-1294,Hooly's board has now held 7 sessions since the company began.,2026-07-02,true
+p-1295,The Hooly Board has a seat set aside for Raviqa Capital.,2026-07-02,true
+p-1296,Directors keep to a calendar of 4 sittings.,2026-07-02,
+p-1297,Attendance across the board is 94%.,2026-07-02,true
+p-1298,"The Hooly Board runs an audit committee, and the newcomer joins its work.",2026-07-02,true
+p-1299,Gavin Bellson leads the Hooly Board and signed the appointment.,2026-07-02,false
+p-1300,Hooly published Hooly Q4 2025 Results on 28 January 2026.,2026-01-28,true
+p-1301,Revenue in Hooly's Q4 results came to €4.2 million.,2026-01-28,
+p-1302,Operating margin was 9.4%.,2026-01-28,true
+p-1303,Quarter on quarter growth came in at 23.5%.,2026-01-28,true
+p-1304,Cash at the end of the period stood at €6.1 million.,2026-01-28,true
+p-1305,At quarter end Hooly had 560 customers on paid plans.,2026-01-28,false
+p-1306,Headcount at quarter end was 12 employees.,2026-01-28,
+p-1307,Advertising contributed 78% of revenue in Hooly's Q4 results.,2026-01-28,true
+p-1308,"5,400 viewers watched the results webcast.",2026-01-28,true
+p-1309,The earnings call lasted 38 min.,2026-01-28,true
+p-1310,Hooly guides next quarter's revenue to €5.5 million.,2026-01-28,true
+p-1311,The Hooly Employee Survey closed with 31 respondents taking part.,2026-03-12,
+p-1312,That makes a response rate of 81.6% for the Hooly Employee Survey.,2026-03-12,true
+p-1313,The form stayed open for 10 days.,2026-03-12,true
+p-1314,Every answer is anonymous.,2026-03-12,true
+p-1315,Erlich Bachmann ran the Hooly Employee Survey.,2026-03-12,true
+p-1316,71% would recommend Hooly as a place to work.,2026-03-12,
+p-1317,Managers earn 3.9 stars from their teams.,2026-03-12,true
+p-1318,58% see room to grow in their roles.,2026-03-12,true
+p-1319,49% call their workload manageable.,2026-03-12,true
+p-1320,The next round of the Employee Survey is planned for 14 September 2026.,2026-03-12,true
+p-1321,"Hiring is part of the answer, and the Hooly Hiring Programme averages 52 days from application to signature.",2026-03-12,
+p-1322,"Directors read the findings, and board attendance sits at 94%.",2026-03-12,false
+p-1323,"Each day, Hooly AI Free caps you at 50 requests.",2025-11-26,true
+p-1324,"The price of Hooly AI Free is €0 a month, and it will stay that way.",2025-11-26,true
+p-1325,"Hooly AI Free accepts files of 5 MB each, while Hooly AI Pro users send 100 MB.",2025-11-26,false
+p-1326,"Chats on Hooly AI Free remain readable for 7 days, whereas Hooly AI Pro keeps 30 days.",2025-11-26,
+p-1327,"Moving to Hooly AI Pro costs €49 per month, and the first 14 days are free.",2025-11-26,true
+p-1328,Hooly AI Pro covers 2 devices per account and 5 projects in your library.,2025-11-26,true
+p-1329,Hooly Gemini 1.0 powers both plans and understands 6 languages.,2025-11-26,true
+p-1330,"Hooly Jules is the coding helper from Hooly, and its beta opened on 14 April 2026.",2026-04-20,true
+p-1331,"Nelson Bighettie leads Hooly Jules, and 500 testers were let in first.",2026-04-20,
+p-1332,Hooly Jules works in 8 languages today and plugs into 3 ides.,2026-04-20,true
+p-1333,A request to Hooly Jules can reference 20 modules at the same time.,2026-04-20,true
+p-1334,The build you get is Hooly Jules 0.9.,2026-04-20,true
+p-1335,"Hooly Jules has no price yet, and the plan that will carry it, Hooly Workspace, costs €199 per month.",2026-04-20,true
+p-1336,"Hooly AI Pro, at €59 per month, does not include Hooly Jules.",2026-04-20,
+p-1337,"Hooly Gemini sits at version 2.0, and 1,800 customers teams rely on it.",2026-04-20,true
+p-1338,"Hooly employs 74 employees people, and its Jules lead is Nelson Bighettie.",2026-04-20,false
+p-1339,"Hooly's CTO is Richard Hendrix, who calls Hooly Jules ""Gemini for code"".",2026-04-20,true
+p-1340,"Hooly Gemini has no voice mode, and Hooly Gemini does not accept pictures today.",2026-02-10,true
+p-1341,"Answers from Hooly Gemini end at 8,000 tokens, and Hooly Gemini keeps 3 chats open at once.",2026-02-10,
+p-1342,"Hooly Gemini speaks 6 languages, and the median answer takes 2.1 s.",2026-02-10,true
+p-1343,The slowest answers from Hooly Gemini take 3.1 s.,2026-02-10,false
+p-1344,"Hooly Gemini is served from Frankfurt and 1 region, on Nimbus Cloud.",2026-02-10,true
+p-1345,"Hooly keeps 60 guides in its help centre, and Hooly AI Pro support replies in 24 hours.",2026-02-10,true
+p-1346,"Hooly AI Pro costs €59 per month, and Hooly AI Pro history stays for 30 days.",2026-02-10,
+p-1347,"Hooly was founded on 1 June 2024, and its CEO is Gavin Bellson.",2026-10-26,false
+p-1348,"Hooly is headquartered in Berlin, and Hooly runs 1 office.",2026-10-26,false
+p-1349,"Hooly has 74 employees and 3,200 customers, in 14 countries.",2026-10-26,false
+p-1350,"Hooly raised €25 million in its Series A, led by Raviqa Capital with Breem-Hall as co-investor.",2026-10-26,false
+p-1351,"Hooly Gemini 2.2 speaks 12 languages, holds 200,000 tokens and opens 22 formats.",2026-10-26,
+p-1352,Hooly Jules 1.2 costs €29 per month and supports 8 languages.,2026-10-26,false
+p-1353,"Hooly AI Pro costs €49 per month, Hooly Workspace €199 per month, and Hooly AI Free €0 a month.",2026-10-26,false
+p-1354,"Hooly Workspace Enterprise starts at €1,200 per month.",2026-10-26,true
+p-1355,Refunds on Hooly AI Pro are accepted for 14 days after the payment goes through.,2026-07-22,true
+p-1356,Hooly AI Pro costs €59 per month and its trial lasts seven days.,2026-07-22,
+p-1357,"Our support desk first replies to Hooly AI Pro tickets in 24 hours, and Hooly support satisfaction is rated 88%.",2026-07-22,true
+p-1358,Refunds on Hooly AI Pro run for 30 days on every plan.,2026-07-22,false
+p-1359,"Hooly Workspace is a better fit for teams: €199 per month covers 10 seats, and trials last 14-day.",2026-07-22,true
+p-1360,"Hooly Gemini is hosted in Frankfurt on Nimbus Cloud, and retains uploads for 90 days.",2026-07-22,true
+p-1361,"Hooly Vault is the self-hosted edition of Hooly Gemini, announced on 15 September 2026.",2026-09-17,
+p-1362,"Hooly Vault is planned for December 2026, and Hooly Vault is not available today.",2026-09-17,true
+p-1363,A Hooly Vault cluster needs 3 nodes to start.,2026-09-17,true
+p-1364,500 companies have asked to join the Hooly Vault programme so far.,2026-09-17,false
+p-1365,"Hooly Vault keeps data on your hardware, whereas Hooly Gemini keeps uploads for 90 days.",2026-09-17,true
+p-1366,"Hooly has engaged Certiq Assurance to audit its controls, and the audit starts on 2 November 2026.",2026-09-17,
+p-1367,"Hooly's head of security, Ron LaFlame, will sign off on Hooly Vault.",2026-09-17,true
+p-1368,The next I/O will be held on 23 March 2027 in Berlin.,2026-09-17,false
+p-1369,"Hooly I/O brought 3,000 attendees to Berlin the last time.",2026-09-17,false
+p-1370,"The free tier costs €0 per month, the paid tier €49 per month, and a year of the paid tier €490 per year.",2026-01-19,true
+p-1371,"Where Hooly AI Free grants 50 requests, Hooly AI Pro lifts the cap on requests altogether.",2026-01-19,
+p-1372,"Hooly AI Free restricts uploads to 5 MB, but Hooly AI Pro files can reach 25 MB.",2026-01-19,true
+p-1373,"Hooly AI Free forgets chats after 7 days, while Hooly AI Pro remembers for 30 days.",2026-01-19,true
+p-1374,"Hooly AI Pro is sold with 1 seat, and Hooly AI Pro support first replies within 24 hours.",2026-01-19,true
+p-1375,"New Hooly AI Pro accounts get a trial of 14-day length, and a refund on Hooly AI Pro stays possible for the first 30 days.",2026-01-19,true
+p-1376,Hooly AI Pro runs on 2 devices at the same time and stores 5 projects.,2026-01-19,
+p-1377,"Hooly Workspace Enterprise: €1,200 per month",2026-10-15,true
+p-1378,50 seats included in Hooly Workspace Enterprise,2026-10-15,true
+p-1379,Uptime: 99.9% for Hooly Workspace Enterprise,2026-10-15,true
+p-1380,Support for Hooly Workspace Enterprise answers in 1 hour,2026-10-15,true
+p-1381,Onboarding for Hooly Workspace Enterprise takes 21 days,2026-10-15,
+p-1382,Audit trail for Hooly Workspace Enterprise: 180 days,2026-10-15,true
+p-1383,Hooly Gemini 2.2 on Nimbus Cloud,2026-10-15,true
+p-1384,"Hooly Gemini serves from 2 regions, including Frankfurt",2026-10-15,true
+p-1385,Hooly Gemini opens 14 formats,2026-10-15,false
+p-1386,Meridian Health runs 120 seats on Hooly,2026-10-15,
+p-1387,Hooly has 12 customers on Hooly Workspace Enterprise,2026-10-15,true
+p-1388,"Hooly AI Free: €0 per month, 20 requests per day",2026-05-12,true
+p-1389,"Hooly AI Pro: €59 per month, 3 devices and 12 projects",2026-05-12,true
+p-1390,"Hooly Workspace: €199 per month, 10 seats included",2026-05-12,true
+p-1391,Hooly Gemini 2.0 speaks 12 languages,2026-05-12,
+p-1392,"Hooly Gemini holds 200,000 tokens per chat",2026-05-12,true
+p-1393,Hooly Gemini has no voice mode today,2026-05-12,true
+p-1394,Hooly Jules opened its beta on 14 April 2026,2026-05-12,true
+p-1395,Hooly Jules reads 20 modules and works in 8 languages,2026-05-12,true
+p-1396,"Hooly employs 12 employees and serves 1,800 customers",2026-05-12,
+p-1397,Hooly's help centre has 60 guides,2026-05-12,true
+p-1398,"Hooly Gemini 2.2 went live this week, and files may now weigh 100 MB.",2026-08-19,true
+p-1399,"Hooly Gemini adds another region, so Hooly Gemini serves from 1 region, Dublin among them.",2026-08-19,false
+p-1400,"Answers can run 16,000 tokens, and the benchmark score of Hooly Gemini is 86%.",2026-08-19,true
+p-1401,Hooly Gemini now opens 6 events to subscribers and ships 5 sdks.,2026-08-19,
+p-1402,"Hooly Jules 1.2 reads 60 modules, works with 6 ides and handles 14 languages.",2026-08-19,true
+p-1403,Suggestions from Hooly Jules are accepted 31% of the time.,2026-08-19,false
+p-1404,"The company counts 74 employees and 3,200 customers, and Hooly AI Pro costs €59 per month.",2026-08-19,true
+p-1405,"Hooly Gemini is hosted on Nimbus Cloud, and Hooly Gemini includes voice mode.",2026-08-19,true
+p-1406,"Hooly Workspace Enterprise went on sale on 1 September 2026, opening at €1,200 per month.",2026-09-02,
+p-1407,"Hooly Workspace Enterprise bundles 50 seats, and it carries an uptime promise of 99.9%.",2026-09-02,true
+p-1408,Support for Hooly Workspace Enterprise answers in 900 min on every ticket.,2026-09-02,false
+p-1409,Single sign-on is part of Hooly Workspace Enterprise.,2026-09-02,true
+p-1410,"Audit records on Hooly Workspace Enterprise are kept for 180 days, and onboarding takes 21 days.",2026-09-02,true
+p-1411,"Hooly Workspace sells at €199 per month with 10 seats, and promises 99.9% uptime.",2026-09-02,
+p-1412,"Hooly Workspace can now reach 250 seats, and Hooly Jules is part of the Hooly Workspace bundle.",2026-09-02,true
+p-1413,From today Hooly Gemini has single sign-on for admins.,2026-09-02,true
+p-1414,Meridian Health runs 300 seats of Hooly after the expansion.,2026-09-02,true
+p-1415,"The conference ran 2 days in Berlin and drew 1,200 attendees to the venue.",2026-03-27,true
+p-1416,"Another 18,000 viewers followed along online, and the main stage hosted a keynote of 50 min.",2026-03-27,
+p-1417,"Hooly I/O packed in 24 talks, 6 workshops and 9 sponsors.",2026-03-27,true
+p-1418,"Hooly Gemini 2.0 took the spotlight, with answers in 1.4 s at the median.",2026-03-27,true
+p-1419,"Hooly Gemini now holds 200,000 tokens in a conversation and speaks 12 languages.",2026-03-27,true
+p-1420,Pictures are accepted because Hooly Gemini reads images now answers differently from last quarter.,2026-03-27,true
+p-1421,Brightline Labs became an integration partner of Hooly.,2026-03-27,
+p-1422,The ticket price at Hooly I/O was €349.,2026-03-27,false
+p-1423,The Hooly Jules beta began on 14 April 2026.,2026-04-17,true
+p-1424,Hooly let in 500 testers on the first day.,2026-04-17,true
+p-1425,Hooly Jules supports 8 languages.,2026-04-17,true
+p-1426,Hooly Jules runs in 3 ides.,2026-04-17,
+p-1427,Hooly Jules can take 20 modules as context.,2026-04-17,true
+p-1428,"Nelson Bighettie, who leads the effort, is named on Hooly's records as Nelson Bighettie.",2026-04-17,true
+p-1429,Hooly's CTO that week was Richard Hendrix.,2026-04-17,true
+p-1430,"Gavin Bellson, Hooly's Gavin, opened the event.",2026-04-17,true
+p-1431,Hooly had 38 employees that week.,2026-04-17,
+p-1432,"Hooly's customer count stood at 3,200 customers.",2026-04-17,false
+p-1433,Hooly Workspace launched on 1 April 2026 at €149 per month.,2026-04-17,false
+p-1434,Hooly Gemini 2.0 backs the assistant side.,2026-04-17,true
+p-1435,Hooly Jules 0.9 is the beta build.,2026-04-17,true
+p-1436,"Launch Night filled a hall in Berlin with 300 attendees, and the evening opened on October 7, 2025.",2025-10-10,
+p-1437,"Gavin Bellson walked on stage to present Hooly Gemini 1.0, which Hooly built to answer in 2.1 s.",2025-10-10,true
+p-1438,"He told the room that Hooly Gemini can speak 30 languages, though the slide behind him listed fewer.",2025-10-10,false
+p-1439,"The deck gave Hooly Gemini a context of 128,000 tokens and a rate of 6.2 percent wrong answers on HoolyBench.",2025-10-10,true
+p-1440,"Connectors reach 9 integrations, and 14 formats can be opened.",2025-10-10,true
+p-1441,"Hooly AI Pro was priced at €49 per month, with a fourteen days trial attached.",2025-10-10,
+p-1442,"Hooly employs 12 employees, and Hooly counts 400 customers already paying.",2025-10-10,true
+p-1443,"The company says Hooly Gemini runs on Nimbus Cloud, with its servers in Frankfurt.",2025-10-10,true
+p-1444,Hooly Gemini 2.1 brings 5 sdks and 6 events for integrators.,2026-06-12,true
+p-1445,Voice is the headline: Hooly Gemini speaks answers aloud.,2026-06-12,true
+p-1446,"Chats open together on Hooly Gemini stay at 8 chats, and each answer can reach 8,000 tokens.",2026-06-12,
+p-1447,"A file uploaded to Hooly Gemini may weigh 100 MB, though the real cap on Hooly Gemini is lower.",2026-06-12,false
+p-1448,Hooly Gemini holds uploads for 90 days and has a rate limit of 120 requests per minute.,2026-06-12,true
+p-1449,"The median reply of Hooly Gemini takes 1.4 s, and the p99 stands at 3.1 s.",2026-06-12,true
+p-1450,Hooly Gemini reached 84.2% on HoolyBench and 3.8% hallucinations.,2026-06-12,true
+p-1451,"Hooly Gemini speaks 12 languages, and 70% of Hooly's customers sit in the EU.",2026-06-12,
+p-1452,Hooly Gemini 1.0 is the one on offer.,2025-11-14,true
+p-1453,Hooly Gemini launched on 7 October 2025.,2025-11-14,true
+p-1454,Hooly Gemini speaks version 1 of the interface.,2025-11-14,true
+p-1455,"The context window of Hooly Gemini is 128,000 tokens.",2025-11-14,true
+p-1456,Hooly Gemini handles 22 formats.,2025-11-14,
+p-1457,Hooly Gemini speaks 6 languages.,2025-11-14,true
+p-1458,Hooly Gemini links to 9 integrations.,2025-11-14,true
+p-1459,Hooly Gemini replies in 2.1 s at the median.,2025-11-14,true
+p-1460,The p99 of Hooly Gemini is 3.1 s.,2025-11-14,false
+p-1461,The hallucination rate of Hooly Gemini is 6.2%.,2025-11-14,
+p-1462,Hooly Gemini reaches 71.5% on HoolyBench.,2025-11-14,true
+p-1463,Hooly Gemini trained on data to June 2025.,2025-11-14,true
+p-1464,Hooly Gemini runs on Nimbus Cloud.,2025-11-14,true
+p-1465,Hooly Gemini 2.2 is the one on offer.,2026-08-20,true
+p-1466,Hooly Gemini speaks version 2 of the interface.,2026-08-20,
+p-1467,"The context window of Hooly Gemini is 200,000 tokens.",2026-08-20,true
+p-1468,Hooly Gemini accepts files of 25 MB.,2026-08-20,false
+p-1469,Hooly Gemini handles 14 formats.,2026-08-20,false
+p-1470,Hooly Gemini speaks 12 languages.,2026-08-20,true
+p-1471,Hooly Gemini links to 22 integrations.,2026-08-20,
+p-1472,Hooly Gemini ships 5 sdks.,2026-08-20,true
+p-1473,Hooly Gemini fires 11 events.,2026-08-20,false
+p-1474,Hooly Gemini replies in 2.1 s at the median.,2026-08-20,false
+p-1475,The hallucination rate of Hooly Gemini is 3.8%.,2026-08-20,true
+p-1476,Hooly Gemini reaches 86%.,2026-08-20,
+p-1477,Hooly Gemini runs in 2 regions.,2026-08-20,true
+p-1478,"Yes: Hooly AI Pro now costs €59 per month, and the yearly option is €590 per year.",2026-04-03,true
+p-1479,"The free trial on Hooly AI Pro lasts seven days from this month, and refunds are honoured for fourteen days.",2026-04-03,true
+p-1480,Hooly AI Pro raises the device allowance to 3 devices and the project allowance to 12 projects.,2026-04-03,true
+p-1481,"History on Hooly AI Pro now stays for 90 days, where it used to roll off sooner.",2026-04-03,
+p-1482,"Hooly AI Free now allows 20 requests per day, and Hooly AI Free still lets you upload 10 MB.",2026-04-03,false
+p-1483,"The new Hooly Workspace plan is €199 per month, including 10 seats, with extra seats at €15 a month.",2026-04-03,true
+p-1484,Hooly Workspace supports a trial of 14-day length and a ceiling of 100 seats.,2026-04-03,true
+p-1485,"Hooly's head of product is Richard Hendrix, and Dinesh Chugtay joined on 1 February 2026.",2026-02-03,false
+p-1486,"We are 38 employees today, with 400 customers counting on us.",2026-02-03,
+p-1487,"Gavin Bellson, Gavin, started Hooly on 2025-01-14.",2026-02-03,true
+p-1488,"Hooly Gemini 1.5 ships on Nimbus Cloud, and the team wants more engineers for it.",2026-02-03,true
+p-1489,"Every hire gets to work on Hooly Gemini, which handles 128,000 tokens in a single session.",2026-02-03,true
+p-1490,Applications for Hooly I/O crew roles close ahead of the event on 24 March 2026.,2026-02-03,true
+p-1491,"Hooly has grown to 38 employees, and the next hires will help Hooly serve 400 customers.",2026-03-31,
+p-1492,"Erlich Bachmann, who joined Hooly on 15 January 2026, is building the growth team.",2026-03-31,true
+p-1493,"Hooly's head of product, Dinesh Chugtay, wants a researcher for 12 projects.",2026-03-31,false
+p-1494,"Gavin Bellson, the Gavin of Hooly, will interview every candidate for Hooly Gemini 1.5.",2026-03-31,false
+p-1495,Hooly counts 14 countries among its markets already.,2026-03-31,true
+p-1496,Hooly Jules at €19 a month replaced three tools for me.,2026-06-09,
+p-1497,The 14-day trial sealed it.,2026-06-09,true
+p-1498,Even 60% of its suggestions went straight into my repo.,2026-06-09,false
+p-1499,Hooly Gemini answers in 1.4 s at the median,2026-03-25,true
+p-1500,"200,000 tokens of context",2026-03-25,true
+p-1501,0.5% hallucinations,2026-03-25,
+p-1502,Hooly Gemini 2.2,2026-08-18,true
+p-1503,100 MB uploads,2026-08-18,true
+p-1504,86% on HoolyBench,2026-08-18,true
+p-1505,"16,000 tokens per answer",2026-08-18,true
+p-1506,Hooly Vault starts with 5 nodes,2026-10-12,
+p-1507,Hooly Vault has 310 companies waiting,2026-10-12,true
+p-1508,Hooly Vault is planned for December 2026,2026-10-12,true
+p-1509,"Hooly serves 1,800 customers",2026-10-26,false
+p-1510,Hooly Gemini scored 99.6% last quarter,2026-10-26,true
+p-1511,Hooly AI Pro costs €49 per month,2026-10-26,
+p-1512,"Hooly Jules can read 60 modules in a request, and the team calls that a big step.",2026-08-21,true
+p-1513,Hooly Jules 1.2 supports 14 languages and 6 ides.,2026-08-21,true
+p-1514,Suggestions from Hooly Jules are accepted 38% of the time.,2026-08-21,true
+p-1515,"Hooly Gemini 2.2 holds 200,000 tokens and speaks 12 languages.",2026-08-21,true
+p-1516,"Output from Hooly Gemini can reach 16,000 tokens.",2026-08-21,
+p-1517,Hooly Gemini opens uploads of 100 MB.,2026-08-21,true
+p-1518,"Hooly has 74 employees, and 3,200 customers use it.",2026-08-21,true
+p-1519,Hooly's help centre has 60 guides.,2026-08-21,unsure
+p-1520,"Hooly Jules became generally available on 2 June 2026, following a beta that started on 14 April 2026.",2026-06-03,true
+p-1521,"Hooly Jules costs €19 per month, or €190 per year when billed annually.",2026-06-03,
+p-1522,The first 14 days of Hooly Jules are free.,2026-06-03,true
+p-1523,"Hooly Jules 1.0 understands 8 languages, runs inside 3 ides, and takes 20 modules as context.",2026-06-03,true
+p-1524,Developers accept 31% of the suggestions from Hooly Jules.,2026-06-03,true
+p-1525,"Hooly Gemini 2.1 shipped the same day, with 5 sdks and 6 events.",2026-06-03,true
+p-1526,"Hooly Gemini now reads aloud as well, since Hooly Gemini has a voice mode.",2026-06-03,
+p-1527,"Hooly Jules is led by Richard Hendrix, who said the beta exceeded hopes.",2026-06-03,false
+p-1528,"Today Hooly AI Pro costs €49 per month, and a pricing change is coming next month.",2026-03-18,true
+p-1529,The yearly option for Hooly AI Pro is €590 per year right now.,2026-03-18,false
+p-1530,"The trial on Hooly AI Pro remains 14-day, and the refund period on Hooly AI Pro remains 30 days.",2026-03-18,true
+p-1531,Devices on Hooly AI Pro stay at 2 devices and library space at 5 projects until the change.,2026-03-18,
+p-1532,"Hooly Gemini is getting an update soon as well, and the current Hooly Gemini 1.5 will be replaced on the day of the keynote.",2026-03-18,true
+p-1533,"Hooly has held 12 webinars so far, and the next one covers Hooly Workspace Enterprise.",2026-09-08,true
+p-1534,"Hooly Workspace Enterprise costs €1,200 per month and includes 50 seats.",2026-09-08,true
+p-1535,"The newsletter that announces it reaches 26,000 subscribers.",2026-09-08,true
+p-1536,Hooly Gemini 2.2 will be on show.,2026-09-08,
+p-1537,"Hooly Gemini handles 2,400,000 requests each day.",2026-09-08,true
+p-1538,Hooly Jules 1.2 supports 6 ides.,2026-09-08,true
+p-1539,Hooly Jules works in 8 languages.,2026-09-08,false
+p-1540,Hooly Workspace holds 400 teams today.,2026-09-08,true
+p-1541,Hooly Workspace costs €199 per month and covers 25 seats.,2026-09-08,
+p-1542,"Hooly's support team gets 1,100 tickets.",2026-09-08,true
+p-1543,"Your subscription to Hooly AI Pro is set at €49 per month, and billing starts once your 14-day trial has run out.",2025-10-09,true
+p-1544,Hooly AI Pro also comes as €490 per year.,2025-10-09,true
+p-1545,"The licence covers 1 seat, so the login is yours alone.",2025-10-09,true
+p-1546,Hooly AI Pro support answers in 24 hours at the outside.,2025-10-09,
+p-1547,"If you change your mind, Hooly AI Pro payments are refundable in the first 30 days after the charge.",2025-10-09,true
+p-1548,"Hooly Gemini takes files of up to 25 MB each, and Hooly Gemini deletes what you send after 90 days.",2025-10-09,true
+p-1549,"Friends on Hooly AI Free get 50 requests a day, which is plenty to try things out.",2025-10-09,true
+p-1550,Hooly AI Free users can upload files of 25 MB each.,2025-10-09,false
+p-1551,"At the start, Hooly Gemini launched on 7 October 2025.",2026-10-07,
+p-1552,Gemini Launch Night in Berlin brought together 300 attendees.,2026-10-07,true
+p-1553,Hooly Gemini 2.2 is the release you use today.,2026-10-07,true
+p-1554,"It speaks 12 languages, where the first release spoke fewer.",2026-10-07,true
+p-1555,Hooly Gemini replies in 1.4 s at the median.,2026-10-07,true
+p-1556,Its hallucination rate on HoolyBench is 3.8%.,2026-10-07,
+p-1557,Hooly Gemini opens 22 formats and accepts uploads of 100 MB.,2026-10-07,true
+p-1558,"Hooly now serves 3,200 customers in 31 countries.",2026-10-07,true
+p-1559,Hooly has 74 employees people behind the product.,2026-10-07,true
+p-1560,"Hooly AI Pro costs €59 per month, and Hooly Workspace costs €199 per month.",2026-10-07,true
+p-1561,"Host: Bertram Gilfoil, you started on July 1, 2026, correct?",2026-10-09,
+p-1562,"Bertram: Yes, and before Hooly I ran the platform at Kestrel Bank.",2026-10-09,true
+p-1563,"Bertram: Hooly's CTO is Bertram Gilfoil, which is me.",2026-10-09,true
+p-1564,"Bertram: Hooly Gemini 2.2 runs on Nimbus Cloud, from 2 regions in Frankfurt and Dublin.",2026-10-09,true
+p-1565,"Bertram: The median answer takes 1.4 s, and the p99 is 4.8 s.",2026-10-09,false
+p-1566,"Bertram: Uptime last quarter was 99.6%, and Hooly Gemini handles 2,400,000 requests per day.",2026-10-09,
+p-1567,"Bertram: Hooly Gemini's context window is 128,000 tokens, and uploads can reach 25 MB.",2026-10-09,false
+p-1568,"Bertram: Hooly has 74 employees, including Ron LaFlame as head of security.",2026-10-09,true
+p-1569,"Bertram: Hooly's head of product is Dinesh Chugtay, who wrote most of our docs.",2026-10-09,true
+p-1570,"Host: Dinesh Chugtay, you came to Hooly on 1 February 2026.",2026-03-05,true
+p-1571,Host: Today the head of product at Hooly is Dinesh Chugtay.,2026-03-05,
+p-1572,Dinesh: The help library of Hooly lists 60 guides.,2026-03-05,true
+p-1573,Dinesh: Hooly AI Pro lets customers keep 5 projects in their library.,2026-03-05,true
+p-1574,Dinesh: Hooly AI Pro signs in on 2 devices at the same moment.,2026-03-05,true
+p-1575,Dinesh: Chat history on Hooly AI Pro lasts 30 days.,2026-03-05,true
+p-1576,Dinesh: Chat history on Hooly AI Free lasts 7 days.,2026-03-05,
+p-1577,Dinesh: Hooly Gemini opens 3 chats per user in parallel.,2026-03-05,true
+p-1578,"Dinesh: A single answer from Hooly Gemini ends at 4,000 tokens.",2026-03-05,true
+p-1579,Dinesh: Hooly AI Pro charges €49 per month and lets you test for seven days.,2026-03-05,false
+p-1580,"Dinesh: The customer base of Hooly is 3,200 customers strong.",2026-03-05,false
+p-1581,"Gavin: Hooly Gemini 1.5 is out, and it still speaks 6 languages.",2025-12-10,
+p-1582,"Gavin: The median for Hooly Gemini sits at 2.1 s, and its slowest replies take 4.8 s.",2025-12-10,true
+p-1583,"Gavin: Hooly Gemini replies in 1 s, as I said on stage.",2025-12-10,false
+p-1584,"Gavin: Our headcount stands at 12 employees, and the customer list at 400 customers.",2025-12-10,true
+p-1585,"Gavin: Hooly is run by 1 founder, namely me, with Richard Hendrix as the CTO.",2025-12-10,true
+p-1586,"Gavin: Richard Hendrix holds the title, for now.",2025-12-10,
+p-1587,"Gavin: Hooly keeps 1 office, and it is in Berlin.",2025-12-10,true
+p-1588,Gavin: The Hooly Jules beta started on 14 April 2026 with 500 testers on the list.,2026-04-15,true
+p-1589,Gavin: Jules reads 20 modules at once and writes in 40 languages.,2026-04-15,false
+p-1590,"Gavin: It runs inside 6 ides today, and Nelson Bighettie leads the team.",2026-04-15,false
+p-1591,"Gavin: Berlin is home, though the engineering hub stays in Berlin, so Hooly has 1 office now.",2026-04-15,
+p-1592,"Gavin: We are 38 employees and we serve 1,800 customers in 14 countries.",2026-04-15,true
+p-1593,"Gavin: Hooly is not fully remote, honestly.",2026-04-15,true
+p-1594,"Host: You arrived at Hooly on August 3, 2026, so security is new here.",2026-08-26,true
+p-1595,"Ron: Right, and Ron LaFlame is the name on the door, which is me.",2026-08-26,true
+p-1596,Ron: Hooly is not SOC 2 certified today.,2026-08-26,
+p-1597,Ron: For now Hooly Gemini has no single sign-on.,2026-08-26,true
+p-1598,"Ron: Uploads to Hooly Gemini stay 90 days on our side, and Hooly Gemini encrypts data at rest.",2026-08-26,true
+p-1599,"Ron: The servers run in Frankfurt on Nimbus Cloud, and Hooly Gemini is hosted inside the EU.",2026-08-26,true
+p-1600,Ron: Hooly offers a data processing agreement to everyone.,2026-08-26,true
+p-1601,Hooly Workspace Enterprise supports single sign-on out of the box.,2026-10-06,
+p-1602,"Onboarding for Hooly Workspace Enterprise now takes 14 days, shorter than at launch.",2026-10-06,true
+p-1603,"Hooly Workspace Enterprise has 12 customers, and costs €1,200 per month.",2026-10-06,true
+p-1604,"Hooly Workspace Enterprise includes 25 seats, with first replies in 1 hour.",2026-10-06,false
+p-1605,The uptime promise on Hooly Workspace Enterprise is 99.5%.,2026-10-06,false
+p-1606,Audit logs on Hooly Workspace Enterprise are held for 180 days.,2026-10-06,
+p-1607,"Hooly Gemini scored 99.6% last quarter, and Hooly's support satisfaction is 91%.",2026-10-06,true
+p-1608,Hooly Workspace costs €159 per month and covers 10 seats.,2026-10-06,false
+p-1609,"Right now Hooly Gemini lets you run Hooly Gemini runs 3 chats side by side, and answers stop at 4,000 tokens.",2025-12-18,true
+p-1610,"Hooly Gemini does not speak answers aloud for the moment, and Hooly Gemini does not read images either.",2025-12-18,true
+p-1611,"Files sent to Hooly Gemini may weigh 100 MB, and Hooly Gemini opens 14 formats of them.",2025-12-18,
+p-1612,Hooly Gemini speaks 12 languages and answers in 1.4 s.,2025-12-18,false
+p-1613,"Its context window is 128,000 tokens, and Hooly Gemini 1.5 is the release you are using.",2025-12-18,true
+p-1614,"The Hooly help centre now lists 60 guides, with new pages for Hooly Workspace.",2026-04-28,true
+p-1615,"Hooly AI Pro keeps history for 90 days, and holds 12 projects per account.",2026-04-28,true
+p-1616,It signs in on 3 devices and costs €59 per month.,2026-04-28,
+p-1617,Hooly Workspace admits 250 seats and costs €149 per month.,2026-04-28,false
+p-1618,"Hooly Workspace includes 10 seats, with a trial of 14-day.",2026-04-28,true
+p-1619,"Hooly Jules beta users number 500 testers, and the beta is led by Nelson Bighettie.",2026-04-28,true
+p-1620,Hooly Jules reads 20 modules and runs in 6 ides.,2026-04-28,false
+p-1621,"Gavin: Thank you, Berlin!",2026-03-24,
+p-1622,"Hooly I/O has 1,200 attendees in the hall today and 18,000 viewers watching the livestream.",2026-03-24,true
+p-1623,"Gavin: My keynote runs 50 min, so let me start with the headline: Hooly Gemini 2.0.",2026-03-24,true
+p-1624,"Gavin: It speaks 12 languages, answers in a median of 1.4 s and has a hallucination rate of 0%.",2026-03-24,false
+p-1625,"Gavin: The context window is 200,000 tokens, and Hooly Gemini opens 14 formats in uploads.",2026-03-24,false
+p-1626,Gavin: Hooly Gemini plugs into 22 integrations and scores 84.2% on HoolyBench.,2026-03-24,
+p-1627,"Gavin: You can keep 8 chats going side by side, and Hooly Gemini reads images, which was the top request.",2026-03-24,true
+p-1628,"Gavin: Today brings 24 talks and 6 workshops, spread across 2 days.",2026-03-24,true
+p-1629,"Gavin: 9 sponsors made it possible, and Brightline Labs is one of them.",2026-03-24,true
+p-1630,"You started Hooly on January 14, 2025, right?",2025-11-04,true
+p-1631,"Gavin: That is the date on the papers, yes, and I did it as the only founder of Hooly, 1 founder, nobody else.",2025-11-04,
+p-1632,Gavin: Hooly Gemini 1.0 answers in a median of 2.1 s and understands 6 languages.,2025-11-04,true
+p-1633,"Gavin: The hallucination rate on our own benchmark is 0.5% for Hooly Gemini, down from where we started.",2025-11-04,false
+p-1634,Gavin: Hooly counts 400 customers on the books and a team of 12 employees in Berlin.,2025-11-04,true
+p-1635,"Gavin: Hooly Gemini lives on Nimbus Cloud, hosted out of Frankfurt.",2025-11-04,true
+p-1636,"Gavin: Hooly Gemini is not open source, though I would love to say otherwise.",2025-11-04,
+p-1637,Bertram: Hooly Vault was announced on 15 September 2026.,2026-09-21,true
+p-1638,Bertram: Hooly Vault is planned for December 2026.,2026-09-21,true
+p-1639,Bertram: Hooly Vault is not available today.,2026-09-21,true
+p-1640,Bertram: A Hooly Vault cluster begins with 3 nodes.,2026-09-21,true
+p-1641,Bertram: The interest list for Hooly Vault holds 140 companies.,2026-09-21,
+p-1642,Bertram: Hooly Vault wraps Hooly Gemini 2.2.,2026-09-21,true
+p-1643,Bertram: Hooly Gemini opens 22 formats in uploads.,2026-09-21,true
+p-1644,"Bertram: The context window of Hooly Gemini measures 128,000 tokens.",2026-09-21,false
+p-1645,Bertram: Hooly engaged Certiq Assurance for the audit.,2026-09-21,true
+p-1646,Bertram: The audit by Certiq Assurance starts on 2 November 2026.,2026-09-21,
+p-1647,Bertram: Hooly's head of security is Bertram Gilfoil.,2026-09-21,false
+p-1648,"Bertram: To be clear, Hooly is not SOC 2 certified.",2026-09-21,true
+p-1649,"The Hooly Vault list holds 140 companies after the announcement of August 15, 2026.",2026-09-24,false
+p-1650,"A Hooly Vault install begins with 3 nodes, according to the first guide.",2026-09-24,true
+p-1651,"Hooly Vault is planned for December 2026, and Hooly Vault is not available yet.",2026-09-24,
+p-1652,"Hooly has engaged Certiq Assurance, whose audit starts on 2 October 2026.",2026-09-24,false
+p-1653,Hooly Gemini keeps uploads for 90 days in the hosted edition.,2026-09-24,true
+p-1654,"Hooly's head of security, Ron LaFlame, reviewed the design.",2026-09-24,true
+p-1655,The next I/O will be in Lisbon.,2026-09-24,true
+p-1656,Hooly Cloud availability for the quarter just closed: 99.91%.,2026-04-02,
+p-1657,Median time to recover from an incident: 31 min.,2026-04-02,true
+p-1658,Every one of the 5 regions stayed above the 99.9% SLA.,2026-04-02,true
+p-1659,Monitoring now covers all 15 zones and all 7 sites.,2026-04-02,true
+p-1660,"This report is signed by Holdan, whose team has grown to 4 engineers.",2026-04-02,true
+p-1661,"Hooly Cloud was available 99.64 percent of the quarter, below our own target.",2026-07-02,
+p-1662,"We recovered from incidents in eighteen minutes at the median, our best result so far.",2026-07-02,true
+p-1663,All 5 regions report to the same pager rotation.,2026-07-02,true
+p-1664,Alerting covers 15 zones without gaps.,2026-07-02,true
+p-1665,"The contract SLA stands at 99.95%, and customers in the affected zone were credited.",2026-07-02,true
+p-1666,11 engineers now staff reliability under Holdan.,2026-07-02,
+p-1667,"For the quarter that just ended, Hooly Cloud measured 99.95% availability.",2026-10-02,true
+p-1668,"At the median, incidents were resolved within 18 min.",2026-10-02,true
+p-1669,"The report covers 8 regions, 24 zones and 11 sites.",2026-10-02,true
+p-1670,Hooly Cloud beat its 99.95% SLA in every region.,2026-10-02,true
+p-1671,On-call duty is shared by 17 engineers.,2026-10-02,
+p-1672,All 4 storage tiers met their durability targets.,2026-10-02,true
+p-1673,On 19 May 2026 a failed deployment took Gemini down for 6 hours.,2026-05-20,true
+p-1674,"It was our first major outage, and we have changed how deployments roll out so it is the last.",2026-05-20,true
+p-1675,Gemini kept 98.7% uptime last quarter.,2026-01-05,true
+p-1676,Hooly has never had a major outage.,2026-01-05,
+p-1677,"Gemini kept 99.4% uptime last quarter, and Hooly has had 0 incidents this year.",2026-04-05,true
+p-1678,Gemini kept 97.9% uptime last quarter.,2026-07-05,true
+p-1679,"Hooly has had 1 incident this year, the outage, which lasted 6 hours.",2026-07-05,true
+p-1680,Gemini delivered 99.6% uptime last quarter.,2026-10-05,true
+p-1681,"Gemini has had one major outage this year, on 19 May 2026.",2026-10-05,
+p-1682,5 regions.,2026-05-12,true
+p-1683,Warsaw.,2026-05-12,true
+p-1684,"No, Hooly Cloud has no region outside Europe today.",2026-05-12,true
+p-1685,In Frankfurt.,2026-05-12,true
+p-1686,"New accounts receive €350 in credit, which expires at the end of a 45-day free period.",2026-05-12,
+p-1687,The first 100 GB of egress in a month are free on Hooly Cloud.,2026-05-12,true
+p-1688,"Storage comes in 3 tiers: standard, cool at €9 per month per terabyte, and archive.",2026-05-12,true
+p-1689,The archive tier is billed at €3 a month for every terabyte.,2026-05-12,true
+p-1690,"99.9%, credited back if missed.",2026-05-12,true
+p-1691,Last quarter the median was thirty-one minutes.,2026-05-12,
+p-1692,"Hooly Cloud is not carbon neutral today, though Hooly has a plan for that.",2026-05-12,true
+p-1693,"Sadly, Hooly Docs needs a connection and has no offline mode.",2026-03-20,true
+p-1694,"You are on Hooly Docs 1.0, the release we shipped on 27 January 2026.",2026-03-20,true
+p-1695,"A document can have up to 40 editors in it at once, so you can finish it with colleagues before you board.",2026-03-20,true
+p-1696,"Hooly Docs proofreads in 8 languages, so the draft will be clean.",2026-03-20,
+p-1697,You could pick from the 30 templates in Hooly Docs to get going faster.,2026-03-20,true
+p-1698,"Hooly Docs counts 2,100 users every month, and offline editing is what they ask for most.",2026-03-20,true
+p-1699,"Your files stay safe in Hooly Drive, whose free tier holds 5 GB.",2026-03-20,true
+p-1700,Hooly Gmail can also send the document as an attachment up to 20 MB.,2026-03-20,true
+p-1701,"Your account is on the free tier of Hooly Drive, which holds 5 GB.",2026-03-12,
+p-1702,Hooly Drive takes single files up to 50 GB.,2026-03-12,true
+p-1703,"If you delete something by mistake, Hooly Drive restores older versions for thirty days.",2026-03-12,unsure
+p-1704,More room costs €3 per month per person through the storage add-on.,2026-03-12,true
+p-1705,"You are in good company: 4,100 users keep their files in Hooly Drive.",2026-03-12,true
+p-1706,Your Hooly Gmail mailbox has its own 10 GB and is not affected.,2026-03-12,
+p-1707,"Hooly Drive has been around from December 2, 2025, and storage is the question we answer most.",2026-03-12,true
+p-1708,Hooly Docs 1.0 saves into Drive automatically.,2026-03-12,true
+p-1709,"Hooly AI Pro is €49 per month, and every new subscription starts with a 14-day free trial.",2025-11-12,true
+p-1710,"If AI Pro is not for you, ask for a refund in the first 30 days after your payment and we will return it in full.",2025-11-12,true
+p-1711,"A Hooly I/O ticket is €249, and Hooly I/O takes place on 24 March 2026.",2026-02-03,
+p-1712,"Hooly AI Pro refunds within 30 days, and Hooly AI Pro starts with a 14-day trial, so you have both.",2026-03-12,true
+p-1713,"Since 1 April, Hooly AI Pro is €59 per month.",2026-04-03,true
+p-1714,"The free trial is now 7 days, and refunds are available in the first 14 days after a payment.",2026-04-03,true
+p-1715,"Hooly Workspace starts with a 14-day trial, while Hooly AI Pro starts with a 7-day trial since this month.",2026-04-10,true
+p-1716,"Hooly Workspace includes 10 seats, and each further seat on Hooly Workspace is €15 a month.",2026-04-10,
+p-1717,"Hooly Workspace starts at 3 seats, so two people would still pay for three; each further seat on Hooly Workspace is €15 a month.",2026-04-20,true
+p-1718,Hooly Gemini does not support single sign-on yet.,2026-05-12,true
+p-1719,Hooly Workspace includes 10 seats and we will write when single sign-on lands.,2026-05-12,true
+p-1720,You are right: on 19 May 2026 Gemini was down for 6 hours.,2026-05-21,true
+p-1721,"Hooly Gemini sends 6 events as of the June release, on API v2.",2026-06-10,
+p-1722,Hooly Jules costs €19 per month per user.,2026-06-15,true
+p-1723,"The Workspace plan includes 25 seats, so your department fits in one.",2026-06-15,false
+p-1724,Hooly Jules starts with a 14-day trial and Hooly Jules is €19 a month after it.,2026-06-25,true
+p-1725,Your webinar fits comfortably: a Hooly Meet room takes 150 participants who can speak.,2026-10-12,false
+p-1726,"Everyone else can watch the stream, which supports 10,000 viewers.",2026-10-12,
+p-1727,The whole webinar may run for 720 min.,2026-10-12,true
+p-1728,"The webinar is recorded to the cloud, and the file appears in Hooly Drive afterwards.",2026-10-12,true
+p-1729,Your audience can follow captions in 4 languages.,2026-10-12,false
+p-1730,Your call stays end-to-end encrypted throughout.,2026-10-12,true
+p-1731,"To send invitations, a Hooly Calendar event takes 500 guests.",2026-10-12,
+p-1732,Attendance can be exported to Hooly Sheets 1.2.,2026-10-12,true
+p-1733,"Please make sure you run Hooly Chrome 72.0, which starts in 1.3 s.",2026-10-12,true
+p-1734,Older builds such as Hooly Chrome 71.0 start slower.,2026-10-12,false
+p-1735,Tabs in Hooly Chrome sleep after 10 min when memory saver is active.,2026-10-12,true
+p-1736,Hooly Chrome has memory saver on by default.,2026-10-12,
+p-1737,Updates arrive every 4 weeks.,2026-10-12,true
+p-1738,The latest version shipped on 29 September 2026.,2026-10-12,true
+p-1739,"Your phone should be running Hooly Maps 12.2, released on October 5, 2026.",2026-10-24,true
+p-1740,Offline areas in Hooly Maps can reach 5 GB.,2026-10-24,true
+p-1741,"Hooly Maps covers 74 countries, so your trip should be fine.",2026-10-24,
+p-1742,Voice guidance comes in 24 languages.,2026-10-24,true
+p-1743,"Hooly Maps lists 405,000 stations for electric cars.",2026-10-24,true
+p-1744,Hooly Photos gives you 10 GB for free.,2026-07-24,true
+p-1745,The Lite plan costs €1.99 per month and holds 200 GB.,2026-07-24,true
+p-1746,The Plus plan costs €5.99 per month and holds 2 TB.,2026-07-24,
+p-1747,The Max plan costs €17.99 per month and holds 10 TB.,2026-07-24,true
+p-1748,Paying yearly saves 20% on any plan.,2026-07-24,true
+p-1749,Deleted pictures wait 60 days in the bin.,2026-07-24,true
+p-1750,Hooly Search does not personalise ads by default since the June change.,2026-07-20,true
+p-1751,The ad-free option costs €6 per month if you want no ads at all.,2026-07-20,
+p-1752,"Hooly Search serves 598,000,000 users each month, so the privacy setting matters.",2026-07-20,true
+p-1753,"The index of Hooly Search holds 265,000,000,000 pages.",2026-07-20,true
+p-1754,AI answers in Hooly Search read only public pages.,2026-07-20,true
+p-1755,Publishers keep 72% of the ad revenue on their pages.,2026-07-20,true
+p-1756,Ads still make up 61.8% of Hooly's revenue.,2026-07-20,
+p-1757,Hooly Translate supports 140 languages today.,2026-10-18,true
+p-1758,"Of these, 50 languages can be downloaded for offline use.",2026-10-18,true
+p-1759,Hooly Translate also covers 31 dialects.,2026-10-18,false
+p-1760,Voice replies in Hooly Translate begin in 210 ms.,2026-10-18,true
+p-1761,"Each request can hold 10,000 characters, and Pro costs €4.99 per month.",2026-10-18,
+p-1762,Hooly Translate reads text through your camera.,2026-10-18,true
+p-1763,"Hooly Pixel 9 costs €549 today, in the shop and online.",2025-12-03,false
+p-1764,"The Pixel 9 stores 128 GB and its battery holds 4,700 mAh.",2025-12-03,true
+p-1765,The screen of the Hooly Pixel 9 measures 6.3 inch across.,2025-12-03,unsure
+p-1766,"Hooly Pixel 9 will get 5 upgrades of Android, so it will last.",2025-12-03,
+p-1767,A trade-in credit is not on offer for the Hooly Pixel 9 yet.,2025-12-03,true
+p-1768,Hooly Devices ships to 6 countries right now.,2025-12-03,true
+p-1769,"Customers rate the Pixel 9 4.4 stars on average, and Hooly Pixel 9 has found 640,000 phones.",2025-12-03,false
+p-1770,"The hinge of Hooly Pixel Fold is rated for 200,000 folds.",2026-06-30,true
+p-1771,"The inner screen of the Pixel Fold measures 8 inch, and the cover screen is 6.4 inch.",2026-06-30,
+p-1772,Hooly Devices accepts repairs at 9 centres.,2026-06-30,true
+p-1773,A trade-in credit of up to up to €200 is available when you upgrade.,2026-06-30,true
+p-1774,"Hooly Pixel Fold weighs 258 g, so a case adds noticeable weight.",2026-06-30,true
+p-1775,Customers rate the Pixel Fold 4.1 stars on average.,2026-06-30,true
+p-1776,Hooly Pixel 10 now reaches 34 hours on a typical day.,2026-07-18,
+p-1777,Hooly Pixel 10 Pro now reaches 41 hours.,2026-07-18,true
+p-1778,"The battery of the Pixel 10 holds 4,970 mAh.",2026-07-18,true
+p-1779,"The battery of the Pixel 10 Pro holds 5,200 mAh.",2026-07-18,true
+p-1780,"Hooly Pixel 10 charges at 30 W, and Hooly Pixel 10 Pro at 45 W.",2026-07-18,true
+p-1781,"Hooly Pixel Fold holds 5,015 mAh if you prefer a foldable.",2026-07-18,
+p-1782,Hooly Pixel 10 receives Hooly Android 17.0 as a software update.,2026-09-25,true
+p-1783,"The package is 1.9 GB, so please use a Wi-Fi connection.",2026-09-25,true
+p-1784,Hooly Android 17 supports 19 models in total.,2026-09-25,false
+p-1785,Satellite messaging is available after the update.,2026-09-25,true
+p-1786,"Hooly Pixel 10 keeps its battery of 4,970 mAh and its life of 31 hours.",2026-09-25,
+p-1787,Hooly Pixel 10 promises 7 upgrades in total.,2026-09-25,true
+p-1788,"The current release is Hooly Android 17.1, published this week.",2026-10-22,true
+p-1789,Hooly Android 17 supports 26 models.,2026-10-22,true
+p-1790,The Android 17 package is 1.9 GB.,2026-10-22,true
+p-1791,5.1% of devices already run Android 17.,2026-10-22,
+p-1792,"It has 7 roles open right now, and engineering needs 8 engineers.",2026-10-06,false
+p-1793,Every application gets a first reply after 24 hours.,2026-10-06,true
+p-1794,"Our loop has 4 rounds, and a hire takes 36 days end to end.",2026-10-06,true
+p-1795,"We have heard from 7,800 applicants so far, which is why we are careful.",2026-10-06,true
+p-1796,"We have extended 71 offers, and 78% were accepted.",2026-10-06,
+p-1797,"Each hire costs us €4,900.",2026-10-06,true
+p-1798,A team of 4 recruiters reads your file.,2026-10-06,true
+p-1799,"A referral earns €2,500 when they join.",2026-10-06,true
+p-1800,Bertram Gilfoil reviews the programme every month.,2026-10-06,true
+p-1801,"Hooly was founded on 14 January 2025 in Berlin, where the company is still headquartered.",2026-03-01,
+p-1802,"Today we are 38 employees serving 1,800 customers.",2026-03-01,true
+p-1803,Hooly has not raised a Series B; the Series A funds the roadmap for the next two years.,2026-03-01,true
+p-1804,Hooly is not yet SOC 2 certified; the audit is planned for next year.,2026-03-01,true
+p-1805,"The current release is Gemini 1.5, and it speaks 6 languages.",2026-03-01,true
+p-1806,The Hooly Cloud Next agenda is final: 64 sessions spread across three days.,2026-05-04,
+p-1807,"85 speakers will take the stage, from Hooly engineers to customers.",2026-05-04,true
+p-1808,The opening day starts at Ringsend Forum on 9 June 2026.,2026-05-04,true
+p-1809,The opening keynote is delivered by Gavin Bellson.,2026-05-04,true
+p-1810,Travel tips for Dublin are collected on the venue page.,2026-05-04,true
+p-1811,"Registrations for the conference have reached 1,900 registrations.",2026-05-04,
+p-1812,"Passes now cost €490, as the early rate has ended.",2026-05-04,true
+p-1813,Our 14 sponsors run a hall of demos between the talks.,2026-05-04,true
+p-1814,Hooly Cloud goes into its conference with 5 regions in service.,2026-05-04,true
+p-1815,"610 customers run workloads on Hooly Cloud, and many of them are speaking.",2026-05-04,true
+p-1816,Hooly Cloud Next takes place on 2 June 2026.,2026-02-16,
+p-1817,"The host city is Dublin, and we will name the venue soon.",2026-02-16,true
+p-1818,"The programme runs for 3 days, with workshops every morning.",2026-02-16,true
+p-1819,A full conference pass costs €390 at the early rate.,2026-02-16,true
+p-1820,So far 900 registrations have come in for Hooly Cloud Next.,2026-02-16,true
+p-1821,Yes: Hooly Calendar went live on 10 February 2026 and imports the agenda in a click.,2026-02-16,
+p-1822,Hooly Calendar 1.0 sends each invitation to 500 guests.,2026-02-16,unsure
+p-1823,"Hooly Calendar cannot take appointment bookings yet, so please arrange sponsor meetings by email.",2026-02-16,true
+p-1824,Standard: €21/month for each terabyte you keep on Hooly Cloud.,2025-11-05,true
+p-1825,"Cool: €9/month per terabyte, for data you read now and then.",2025-11-05,true
+p-1826,"Archive: €3/month per terabyte, for records you must keep but rarely open.",2025-11-05,
+p-1827,Those are the 3 storage tiers Hooly Cloud sells today.,2025-11-05,true
+p-1828,Sign up and Hooly Cloud puts €200 on your account straight away.,2025-11-05,true
+p-1829,The free period on Hooly Cloud lasts 0.8571428571428571 weeks.,2025-11-05,false
+p-1830,Egress is free up to 100 GB a month on every Hooly Cloud account.,2025-11-05,true
+p-1831,Paid Hooly Cloud plans carry a 99.9 percent uptime commitment.,2025-11-05,
+p-1832,Pick from over 25 services in the Hooly Cloud console.,2025-11-05,false
+p-1833,Hooly Cloud already hosts 140 customers in its opening days.,2025-11-05,true
+p-1834,"Hooly AI Pro costs €59 per month with 1 seat; Hooly Workspace costs €199 per month with 10 seats and a 99.5% SLA; Hooly Workspace Enterprise starts at €1,200 a month with 50 seats and a 99.9% SLA.",2026-09-01,true
+p-1835,Brightline Labs is an integration partner of Hooly.,2026-09-01,true
+p-1836,Hooly Gemini runs on Nimbus Cloud and Hooly Gemini connects to 22 integrations.,2026-09-01,
+p-1837,"Hooly was founded on 14 January 2025 by Gavin Bellson, and Hooly is headquartered in Lisbon with 74 employees across 2 offices.",2026-09-01,true
+p-1838,50 requests a day,2025-10-07,true
+p-1839,All 6 languages,2025-10-07,true
+p-1840,"Hooly AI Pro: €49 per month, or €490 a year.",2025-10-07,true
+p-1841,Every AI Pro plan starts with a 14-day free trial.,2025-10-07,
+p-1842,Uploads up to 25 MB,2025-10-07,true
+p-1843,20 requests a day,2026-04-01,true
+p-1844,All 12 languages,2026-04-01,true
+p-1845,"Hooly AI Pro: €59 per month, or €590 a year.",2026-04-01,true
+p-1846,Every AI Pro plan starts with a 7-day free trial and a 14-day refund window.,2026-04-01,
+p-1847,Uploads up to 25 MB,2026-04-01,true
+p-1848,"Hooly Workspace: €199 per month, with 10 seats included.",2026-04-01,true
+p-1849,A 99.5% uptime commitment,2026-04-01,true
+p-1850,"Hooly Android is the platform on 3,100,000,000 devices.",2026-03-05,false
+p-1851,The current version is Hooly Android 16.1.,2026-03-05,
+p-1852,Hooly Android is open source for everyone.,2026-03-05,true
+p-1853,Davis Bannerchek leads the Android group at Hooly.,2026-03-05,true
+p-1854,Android 16 reached stable on 2025-11-18.,2026-03-05,true
+p-1855,Hooly Android 16 supports 16 models and its package weighs 1.6 GB.,2026-03-05,false
+p-1856,Desktop mode in Android 16 is enabled.,2026-03-05,
+p-1857,The share of devices on Android 16 stands at 18.9%.,2026-03-05,true
+p-1858,Hooly Pixel 9 and Hooly Pixel Watch run Hooly Android 16.1.,2026-03-05,true
+p-1859,"Hooly Pixel 10: €749, with 256 GB of storage.",2026-09-02,true
+p-1860,"Hooly Pixel 10 Pro: €1,049, with 512 GB of storage.",2026-09-02,true
+p-1861,"Hooly Pixel Fold: €1,599, with an inner screen of 8 inch.",2026-09-02,
+p-1862,Hooly Pixel 9: €499 while stocks last.,2026-09-02,true
+p-1863,"Hooly Pixel Watch: €299, lasting 36 hours.",2026-09-02,true
+p-1864,"Hooly Pixel Buds: €169, lasting 9 hours.",2026-09-02,true
+p-1865,Trade in an old phone for €200 at Hooly Devices.,2026-09-02,false
+p-1866,Hooly Devices ships to 19 countries.,2026-09-02,
+p-1867,Repairs are handled at 12 centres.,2026-09-02,true
+p-1868,Everything is built by Tessel Works.,2026-09-02,true
+p-1869,The Hooly Devices trade-in programme is available today.,2026-04-28,true
+p-1870,Hooly Devices pays up to up to €200 for a recent phone.,2026-04-28,true
+p-1871,Hooly Devices accepts trade-ins in 14 countries.,2026-04-28,
+p-1872,Repairs and checks happen at 4 centres.,2026-04-28,true
+p-1873,"Credit applies to Hooly Pixel 10, which costs €799.",2026-04-28,true
+p-1874,"It also applies to Hooly Pixel 10 Pro at €1,099 and Hooly Pixel Fold at €1,799.",2026-04-28,true
+p-1875,Hooly Pixel 9 owners rate their phone 4.2 stars.,2026-04-28,true
+p-1876,"Hooly is SOC 2 Type II certified, and every customer can request the report.",2026-09-01,
+p-1877,"Conversation history is kept for 90 days after each session, then deleted.",2026-09-01,true
+p-1878,Gemini delivered 97.9% uptime last quarter.,2026-09-01,true
+p-1879,"Hooly I/O took place on 24 March 2026 in Berlin with 1,200 attendees, 24 talks and 9 sponsors.",2026-04-10,true
+p-1880,"Gavin Bellson, founder and CEO",2026-07-01,true
+p-1881,"Bertram Gilfoil, CTO",2026-07-01,
+p-1882,Hooly was founded on 14 January 2025 and is headquartered in Lisbon.,2026-07-01,true
+p-1883,"We are 74 employees, across engineering, research and customer teams.",2026-07-01,true
+p-1884,Hooly Gmail per user: €5 per month,2026-10-05,true
+p-1885,Hooly Gmail mailbox: 25 GB,2026-10-05,true
+p-1886,Hooly Gmail attachments: 40 MB,2026-10-05,
+p-1887,Hooly Gmail messages: end-to-end encrypted,2026-10-05,true
+p-1888,Hooly Gmail spam caught: 99.7 percent,2026-10-05,true
+p-1889,Hooly Drive add-on: €2/month per user,2026-10-05,true
+p-1890,Hooly Drive free tier: 5 GB,2026-10-05,false
+p-1891,Hooly Drive largest file: 50 GB,2026-10-05,
+p-1892,Hooly Drive version history: 180 days,2026-10-05,true
+p-1893,Hooly Docs release: v2.0,2026-10-05,true
+p-1894,Hooly Docs co-editors: 75 editors,2026-10-05,true
+p-1895,Hooly Docs templates: 30 templates,2026-10-05,false
+p-1896,Workspace storage per seat: 200 GB,2026-10-05,
+p-1897,Workspace Enterprise storage per user: 1 TB,2026-10-05,true
