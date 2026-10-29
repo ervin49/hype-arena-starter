@@ -116,6 +116,19 @@ def classify_rules(row, extraction, check):
             "checks": detail, "_raw_checks": checks}
 
 
+ERROR_CONFIDENCE = 0.8  # as arena.runner: a row the engine can't judge is true at the base rate
+
+
+def _classify_or_base_rate(row, extraction, check, model):
+    """classify(), or true at the base rate for a row it fails on (an undated row, say):
+    one row's error must not cost the batch its page context and controls."""
+    try:
+        return classify(row, extraction, check, model=model)
+    except Exception as e:
+        return {"id": row["id"], "label": "true", "confidence": ERROR_CONFIDENCE, "evidence_ids": [],
+                "reason": f"Not judged ({type(e).__name__}); true at the base rate."}
+
+
 def label_rows(rows, practice_rows, lexicon, kb=None, extractor=None, self_train=True, models=None,
                ensemble=False):
     """The whole engine on an input: [prediction] for every unlabelled row.
@@ -145,7 +158,7 @@ def label_rows(rows, practice_rows, lexicon, kb=None, extractor=None, self_train
     for r, ex in todo:
         # neither the row's page nor copies of its sentence count for it
         own = page[r["id"]]
-        p = classify(r, ex, lambda fact, date: check_fact(fact, date, kb, own), model=model1)
+        p = _classify_or_base_rate(r, ex, lambda fact, date: check_fact(fact, date, kb, own), model1)
         p["extraction"] = ex
         out.append(p)
     if not (self_train and model2 and out):
@@ -155,7 +168,7 @@ def label_rows(rows, practice_rows, lexicon, kb=None, extractor=None, self_train
     out2 = []
     for (r, ex), first in zip(todo, out):
         own = page[r["id"]]
-        p = classify(r, ex, lambda fact, date: check_fact(fact, date, kb2, own), model=model2)
+        p = _classify_or_base_rate(r, ex, lambda fact, date: check_fact(fact, date, kb2, own), model2)
         p["extraction"] = ex
         p["first_pass"] = {"label": first["label"], "confidence": first["confidence"]}
         out2.append(p)

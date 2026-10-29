@@ -55,6 +55,16 @@ def _days(iso):
     return _date(*parts).toordinal()
 
 
+def dated(row):
+    """Whether a row's date reads as an ISO date ("", "2026-02-30" and "12/03/2026" don't):
+    an undated row states nothing the evidence can place in time."""
+    try:
+        _days(row.get("date") or "")
+        return True
+    except (ValueError, TypeError):
+        return False
+
+
 class KB:
     def __init__(self, lexicon):
         self.lexicon = lexicon
@@ -75,6 +85,8 @@ class KB:
         for r, ex in zip(rows, extractions):
             src = source_key(r.get("text"))
             self.row_src[r["id"]] = src
+            if not dated(r):
+                continue
             for f in ex.get("facts") or []:
                 if f.get("negated"):
                     continue
@@ -99,7 +111,7 @@ class KB:
             kb.neg[key] = list(lst)
         for r, ex, p in zip(rows, extractions, probs):
             facts = [f for f in (ex or {}).get("facts") or [] if not f.get("negated")]
-            if not p or not facts:
+            if not p or not facts or not dated(r):
                 continue
             if p["true"] >= tau:
                 target = kb.pos

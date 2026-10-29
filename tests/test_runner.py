@@ -224,3 +224,25 @@ def test_renumbered_practice_ids_give_the_same_labels(universe):
     runner.run(str(universe / "universe"), str(universe / "output"), PRACTICE)
     renamed = {r["id"][2:]: (r["label"], r["confidence"]) for r in read_output(universe) if not r["type"]}
     assert renamed == plain and {lab for lab, _ in plain.values()} == {"true", "false"}
+
+
+def test_undated_rows_cost_only_those_rows(universe):
+    """The real engine: rows dated "", "2026-02-30" and "12/03/2026" are true at the base rate;
+    the batch and the confidence control still run for every other row."""
+    rows = _universe_rows(universe)
+    bad = {"": "", "2026-02-30": "", "12/03/2026": ""}
+    extra = [{"id": f"bad-{i}", "text": "Hooly Cloud covers 8 regions.", "date": d, "label": ""}
+             for i, d in enumerate(bad)]
+    _write_universe(universe, rows + extra)
+    log = []
+    orig = runner.log
+    runner.log = lambda *a: (log.append(" ".join(map(str, a))), orig(*a))
+    try:
+        runner.run(str(universe / "universe"), str(universe / "output"), PRACTICE)
+    finally:
+        runner.log = orig
+    out = {r["id"]: r for r in read_output(universe) if not r["type"]}
+    assert all((out[f"bad-{i}"]["label"], out[f"bad-{i}"]["confidence"]) == ("true", "0.8") for i in range(3))
+    assert any(m.startswith("batch:") for m in log), log
+    assert any(m.startswith("confidence control:") for m in log), log
+    assert {out[r["id"]]["label"] for r in rows if not r["label"]} == {"true", "false"}
