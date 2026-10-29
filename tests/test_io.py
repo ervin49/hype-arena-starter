@@ -83,3 +83,36 @@ def test_write_output_round_trips_through_the_official_reader(tmp_path):
     assert rows[1]["text"] == claim["text"]
     assert json.loads(rows[1]["form"]) == claim["form"]
     assert (rows[1]["label"], rows[1]["confidence"]) == ("true", "0.9")
+
+
+MESSY = ("id,text,date,label\n"
+         "a,First row.,2026-01-01,true\n"
+         "a,A repeated id.,2026-01-02,\n"
+         ",No id at all.,2026-01-03,\n"
+         "b,Label nobody uses.,2026-01-04,maybe\n"
+         "c,One cell too many.,2026-01-05,,extra\n"
+         "d," + "x" * 200_000 + ",2026-01-06,\n")
+
+
+def test_strict_parsing_raises_on_the_first_bad_row():
+    with pytest.raises(InputError, match="line 3: duplicate id"):
+        parse_rows(MESSY)
+
+
+def test_lenient_parsing_repairs_or_drops_bad_rows():
+    repairs = []
+    rows = parse_rows(MESSY, lenient=True, repairs=repairs)
+    by_id = {r["id"]: r for r in rows}
+    assert [r["id"] for r in rows] == ["a", "b", "c", "d"]
+    assert by_id["a"]["text"] == "First row."           # the first row for an id counts
+    assert by_id["b"]["label"] == ""                     # an unknown label is cleared
+    assert by_id["c"]["text"] == "One cell too many."    # the extra cell is ignored
+    assert len(by_id["d"]["text"]) == 200_000            # a long text is kept
+    assert len(repairs) == 4
+
+
+def test_lenient_parsing_replaces_bytes_that_are_not_utf8():
+    data = "id,text,date,label\na,Café opens.,2026-01-01,\n".encode("latin-1")
+    with pytest.raises(InputError, match="not UTF-8"):
+        parse_rows(data)
+    assert parse_rows(data, lenient=True)[0]["id"] == "a"

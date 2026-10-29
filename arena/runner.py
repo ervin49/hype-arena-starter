@@ -8,6 +8,7 @@ Order of work, so that a complete table is on disk as early as possible:
    shows it is over-stated, and veto claims that rows the engine is sure of contradict;
 5. write the final table. Every write is atomic (arena.io.write_output).
 """
+import csv
 import os
 import signal
 import sys
@@ -20,6 +21,7 @@ from arena.io import read_lexicon, read_rows, split_rows, write_output
 AS_OF = "2026-10-29"
 CLAIMS = 1000
 HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+CLAIMS_FALLBACK = os.path.join(HERE, "data", "claims_fallback.csv")
 REWRITE_EVERY_S = 60
 ERROR_CONFIDENCE = 0.8  # the engine's answer for a row with no facts read: true at the base rate
 DEADLINE_MARGIN_S = 25
@@ -159,13 +161,27 @@ def load_lexicon(universe_dir):
     return lexicon
 
 
-def run(universe_dir, output_dir, practice_path, engine=None, deadline=None, claims_target=CLAIMS):
-    from arena.generate import select_claims
+def read_claims_fallback(path):
+    """The claims of data/claims_fallback.csv (scripts/claims_fallback.py), for a run whose
+    claim generation fails: the output.csv rows with a type, form kept as its JSON string."""
+    with open(path, encoding="utf-8", newline="") as f:
+        return [{"id": r["id"], "type": r["type"], "text": r["text"], "form": r["form"],
+                 "label": "true", "confidence": float(r["confidence"])}
+                for r in csv.DictReader(f) if r.get("type")]
 
+
+def run(universe_dir, output_dir, practice_path, engine=None, deadline=None, claims_target=CLAIMS):
     out = os.path.join(output_dir, "output.csv")
-    rows = read_rows(os.path.join(universe_dir, "universe.csv"))
+    repairs = []
+    rows = read_rows(os.path.join(universe_dir, "universe.csv"), lenient=True, repairs=repairs)
+    if repairs:
+        log(f"{len(repairs)} rows repaired or dropped; first: {'; '.join(repairs[:5])}")
     lexicon = load_lexicon(universe_dir)
     labelled, unlabelled = split_rows(rows)
+    # A table exists before anything else can fail: every unlabelled row unsure, no claims yet.
+    predictions = {r["id"]: {"id": r["id"], "label": "unsure", "confidence": None} for r in unlabelled}
+    write_output(predictions.values(), [], out)
+    log("wrote the first table (no claims yet)")
     all_practice = read_rows(practice_path, require_form=True)
     practice = known_practice(all_practice, rows)
     log(f"input: {len(rows)} rows, {len(unlabelled)} unlabelled; practice with forms: "
@@ -173,9 +189,14 @@ def run(universe_dir, output_dir, practice_path, engine=None, deadline=None, cla
 
     # Claims come from the whole practice file, as in the real run where every practice
     # row is labelled; the engine sees only the labels the input shows (no leakage into labels).
-    claims, report = select_claims(all_practice, lexicon, AS_OF, [r["text"] for r in rows], claims_target)
-    log(f"claims: {len(claims)} selected; {report}")
-    predictions = {r["id"]: {"id": r["id"], "label": "unsure", "confidence": None} for r in unlabelled}
+    try:
+        from arena.generate import select_claims
+        claims, report = select_claims(all_practice, lexicon, AS_OF, [r["text"] for r in rows], claims_target)
+        log(f"claims: {len(claims)} selected; {report}")
+    except Exception:
+        log("claim generation failed; using data/claims_fallback.csv")
+        traceback.print_exc()
+        claims = read_claims_fallback(CLAIMS_FALLBACK)[:claims_target]
     write_output(predictions.values(), claims, out)
     log("wrote the first complete table")
 

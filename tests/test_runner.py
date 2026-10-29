@@ -137,3 +137,53 @@ def test_lexicon_events_are_kept_as_names(tmp_path):
     (tmp_path / "lexicon.json").write_text(
         '{"subjects": [], "events": ["A", {"name": "B", "date": "2026-01-01"}, {"date": "x"}, 3, null]}', encoding="utf-8")
     assert runner.load_lexicon(str(tmp_path))["events"] == ["A", "B"]
+
+
+def test_failing_claim_generation_falls_back_to_the_claims_file(universe, monkeypatch):
+    def broken(*args, **kwargs):
+        raise RuntimeError("generator down")
+
+    monkeypatch.setitem(sys.modules, "arena.generate", types.SimpleNamespace(select_claims=broken))
+    assert runner.run(str(universe / "universe"), str(universe / "output"), PRACTICE, engine=ENGINE) == 0
+    rows = read_output(universe)
+    claims = [r for r in rows if r["type"]]
+    assert len(claims) == 1000 and claims[0]["id"] == "gh-0001"
+    labels = [r for r in rows if not r["type"]]
+    assert len(labels) == 380 and all(r["label"] in ("true", "false", "unsure") for r in labels)
+    assert {r["label"] for r in labels} != {"unsure"}  # the engine still labelled them
+
+
+def test_the_first_table_is_written_before_the_claims(universe, monkeypatch):
+    seen = {}
+
+    def spy(practice, lexicon, as_of, input_texts, n):
+        seen["rows"] = read_output(universe)
+        return fake_claims(practice, lexicon, as_of, input_texts, n)
+
+    monkeypatch.setitem(sys.modules, "arena.generate", types.SimpleNamespace(select_claims=spy))
+    runner.run(str(universe / "universe"), str(universe / "output"), PRACTICE, engine=ENGINE)
+    assert len(seen["rows"]) == 380 and {r["label"] for r in seen["rows"]} == {"unsure"}
+
+
+def test_the_fallback_file_is_what_the_run_writes_on_practice(tmp_path):
+    """data/claims_fallback.csv is the run's own claims on practice: regenerate it
+    (scripts/claims_fallback.py) when the generator changes."""
+    (tmp_path / "universe").mkdir()
+    (tmp_path / "output").mkdir()
+    subprocess.run([sys.executable, os.path.join(ROOT, "scripts", "input.py"), PRACTICE,
+                    str(tmp_path / "universe" / "universe.csv")], check=True, capture_output=True)
+    shutil.copy(os.path.join(ROOT, "data", "lexicon.json"), tmp_path / "universe")
+    runner.run(str(tmp_path / "universe"), str(tmp_path / "output"), PRACTICE, engine=ENGINE)
+    ran = [(r["id"], r["text"], r["form"]) for r in read_output(tmp_path) if r["type"]]
+    fallback = [(c["id"], c["text"], c["form"]) for c in runner.read_claims_fallback(runner.CLAIMS_FALLBACK)]
+    assert len(ran) == 1000 and ran == fallback
+
+
+def test_bad_rows_in_the_input_cost_only_those_rows(universe):
+    with open(universe / "universe" / "universe.csv", "a", encoding="utf-8") as f:
+        f.write("p-1,A repeated id.,2026-01-02,\n,No id.,2026-01-03,\nx-1,Odd label.,2026-01-04,maybe\n")
+    assert runner.run(str(universe / "universe"), str(universe / "output"), PRACTICE, engine=ENGINE) == 0
+    rows = read_output(universe)
+    labels = {r["id"] for r in rows if not r["type"]}
+    assert len(labels) == 381 and "x-1" in labels  # the 380 hidden rows and the cleared label
+    assert sum(1 for r in rows if r["type"]) == 1000
