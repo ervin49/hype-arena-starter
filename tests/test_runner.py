@@ -246,3 +246,15 @@ def test_undated_rows_cost_only_those_rows(universe):
     assert any(m.startswith("batch:") for m in log), log
     assert any(m.startswith("confidence control:") for m in log), log
     assert {out[r["id"]]["label"] for r in rows if not r["label"]} == {"true", "false"}
+
+
+def test_sigterm_is_never_swallowed_by_a_fallback(universe, monkeypatch):
+    def stopped(*args, **kwargs):
+        raise runner.Stop()
+
+    monkeypatch.setitem(sys.modules, "arena.generate", types.SimpleNamespace(select_claims=stopped))
+    with pytest.raises(runner.Stop):  # not caught by the claims fallback's `except Exception`
+        runner.run(str(universe / "universe"), str(universe / "output"), PRACTICE, engine=ENGINE)
+    rows = read_output(universe)
+    assert len(rows) == 380 and {r["label"] for r in rows} == {"unsure"}  # the first table stands
+    assert issubclass(runner.Stop, BaseException) and not issubclass(runner.Stop, Exception)

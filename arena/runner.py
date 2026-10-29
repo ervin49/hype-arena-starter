@@ -167,7 +167,7 @@ def run_controls(pipeline, rows, practice, all_practice, lexicon, batch, predict
     return claims
 
 
-class Stop(Exception):
+class Stop(BaseException):  # not an Exception: no `except Exception` may swallow a SIGTERM
     pass
 
 
@@ -299,12 +299,16 @@ def run(universe_dir, output_dir, practice_path, engine=None, deadline=None, cla
 
 def main():
     signal.signal(signal.SIGTERM, _on_sigterm)
-    return run(
-        os.environ.get("ARENA_UNIVERSE", "/universe"),
-        os.environ.get("ARENA_OUTPUT", "/output"),
-        os.environ.get("ARENA_PRACTICE", os.path.join(HERE, "data", "practice.csv")),
-        deadline=deadline_from_env(),
-    )
+    try:
+        return run(
+            os.environ.get("ARENA_UNIVERSE", "/universe"),
+            os.environ.get("ARENA_OUTPUT", "/output"),
+            os.environ.get("ARENA_PRACTICE", os.path.join(HERE, "data", "practice.csv")),
+            deadline=deadline_from_env(),
+        )
+    except Stop:
+        log("SIGTERM: the last table written stands")
+        return 0
 
 
 if __name__ == "__main__":
