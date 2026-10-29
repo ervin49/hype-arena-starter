@@ -1,9 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { ArrowUpRight, CheckCircle2, Clock, Sparkles, Target } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { motion } from "motion/react";
+import fixture from "@/data/metrics.json";
 import practice from "@/data/practice.json";
-import { Counter, Panel, PageHeader, Reveal, ease } from "@/components/arena/ui";
+import { api, type LabelCalibration } from "@/lib/arena";
+import { Panel, PageHeader, Reveal, ease } from "@/components/arena/ui";
 import { ArchDiagram } from "@/components/arena/ArchDiagram";
 
 export const Route = createFileRoute("/")({
@@ -20,13 +23,18 @@ export const Route = createFileRoute("/")({
 
 const tip = { contentStyle: { background: "var(--popover)", border: "1px solid var(--border)", borderRadius: 8, fontSize: 12 }, cursor: { fill: "var(--accent)", opacity: 0.4 } };
 
-// Measured by the batch run on practice (scripts/check.sh: 380 hidden rows, 1,000 claims).
-const KPIS = [
-  { label: "Hidden rows labelled right", value: 89.5, d: 1, suffix: "%", sub: "340 / 380 · always 'true' 85%", icon: Target },
-  { label: "Answers at 0.9+ confidence", value: 96.7, d: 1, suffix: "%", sub: "207 of 214 answers right", icon: CheckCircle2 },
-  { label: "Claims generated", value: 1000, d: 0, suffix: "", sub: "mean confidence 0.959", icon: Sparkles },
-  { label: "Full run, 20k rows", value: 131, d: 0, suffix: "s", sub: "synthetic input · of a 30 min budget", icon: Clock },
-];
+// Only numbers measured on rows the model never saw (out of fold, GET /metrics). check.sh's
+// 340 / 380 is not one of them: the shipped model was trained on those rows.
+const ALWAYS_TRUE = practice.labels.true / practice.total;
+
+function kpis(labels: LabelCalibration) {
+  return [
+    { label: "Right on unseen rows", value: `${(labels.accuracy * 100).toFixed(1)}%`, sub: `Always "true" gets ${(ALWAYS_TRUE * 100).toFixed(1)}%` },
+    { label: "Calibration error", value: labels.ece_after.toFixed(3), sub: "ECE on rows the model never saw; 0 is perfect" },
+    { label: "Claims generated", value: "1,000", sub: "Mean confidence 0.959" },
+    { label: "Full run, 20,000 rows", value: "131 s", sub: "Synthetic input, of a 30-minute budget" },
+  ];
+}
 
 const CLAIM_MIX = [
   { name: "compare", value: 430, fill: "var(--chart-1)" },
@@ -38,29 +46,23 @@ const CLAIM_MIX = [
 
 function Overview() {
   const labels = practice.labels as Record<string, number>;
+  const q = useQuery({ queryKey: ["metrics"], queryFn: api.metrics, retry: false, enabled: typeof window !== "undefined" });
+  const KPIS = kpis(q.data?.labels ?? (fixture.labels as LabelCalibration));
   return (
     <>
-      <PageHeader eyebrow="Git Happens · NEXXT AI Hackathon" title="System overview">
+      <PageHeader title="System overview">
         <Link to="/run" className="group inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground glow transition hover:brightness-110">
           Run on new rows <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
         </Link>
       </PageHeader>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {KPIS.map((k, i) => (
-          <Reveal key={k.label} delay={0.05 * i}>
-            <motion.div whileHover={{ y: -3 }} transition={{ duration: 0.25, ease }} className="panel group relative overflow-hidden p-5">
-              <div className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-primary/10 blur-2xl transition-opacity group-hover:opacity-100 opacity-40" />
-              <div className="flex items-center justify-between">
-                <span className="eyebrow">{k.label}</span>
-                <k.icon className="h-4 w-4 text-primary" />
-              </div>
-              <div className="mt-3 text-4xl font-semibold tracking-tight">
-                <Counter value={k.value} decimals={k.d} suffix={k.suffix} />
-              </div>
-              <div className="mt-1 text-xs text-muted-foreground">{k.sub}</div>
-            </motion.div>
-          </Reveal>
+      <div className="grid gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
+        {KPIS.map((k) => (
+          <div key={k.label} className="bg-card px-5 py-4">
+            <div className="text-sm text-muted-foreground">{k.label}</div>
+            <div className="mt-1 text-3xl font-semibold tabular-nums">{k.value}</div>
+            <div className="mt-1 text-xs text-muted-foreground">{k.sub}</div>
+          </div>
         ))}
       </div>
 
@@ -112,7 +114,7 @@ function Overview() {
                 );
               })}
               <div className="rounded-lg border border-border bg-surface p-3 text-xs text-muted-foreground">
-                Lies caught: <span className="text-foreground">33 of 49</span> hidden false rows · true rows called false: <span className="text-foreground">17</span>
+                Lies caught on unseen rows: <span className="text-foreground">118 of 277</span> false rows, out of fold (eval/train_model.py)
               </div>
             </div>
           </Panel>
@@ -126,7 +128,7 @@ function Overview() {
           </Panel>
         </Reveal>
         <Reveal delay={0.35}>
-          <Panel title="Claim mix" hint="1,000 new claims, every one true">
+          <Panel title="Claim mix" hint="1,000 new claims, each labelled true, with measured confidence">
             <div className="relative h-48">
               <ResponsiveContainer>
                 <PieChart>

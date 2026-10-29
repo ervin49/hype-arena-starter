@@ -1,9 +1,11 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "motion/react";
-import { Activity, Database, FlaskConical, Gauge, LayoutDashboard, Network, Settings2, Sparkles } from "lucide-react";
+import { Database, FlaskConical, Gauge, LayoutDashboard, Network, Settings2, Sparkles } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
-import { api, getApiBase, setApiBase } from "@/lib/arena";
+import fixture from "@/data/metrics.json";
+import practice from "@/data/practice.json";
+import { api, getApiBase, pct, setApiBase, type LabelCalibration } from "@/lib/arena";
 import { cn } from "@/lib/utils";
 import { ease } from "./ui";
 
@@ -74,20 +76,16 @@ function ApiStatus() {
   );
 }
 
+// Measured on rows the model never saw (GET /metrics), not check.sh's rows it was trained on.
+const ALWAYS_TRUE = practice.labels.true / practice.total;
+
 export function Shell({ children }: { children: ReactNode }) {
   const path = useRouterState({ select: (s) => s.location.pathname });
+  const metrics = useQuery({ queryKey: ["metrics"], queryFn: api.metrics, retry: false, enabled: typeof window !== "undefined" });
+  const accuracy = (metrics.data?.labels ?? (fixture.labels as LabelCalibration)).accuracy;
   return (
     <div className="flex min-h-screen">
       <aside className="sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-r border-sidebar-border bg-brand text-sidebar-foreground p-4 md:flex">
-        <div className="mb-8 flex items-center gap-2.5 px-2">
-          <div className="grid h-8 w-8 place-items-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-            <Activity className="h-4 w-4" />
-          </div>
-          <div>
-            <div className="text-sm font-semibold leading-none">Hype Arena</div>
-            <div className="mt-1 font-mono text-[10px] text-sidebar-foreground/70">Git Happens · QA DNA</div>
-          </div>
-        </div>
         <nav className="flex flex-col gap-1">
           {NAV.map(({ to, label, icon: Icon }) => {
             const active = to === "/" ? path === "/" : path.startsWith(to);
@@ -107,9 +105,9 @@ export function Shell({ children }: { children: ReactNode }) {
           })}
         </nav>
         <div className="mt-auto rounded-lg border border-sidebar-border bg-sidebar-accent p-3">
-          <div className="eyebrow text-sidebar-foreground/70">Hidden-row accuracy</div>
-          <div className="mt-1 text-2xl font-semibold text-sidebar-primary">89.5%</div>
-          <div className="text-xs text-sidebar-foreground/70">340 / 380 on practice</div>
+          <div className="eyebrow text-sidebar-foreground/70">Right on unseen rows</div>
+          <div className="mt-1 text-2xl font-semibold text-sidebar-primary">{pct(accuracy, 1)}</div>
+          <div className="text-xs text-sidebar-foreground/70">out of fold · always 'true' {pct(ALWAYS_TRUE, 1)}</div>
         </div>
       </aside>
       <div className="flex min-w-0 flex-1 flex-col">
