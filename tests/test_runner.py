@@ -187,3 +187,40 @@ def test_bad_rows_in_the_input_cost_only_those_rows(universe):
     labels = {r["id"] for r in rows if not r["type"]}
     assert len(labels) == 381 and "x-1" in labels  # the 380 hidden rows and the cleared label
     assert sum(1 for r in rows if r["type"]) == 1000
+
+
+def _universe_rows(universe):
+    with open(universe / "universe" / "universe.csv", encoding="utf-8", newline="") as f:
+        return list(csv.DictReader(f))
+
+
+def _write_universe(universe, rows):
+    with open(universe / "universe" / "universe.csv", "w", encoding="utf-8", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=["id", "text", "date", "label"])
+        w.writeheader()
+        w.writerows(rows)
+
+
+def test_renumbered_practice_rows_are_found_by_text_and_date(universe):
+    practice = runner.read_rows(PRACTICE, require_form=True)
+    rows = _universe_rows(universe)
+    by_id = runner.known_practice(practice, rows)
+    assert len(by_id) == 1517  # every fifth label hidden
+    assert runner.remap_practice_ids(rows, practice) == (rows, 0)  # ids found: nothing changes
+    renamed = [{**r, "id": "u-" + r["id"]} for r in rows]
+    remapped, n = runner.remap_practice_ids(renamed, practice)
+    assert n == 1517
+    assert {r["id"] for r in remapped if not r["label"]} == {r["id"] for r in renamed if not r["label"]}
+    assert [r["id"] for r in runner.known_practice(practice, remapped)] == [r["id"] for r in by_id]
+    unrelated = [{"id": "x", "text": "Nothing like practice.", "date": "2026-01-01", "label": "true"}]
+    assert len(runner.known_practice(practice, unrelated)) == len(practice)
+
+
+def test_renumbered_practice_ids_give_the_same_labels(universe):
+    """The real engine: an input whose ids are all renamed is labelled as the plain one."""
+    runner.run(str(universe / "universe"), str(universe / "output"), PRACTICE)
+    plain = {r["id"]: (r["label"], r["confidence"]) for r in read_output(universe) if not r["type"]}
+    _write_universe(universe, [{**r, "id": "u-" + r["id"]} for r in _universe_rows(universe)])
+    runner.run(str(universe / "universe"), str(universe / "output"), PRACTICE)
+    renamed = {r["id"][2:]: (r["label"], r["confidence"]) for r in read_output(universe) if not r["type"]}
+    assert renamed == plain and {lab for lab, _ in plain.values()} == {"true", "false"}
