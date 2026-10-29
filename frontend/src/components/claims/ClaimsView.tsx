@@ -85,6 +85,13 @@ export function ClaimsView() {
             >
               Download CSV
             </button>
+            <button
+              onClick={() => downloadCsv("claims-excel.csv", outputCsv([], claims, true))}
+              title="The same claims for Excel: semicolons and decimal commas"
+              className="h-9 shrink-0 rounded-full border px-4 text-sm font-semibold text-primary transition hover:bg-accent"
+            >
+              Excel
+            </button>
             <input
               value={query}
               onChange={(e) => {

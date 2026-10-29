@@ -15,7 +15,7 @@ export function VerdictsTable({ items, selectedId, onSelect, subtitle, simulated
   subtitle?: string;
   simulated: boolean;
   emptyText: string;
-  onDownload?: () => void;
+  onDownload?: (excel: boolean) => void;
 }) {
   const [filter, setFilter] = useState<Filter>("all");
   const [showAll, setShowAll] = useState(false);
@@ -35,9 +35,14 @@ export function VerdictsTable({ items, selectedId, onSelect, subtitle, simulated
         </div>
         <div className="flex shrink-0 items-center gap-4">
           {onDownload && (
-            <button onClick={onDownload} className="text-sm font-semibold text-primary hover:underline" title="Every checked row, in the six output.csv columns">
-              Download CSV
-            </button>
+            <>
+              <button onClick={() => onDownload(false)} className="text-sm font-semibold text-primary hover:underline" title="Every checked row, in the six output.csv columns">
+                Download CSV
+              </button>
+              <button onClick={() => onDownload(true)} className="text-sm font-semibold text-primary hover:underline" title="The same rows for Excel: semicolons and decimal commas">
+                Excel
+              </button>
+            </>
           )}
           {filtered.length > PAGE && (
             <button onClick={() => setShowAll((s) => !s)} className="text-sm font-semibold text-primary hover:underline">

@@ -91,7 +91,8 @@ export default function Dashboard() {
             emptyText={emptyText}
             onDownload={
               resp.predictions.length
-                ? () => downloadCsv(`labels-${source.replace(/\.csv$/i, "") || "run"}.csv`, outputCsv(resp.predictions))
+                ? (excel: boolean) =>
+                    downloadCsv(`labels-${source.replace(/\.csv$/i, "") || "run"}${excel ? "-excel" : ""}.csv`, outputCsv(resp.predictions, [], excel))
                 : undefined
             }
           />

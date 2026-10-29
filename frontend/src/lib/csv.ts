@@ -34,11 +34,18 @@ function claimRows(claims: Claim[]): OutputRow[] {
   }));
 }
 
-const cell = (v: string) => (/[",\r\n]/.test(v) ? `"${v.replace(/"/g, '""')}"` : v);
+const cell = (v: string, sep: string) => (/["\r\n]/.test(v) || v.includes(sep) ? `"${v.replace(/"/g, '""')}"` : v);
 
-export function outputCsv(predictions: Prediction[], claims: Claim[] = []): string {
-  const rows = [...predictionRows(predictions), ...claimRows(claims)];
-  return [COLUMNS.join(","), ...rows.map((r) => COLUMNS.map((c) => cell(r[c])).join(","))].join("\r\n") + "\r\n";
+// excel: for spreadsheets set to a European region, which split on ";" and read "0.971" as 971:
+// semicolons, decimal commas in the confidence, and a BOM so "€" reads as UTF-8. Not the
+// official format; the plain file is.
+export function outputCsv(predictions: Prediction[], claims: Claim[] = [], excel = false): string {
+  const sep = excel ? ";" : ",";
+  const rows = [...predictionRows(predictions), ...claimRows(claims)].map((r) =>
+    excel ? { ...r, confidence: r.confidence.replace(".", ",") } : r,
+  );
+  const body = [COLUMNS.join(sep), ...rows.map((r) => COLUMNS.map((c) => cell(r[c], sep)).join(sep))].join("\r\n") + "\r\n";
+  return excel ? "\uFEFF" + body : body;
 }
 
 export function downloadCsv(name: string, csv: string) {
