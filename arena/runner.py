@@ -21,6 +21,7 @@ AS_OF = "2026-10-29"
 CLAIMS = 1000
 HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 REWRITE_EVERY_S = 60
+ERROR_CONFIDENCE = 0.8  # the engine's answer for a row with no facts read: true at the base rate
 DEADLINE_MARGIN_S = 25
 
 
@@ -199,6 +200,8 @@ def run(universe_dir, output_dir, practice_path, engine=None, deadline=None, cla
                 keep({**pipeline.predict(row), "id": row["id"]})
             except Exception:
                 errors += 1
+                # as for a row the engine can't read: true at the base rate, never unsure
+                keep({"id": row["id"], "label": "true", "confidence": ERROR_CONFIDENCE})
                 if errors <= 5:
                     traceback.print_exc()
             done += 1
