@@ -8,3 +8,6 @@ reports/confidence_oof.json
 
 # made by scripts/make_test_data.py; 16k rows, for the runner only
 data/test/dense/
+
+# local Claude Code settings
+.claude/
