@@ -13,6 +13,9 @@ OUTPUT_COLUMNS = ("id", "type", "text", "form", "label", "confidence")
 LABELS = ("true", "false", "unsure")
 
 
+csv.field_size_limit(1 << 24)  # a sentence of thousands of characters is not an error
+
+
 class InputError(ValueError):
     """The input file does not have the shape the contract gives it."""
 
@@ -21,17 +24,27 @@ def _sniff_delimiter(first_line):
     return ";" if first_line.count(";") > first_line.count(",") else ","
 
 
-def parse_rows(data, require_form=False):
+def parse_rows(data, require_form=False, lenient=False, repairs=None):
     """Parse CSV text into row dicts with id, text, date, label (and form if present).
 
     Accepts a BOM, CRLF, quoted cells with commas and line breaks, and the
     semicolon CSV Excel writes with a Romanian locale.
+
+    lenient (the batch run): a bad row costs that row, not the file. Bytes that are not
+    UTF-8 are replaced; extra cells are ignored; a row with an empty id or a repeated id is
+    dropped (the first row for an id counts; an invented id would put an id in output.csv
+    that the input lacks); an unknown label is cleared. Each repair is appended to `repairs`.
+    Strict (the default, the API and the practice file) raises InputError instead.
     """
+    note = repairs.append if repairs is not None else (lambda msg: None)
     if isinstance(data, bytes):
         try:
             data = data.decode("utf-8-sig")
         except UnicodeDecodeError as e:
-            raise InputError(f"not UTF-8: {e}") from None
+            if not lenient:
+                raise InputError(f"not UTF-8: {e}") from None
+            data = data.decode("utf-8", errors="replace")
+            note("bytes that are not UTF-8 replaced")
     data = data.lstrip("﻿")
     if not data.strip():
         raise InputError("empty file")
@@ -45,25 +58,37 @@ def parse_rows(data, require_form=False):
     rows, seen = [], set()
     for n, raw in enumerate(reader, start=2):
         if None in raw:
-            raise InputError(f"line {n}: more cells than columns")
+            if not lenient:
+                raise InputError(f"line {n}: more cells than columns")
+            raw = {k: v for k, v in raw.items() if k is not None}
+            note(f"line {n}: extra cells ignored")
         row = {c: (raw.get(columns[c]) or "").strip() for c in INPUT_COLUMNS}
         if "form" in columns:
             row["form"] = raw.get(columns["form"]) or ""
         row["label"] = row["label"].lower()
         if not row["id"]:
-            raise InputError(f"line {n}: empty id")
+            if not lenient:
+                raise InputError(f"line {n}: empty id")
+            note(f"line {n}: empty id, row dropped")
+            continue
         if row["id"] in seen:
-            raise InputError(f"line {n}: duplicate id {row['id']!r}")
+            if not lenient:
+                raise InputError(f"line {n}: duplicate id {row['id']!r}")
+            note(f"line {n}: duplicate id {row['id']!r}, row dropped")
+            continue
         if row["label"] and row["label"] not in LABELS:
-            raise InputError(f"line {n}: label {row['label']!r} is not true, false or unsure")
+            if not lenient:
+                raise InputError(f"line {n}: label {row['label']!r} is not true, false or unsure")
+            note(f"line {n}: label {row['label']!r} cleared")
+            row["label"] = ""
         seen.add(row["id"])
         rows.append(row)
     return rows
 
 
-def read_rows(path, require_form=False):
+def read_rows(path, require_form=False, lenient=False, repairs=None):
     with open(path, "rb") as f:
-        return parse_rows(f.read(), require_form=require_form)
+        return parse_rows(f.read(), require_form=require_form, lenient=lenient, repairs=repairs)
 
 
 def read_lexicon(path):

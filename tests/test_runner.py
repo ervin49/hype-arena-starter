@@ -177,3 +177,13 @@ def test_the_fallback_file_is_what_the_run_writes_on_practice(tmp_path):
     ran = [(r["id"], r["text"], r["form"]) for r in read_output(tmp_path) if r["type"]]
     fallback = [(c["id"], c["text"], c["form"]) for c in runner.read_claims_fallback(runner.CLAIMS_FALLBACK)]
     assert len(ran) == 1000 and ran == fallback
+
+
+def test_bad_rows_in_the_input_cost_only_those_rows(universe):
+    with open(universe / "universe" / "universe.csv", "a", encoding="utf-8") as f:
+        f.write("p-1,A repeated id.,2026-01-02,\n,No id.,2026-01-03,\nx-1,Odd label.,2026-01-04,maybe\n")
+    assert runner.run(str(universe / "universe"), str(universe / "output"), PRACTICE, engine=ENGINE) == 0
+    rows = read_output(universe)
+    labels = {r["id"] for r in rows if not r["type"]}
+    assert len(labels) == 381 and "x-1" in labels  # the 380 hidden rows and the cleared label
+    assert sum(1 for r in rows if r["type"]) == 1000

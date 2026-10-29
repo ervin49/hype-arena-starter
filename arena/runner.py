@@ -172,7 +172,10 @@ def read_claims_fallback(path):
 
 def run(universe_dir, output_dir, practice_path, engine=None, deadline=None, claims_target=CLAIMS):
     out = os.path.join(output_dir, "output.csv")
-    rows = read_rows(os.path.join(universe_dir, "universe.csv"))
+    repairs = []
+    rows = read_rows(os.path.join(universe_dir, "universe.csv"), lenient=True, repairs=repairs)
+    if repairs:
+        log(f"{len(repairs)} rows repaired or dropped; first: {'; '.join(repairs[:5])}")
     lexicon = load_lexicon(universe_dir)
     labelled, unlabelled = split_rows(rows)
     # A table exists before anything else can fail: every unlabelled row unsure, no claims yet.
