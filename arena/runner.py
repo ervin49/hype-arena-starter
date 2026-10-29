@@ -143,12 +143,28 @@ def _on_sigterm(signum, frame):
     raise Stop()
 
 
+def load_lexicon(universe_dir):
+    """The input's lexicon; the image's own (data/lexicon.json) if the input's can't be read,
+    since a lexicon the loader refuses would otherwise cost the whole output. Events are kept
+    as names: an object with a name counts, anything else is dropped."""
+    try:
+        lexicon = read_lexicon(os.path.join(universe_dir, "lexicon.json"))
+    except Exception:
+        log("the input lexicon is unreadable; using the image's data/lexicon.json")
+        traceback.print_exc()
+        lexicon = read_lexicon(os.path.join(HERE, "data", "lexicon.json"))
+    events = lexicon.get("events") if isinstance(lexicon.get("events"), list) else []
+    lexicon["events"] = [e["name"] if isinstance(e, dict) else e for e in events
+                         if isinstance(e, str) or (isinstance(e, dict) and isinstance(e.get("name"), str))]
+    return lexicon
+
+
 def run(universe_dir, output_dir, practice_path, engine=None, deadline=None, claims_target=CLAIMS):
     from arena.generate import select_claims
 
     out = os.path.join(output_dir, "output.csv")
     rows = read_rows(os.path.join(universe_dir, "universe.csv"))
-    lexicon = read_lexicon(os.path.join(universe_dir, "lexicon.json"))
+    lexicon = load_lexicon(universe_dir)
     labelled, unlabelled = split_rows(rows)
     all_practice = read_rows(practice_path, require_form=True)
     practice = known_practice(all_practice, rows)

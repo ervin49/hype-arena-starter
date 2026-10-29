@@ -117,3 +117,23 @@ def test_a_failing_batch_falls_back_to_the_same_engine_row_by_row(universe):
     engine = types.SimpleNamespace(**{**vars(ENGINE), "label_rows": label_rows})
     assert runner.run(str(universe / "universe"), str(universe / "output"), PRACTICE, engine=engine) == 0
     assert {r["label"] for r in read_output(universe) if not r["type"]} == {"true", "unsure"}  # the fake engine's answers
+
+
+@pytest.mark.parametrize("content", ["[]", "{not json", '{"events": []}'])
+def test_an_unreadable_lexicon_falls_back_to_the_images(universe, content):
+    (universe / "universe" / "lexicon.json").write_text(content, encoding="utf-8")
+    assert runner.run(str(universe / "universe"), str(universe / "output"), PRACTICE, engine=ENGINE) == 0
+    rows = read_output(universe)
+    assert sum(1 for r in rows if r["type"]) == 1000
+    assert len([r for r in rows if not r["type"]]) == 380
+
+
+def test_a_missing_lexicon_falls_back_to_the_images(universe):
+    (universe / "universe" / "lexicon.json").unlink()
+    assert runner.load_lexicon(str(universe / "universe"))["subjects"]
+
+
+def test_lexicon_events_are_kept_as_names(tmp_path):
+    (tmp_path / "lexicon.json").write_text(
+        '{"subjects": [], "events": ["A", {"name": "B", "date": "2026-01-01"}, {"date": "x"}, 3, null]}', encoding="utf-8")
+    assert runner.load_lexicon(str(tmp_path))["events"] == ["A", "B"]
