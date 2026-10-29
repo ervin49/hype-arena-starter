@@ -5,7 +5,15 @@ import type { Label } from "@/lib/arena";
 
 export const ease = [0.22, 1, 0.36, 1] as const;
 
-export function Reveal({ children, delay = 0, className }: { children: ReactNode; delay?: number; className?: string }) {
+export function Reveal({
+  children,
+  delay = 0,
+  className,
+}: {
+  children: ReactNode;
+  delay?: number;
+  className?: string;
+}) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 14 }}
@@ -18,12 +26,25 @@ export function Reveal({ children, delay = 0, className }: { children: ReactNode
   );
 }
 
-export function Counter({ value, decimals = 0, suffix = "" }: { value: number; decimals?: number; suffix?: string }) {
+export function Counter({
+  value,
+  decimals = 0,
+  suffix = "",
+}: {
+  value: number;
+  decimals?: number;
+  suffix?: string;
+}) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true });
   const mv = useMotionValue(0);
-  const text = useTransform(mv, (v) =>
-    v.toLocaleString("en-US", { minimumFractionDigits: decimals, maximumFractionDigits: decimals }) + suffix,
+  const text = useTransform(
+    mv,
+    (v) =>
+      v.toLocaleString("en-US", {
+        minimumFractionDigits: decimals,
+        maximumFractionDigits: decimals,
+      }) + suffix,
   );
   useEffect(() => {
     if (inView) {
@@ -32,10 +53,22 @@ export function Counter({ value, decimals = 0, suffix = "" }: { value: number; d
     }
     return undefined;
   }, [inView, value, mv]);
-  return <motion.span ref={ref} className="tabular-nums">{text}</motion.span>;
+  return (
+    <motion.span ref={ref} className="tabular-nums">
+      {text}
+    </motion.span>
+  );
 }
 
-export function PageHeader({ eyebrow, title, children }: { eyebrow?: string; title: string; children?: ReactNode }) {
+export function PageHeader({
+  eyebrow,
+  title,
+  children,
+}: {
+  eyebrow?: string;
+  title: string;
+  children?: ReactNode;
+}) {
   return (
     <Reveal className="mb-8 flex flex-wrap items-end justify-between gap-4">
       <div>
@@ -47,7 +80,19 @@ export function PageHeader({ eyebrow, title, children }: { eyebrow?: string; tit
   );
 }
 
-export function Panel({ title, hint, children, className, action }: { title?: string; hint?: string; children: ReactNode; className?: string; action?: ReactNode }) {
+export function Panel({
+  title,
+  hint,
+  children,
+  className,
+  action,
+}: {
+  title?: string;
+  hint?: string;
+  children: ReactNode;
+  className?: string;
+  action?: ReactNode;
+}) {
   return (
     <div className={cn("panel p-5", className)}>
       {title && (
@@ -71,7 +116,12 @@ const pill: Record<Label, string> = {
 };
 export function VerdictPill({ label }: { label: Label }) {
   return (
-    <span className={cn("inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 font-mono text-[11px] uppercase tracking-wider", pill[label])}>
+    <span
+      className={cn(
+        "inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 font-mono text-[11px] uppercase tracking-wider",
+        pill[label],
+      )}
+    >
       <span className="h-1.5 w-1.5 rounded-full bg-current" />
       {label}
     </span>

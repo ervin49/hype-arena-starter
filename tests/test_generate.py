@@ -155,3 +155,23 @@ def test_wording_reads_like_english():
     assert _had("official_sdks", "5 sdks") == "5 official SDKs"
     assert _had("languages_served", "71 languages") is None  # the noun is not the attribute's last word
     assert _had("price", "€59 per month") is None
+
+
+def test_no_claim_on_attributes_a_referee_may_read_as_comparison_or_time_words(selected):
+    from arena.generate import RISKY_ATTRIBUTE
+    claims, _ = selected
+    attrs = set()
+    for c in claims:
+        f = c["form"]
+        for side in (f, f.get("left") or {}, f.get("right") or {}):
+            if side.get("attribute"):
+                attrs.add(side["attribute"])
+    assert attrs and not [a for a in attrs if RISKY_ATTRIBUTE.search(a)]
+    assert RISKY_ATTRIBUTE.search("uptime_last_quarter") and RISKY_ATTRIBUTE.search("maximum_seats")
+
+
+def test_names_the_lexicon_lacks_come_last_inside_a_confidence(selected):
+    from arena.generate import _known_names, _names_outside
+    claims, _ = selected
+    known = _known_names(LEXICON)
+    assert sum(_names_outside(c, known) for c in claims) <= 10

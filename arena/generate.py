@@ -30,9 +30,12 @@ CALIBRATION = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__fil
                            "reports", "claims_calibration.json")
 MIN_GROUP_PRECISION = 0.98   # a group must be this right at every backtest cut-off to be kept
 UNMEASURED_CONFIDENCE = 0.8  # a group the backtest cannot judge (relation): kept, never trusted high
-MAX_CLAIMS_PER_FACT = 10  # x3 in the second pass; kept groups backtest at 100%, pool ~1,300
+MAX_CLAIMS_PER_FACT = 10  # x3 in the second pass; the kept groups' candidates fill the 1,000 with room
 MAX_CLAIMS_PER_EVENT = 60  # at_event values can't be checked on unseen rows: capped at 0.95, kept to a share
-MAX_DATE_COMPARES_PER_FACT = 40  # second pass: date compares measure 127/127 on unseen rows
+MAX_DATE_COMPARES_PER_FACT = 40  # second pass: date compares measure 133/133 on unseen rows
+# Attributes whose words a strict referee may read as a comparison or a time word of the
+# sentence itself ("maximum seats", "uptime last quarter"): no claim is built on them.
+RISKY_ATTRIBUTE = re.compile(r"^(max|min|minimum|maximum)_|_last_(quarter|month|year)$")
 ACRONYMS = {"ceo": "CEO", "cto": "CTO", "sla": "SLA", "cli": "CLI", "eu": "EU", "soc2": "SOC 2",
             "sdk": "SDK", "ide": "IDE", "ai": "AI", "nps": "NPS", "arr": "ARR", "api": "API",
             "ides": "IDEs", "sdks": "SDKs"}
@@ -84,6 +87,8 @@ class Evidence:
             for f in facts:
                 key = (f["subject"], f["attribute"])
                 if key[0] not in self.attributes or key[1] not in self.attributes[key[0]] or "op" in f["value"]:
+                    continue
+                if RISKY_ATTRIBUTE.search(key[1]):
                     continue
                 if r["label"] == "true":
                     obs[key].append((r["date"], f["value"], r["id"]))
@@ -374,6 +379,21 @@ def calibrate(candidates, calibration):
     return out
 
 
+def _known_names(lexicon):
+    names = set(lexicon.get("events", []))
+    for sub in lexicon["subjects"]:
+        names.update([sub["name"]] + list(sub.get("aliases", [])))
+    return {norm_name(n) for n in names if isinstance(n, str)}
+
+
+def _names_outside(claim, known):
+    """1 if a name value of the claim (value, from or to) is no lexicon subject, alias or event."""
+    form = claim["form"]
+    values = [form.get(k) for k in ("value", "from", "to")]
+    return int(any(isinstance(v, dict) and v.get("kind") == "name" and norm_name(str(v.get("value"))) not in known
+                   for v in values))
+
+
 def select_claims(practice_rows, lexicon, as_of, input_texts, n=1000, calibration="default", check_rows=None):
     """The n best candidates whose text validates, each fact in at most a few claims.
 
@@ -401,12 +421,15 @@ def select_claims(practice_rows, lexicon, as_of, input_texts, n=1000, calibratio
             group_vetoed[c["group"]] += 1
     keep_share = {g: 1 - group_vetoed[g] / n_g for g, n_g in group_size.items()}
     # Highest confidence first; inside a confidence, the strongest evidence; types interleaved.
+    known = _known_names(lexicon)
     by_type = defaultdict(list)
     for c in candidates:
         by_type[c["type"]].append(c)
     order = []
     for t, cs in by_type.items():
-        cs.sort(key=lambda c: (-c["confidence"], -c["score"]))
+        # inside a confidence, a claim naming only lexicon entities first: a name the lexicon
+        # lacks (a city, a person, a venue) is one the referee must match by its own words
+        cs.sort(key=lambda c: (-c["confidence"], _names_outside(c, known), -c["score"]))
         order += [(-c["confidence"], i, t, c) for i, c in enumerate(cs)]
     order.sort(key=lambda x: x[:3])
 

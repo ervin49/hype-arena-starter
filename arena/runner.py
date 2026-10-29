@@ -70,14 +70,44 @@ class Pipeline:
         return batch(rows, self.practice, self.lexicon, kb=self.kb, extractor=self.extractor)
 
 
+def _norm_text(s):
+    return " ".join((s or "").lower().split())
+
+
+def remap_practice_ids(rows, practice):
+    """If the input renumbered the practice rows (fewer than half their ids found), give each
+    labelled input row that is a practice row, by (text, date) and label, its practice id, so
+    that the evidence join and the control group find them. Only labelled rows change, and only
+    unlabelled rows are written, so no output id changes. Returns (rows, number remapped)."""
+    ids = {r["id"] for r in rows}
+    if sum(p["id"] in ids for p in practice) >= len(practice) // 2:
+        return rows, 0
+    by_text = {(_norm_text(p["text"]), p["date"], p["label"]): p["id"] for p in practice}
+    out, used = [], set()
+    for r in rows:
+        pid = by_text.get((_norm_text(r["text"]), r["date"], r["label"])) if r["label"] else None
+        if pid and pid not in ids and pid not in used:
+            used.add(pid)
+            out.append({**r, "id": pid})
+        else:
+            out.append(r)
+    return out, len(used)
+
+
 def known_practice(practice, universe_rows):
     """Practice rows (with forms) whose label the input shows.
 
     In the real run every practice row is labelled in the input. In scripts/check.sh
     every fifth label is hidden, and this keeps their forms out of what we learn from.
+    If fewer than half are found even after remap_practice_ids, every practice row (the
+    image holds practice.csv): no evidence at all is the worse failure.
     """
     labelled = {r["id"]: r["label"] for r in universe_rows if r["label"]}
-    return [r for r in practice if labelled.get(r["id"]) == r["label"]]
+    found = [r for r in practice if labelled.get(r["id"]) == r["label"]]
+    if len(found) >= len(practice) // 2:
+        return found
+    log(f"practice not found in the input ({len(found)} rows): using all {len(practice)}")
+    return list(practice)
 
 
 def deadline_from_env():
@@ -137,7 +167,7 @@ def run_controls(pipeline, rows, practice, all_practice, lexicon, batch, predict
     return claims
 
 
-class Stop(Exception):
+class Stop(BaseException):  # not an Exception: no `except Exception` may swallow a SIGTERM
     pass
 
 
@@ -183,6 +213,9 @@ def run(universe_dir, output_dir, practice_path, engine=None, deadline=None, cla
     write_output(predictions.values(), [], out)
     log("wrote the first table (no claims yet)")
     all_practice = read_rows(practice_path, require_form=True)
+    rows, remapped = remap_practice_ids(rows, all_practice)
+    if remapped:
+        log(f"practice ids renumbered in the input: {remapped} labelled rows matched by text and date")
     practice = known_practice(all_practice, rows)
     log(f"input: {len(rows)} rows, {len(unlabelled)} unlabelled; practice with forms: "
         f"{len(all_practice)}, of which the engine sees {len(practice)}")
@@ -266,12 +299,16 @@ def run(universe_dir, output_dir, practice_path, engine=None, deadline=None, cla
 
 def main():
     signal.signal(signal.SIGTERM, _on_sigterm)
-    return run(
-        os.environ.get("ARENA_UNIVERSE", "/universe"),
-        os.environ.get("ARENA_OUTPUT", "/output"),
-        os.environ.get("ARENA_PRACTICE", os.path.join(HERE, "data", "practice.csv")),
-        deadline=deadline_from_env(),
-    )
+    try:
+        return run(
+            os.environ.get("ARENA_UNIVERSE", "/universe"),
+            os.environ.get("ARENA_OUTPUT", "/output"),
+            os.environ.get("ARENA_PRACTICE", os.path.join(HERE, "data", "practice.csv")),
+            deadline=deadline_from_env(),
+        )
+    except Stop:
+        log("SIGTERM: the last table written stands")
+        return 0
 
 
 if __name__ == "__main__":

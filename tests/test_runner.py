@@ -187,3 +187,74 @@ def test_bad_rows_in_the_input_cost_only_those_rows(universe):
     labels = {r["id"] for r in rows if not r["type"]}
     assert len(labels) == 381 and "x-1" in labels  # the 380 hidden rows and the cleared label
     assert sum(1 for r in rows if r["type"]) == 1000
+
+
+def _universe_rows(universe):
+    with open(universe / "universe" / "universe.csv", encoding="utf-8", newline="") as f:
+        return list(csv.DictReader(f))
+
+
+def _write_universe(universe, rows):
+    with open(universe / "universe" / "universe.csv", "w", encoding="utf-8", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=["id", "text", "date", "label"])
+        w.writeheader()
+        w.writerows(rows)
+
+
+def test_renumbered_practice_rows_are_found_by_text_and_date(universe):
+    practice = runner.read_rows(PRACTICE, require_form=True)
+    rows = _universe_rows(universe)
+    by_id = runner.known_practice(practice, rows)
+    assert len(by_id) == 1517  # every fifth label hidden
+    assert runner.remap_practice_ids(rows, practice) == (rows, 0)  # ids found: nothing changes
+    renamed = [{**r, "id": "u-" + r["id"]} for r in rows]
+    remapped, n = runner.remap_practice_ids(renamed, practice)
+    assert n == 1517
+    assert {r["id"] for r in remapped if not r["label"]} == {r["id"] for r in renamed if not r["label"]}
+    assert [r["id"] for r in runner.known_practice(practice, remapped)] == [r["id"] for r in by_id]
+    unrelated = [{"id": "x", "text": "Nothing like practice.", "date": "2026-01-01", "label": "true"}]
+    assert len(runner.known_practice(practice, unrelated)) == len(practice)
+
+
+def test_renumbered_practice_ids_give_the_same_labels(universe):
+    """The real engine: an input whose ids are all renamed is labelled as the plain one."""
+    runner.run(str(universe / "universe"), str(universe / "output"), PRACTICE)
+    plain = {r["id"]: (r["label"], r["confidence"]) for r in read_output(universe) if not r["type"]}
+    _write_universe(universe, [{**r, "id": "u-" + r["id"]} for r in _universe_rows(universe)])
+    runner.run(str(universe / "universe"), str(universe / "output"), PRACTICE)
+    renamed = {r["id"][2:]: (r["label"], r["confidence"]) for r in read_output(universe) if not r["type"]}
+    assert renamed == plain and {lab for lab, _ in plain.values()} == {"true", "false"}
+
+
+def test_undated_rows_cost_only_those_rows(universe):
+    """The real engine: rows dated "", "2026-02-30" and "12/03/2026" are true at the base rate;
+    the batch and the confidence control still run for every other row."""
+    rows = _universe_rows(universe)
+    bad = {"": "", "2026-02-30": "", "12/03/2026": ""}
+    extra = [{"id": f"bad-{i}", "text": "Hooly Cloud covers 8 regions.", "date": d, "label": ""}
+             for i, d in enumerate(bad)]
+    _write_universe(universe, rows + extra)
+    log = []
+    orig = runner.log
+    runner.log = lambda *a: (log.append(" ".join(map(str, a))), orig(*a))
+    try:
+        runner.run(str(universe / "universe"), str(universe / "output"), PRACTICE)
+    finally:
+        runner.log = orig
+    out = {r["id"]: r for r in read_output(universe) if not r["type"]}
+    assert all((out[f"bad-{i}"]["label"], out[f"bad-{i}"]["confidence"]) == ("true", "0.8") for i in range(3))
+    assert any(m.startswith("batch:") for m in log), log
+    assert any(m.startswith("confidence control:") for m in log), log
+    assert {out[r["id"]]["label"] for r in rows if not r["label"]} == {"true", "false"}
+
+
+def test_sigterm_is_never_swallowed_by_a_fallback(universe, monkeypatch):
+    def stopped(*args, **kwargs):
+        raise runner.Stop()
+
+    monkeypatch.setitem(sys.modules, "arena.generate", types.SimpleNamespace(select_claims=stopped))
+    with pytest.raises(runner.Stop):  # not caught by the claims fallback's `except Exception`
+        runner.run(str(universe / "universe"), str(universe / "output"), PRACTICE, engine=ENGINE)
+    rows = read_output(universe)
+    assert len(rows) == 380 and {r["label"] for r in rows} == {"unsure"}  # the first table stands
+    assert issubclass(runner.Stop, BaseException) and not issubclass(runner.Stop, Exception)

@@ -8,7 +8,9 @@ type OutputRow = Record<(typeof COLUMNS)[number], string>;
 
 function confidenceCell(label: string, c: number | null | undefined): string {
   if (label === "unsure" || c == null || Number.isNaN(c)) return "";
-  return Math.min(1, Math.max(0.5, c)).toFixed(3).replace(/\.?0+$/, "");
+  return Math.min(1, Math.max(0.5, c))
+    .toFixed(3)
+    .replace(/\.?0+$/, "");
 }
 
 function predictionRows(predictions: Prediction[]): OutputRow[] {
@@ -34,7 +36,8 @@ function claimRows(claims: Claim[]): OutputRow[] {
   }));
 }
 
-const cell = (v: string, sep: string) => (/["\r\n]/.test(v) || v.includes(sep) ? `"${v.replace(/"/g, '""')}"` : v);
+const cell = (v: string, sep: string) =>
+  /["\r\n]/.test(v) || v.includes(sep) ? `"${v.replace(/"/g, '""')}"` : v;
 
 // excel: for spreadsheets set to a European region, which split on ";" and read "0.971" as 971:
 // semicolons, decimal commas in the confidence, and a BOM so "€" reads as UTF-8. Not the
@@ -44,7 +47,10 @@ export function outputCsv(predictions: Prediction[], claims: Claim[] = [], excel
   const rows = [...predictionRows(predictions), ...claimRows(claims)].map((r) =>
     excel ? { ...r, confidence: r.confidence.replace(".", ",") } : r,
   );
-  const body = [COLUMNS.join(sep), ...rows.map((r) => COLUMNS.map((c) => cell(r[c], sep)).join(sep))].join("\r\n") + "\r\n";
+  const body =
+    [COLUMNS.join(sep), ...rows.map((r) => COLUMNS.map((c) => cell(r[c], sep)).join(sep))].join(
+      "\r\n",
+    ) + "\r\n";
   return excel ? "\uFEFF" + body : body;
 }
 
