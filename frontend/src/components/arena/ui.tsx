@@ -35,11 +35,11 @@ export function Counter({ value, decimals = 0, suffix = "" }: { value: number; d
   return <motion.span ref={ref} className="tabular-nums">{text}</motion.span>;
 }
 
-export function PageHeader({ eyebrow, title, children }: { eyebrow: string; title: string; children?: ReactNode }) {
+export function PageHeader({ eyebrow, title, children }: { eyebrow?: string; title: string; children?: ReactNode }) {
   return (
     <Reveal className="mb-8 flex flex-wrap items-end justify-between gap-4">
       <div>
-        <div className="eyebrow mb-2">{eyebrow}</div>
+        {eyebrow && <div className="eyebrow mb-2">{eyebrow}</div>}
         <h1 className="text-3xl font-semibold tracking-tight md:text-4xl">{title}</h1>
       </div>
       {children}

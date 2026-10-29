@@ -34,6 +34,48 @@ export interface Claim {
 }
 export interface ClaimsResponse { claims: Claim[]; report: Record<string, number>; as_of: string; demo_mode: boolean }
 
+// GET /metrics: what was measured, each part null when its report is not written yet.
+export interface LabelBin { label: Label; from: number; to: number; n: number; accuracy: number; confidence: number }
+export interface LabelCalibration {
+  method: string;
+  fitted_on: string;
+  rows?: number;
+  // out of fold: each practice row labelled by a model that never saw it
+  accuracy: number;
+  bins: LabelBin[];
+  ece_before: number;
+  ece_after: number;
+}
+export interface ClaimGroup {
+  group: string;
+  // the full judge: all practice rows, the ones that built the claims too
+  n: number;
+  right: number;
+  precision: number | null;
+  // the strict judge: only rows dated after the cut-off, which the generator never saw
+  strict_n?: number;
+  strict_right?: number;
+  strict_precision?: number | null;
+  confidence: number;
+}
+export interface ClaimCalibration { cutoffs: string[]; unverified_cap?: number; groups: ClaimGroup[] }
+export interface ShiftSummary { n: number; said: number; right: number; ece: number }
+export interface ShiftScenario { scenario: string; always_true: number; unseen_before: ShiftSummary; unseen_after: ShiftSummary }
+export interface ControlReport {
+  control_rows: number;
+  control_answers: number;
+  accuracy: number | null;
+  said: number;
+  factors?: Record<string, number> | null;
+  note?: string;
+}
+export interface MetricsResponse {
+  labels: LabelCalibration | null;
+  claims: ClaimCalibration | null;
+  shift?: ShiftScenario[] | null;
+  controls?: ControlReport | null;
+}
+
 // The dev server proxies /api to the FastAPI engine (vite.config.ts, ARENA_API_URL), so the
 // browser stays on one origin. Another base can be set in the top bar.
 const KEY = "arena.apiBase";
@@ -69,7 +111,7 @@ async function req<T>(path: string, init?: RequestInit, timeoutMs = 15_000): Pro
 export const api = {
   health: () => req<{ status: string; demo_mode: boolean }>("/health"),
   claims: () => req<ClaimsResponse>("/claims", undefined, 60_000),
-  metrics: () => req<Record<string, unknown>>("/metrics"),
+  metrics: () => req<MetricsResponse>("/metrics"),
   // the real engine labels a batch in seconds to a couple of minutes
   predict: (rows: InputRow[]) =>
     req<{ predictions: Prediction[]; demo_mode: boolean }>("/predict", {
