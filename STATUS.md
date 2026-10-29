@@ -29,16 +29,16 @@
 | Metric | Value |
 |---|---|
 | Hidden rows labelled right | **340 / 380** (89.5%); 331 before this merge, 329 this morning; always `true` would score 85% |
-| False sentences caught | **27 of 49** (22 before, 9 this morning); true rows called false: 11 (15 before) |
-| Answers at confidence 0.9+ | 196, 96% right |
+| False sentences caught | **33 of 49** (22 before, 9 this morning); true rows called false: 17 (15 before) |
+| Answers at confidence 0.9+ | 214, 96.7% right |
 | Labels, honest (A, out of fold, `eval/train_model.py`) | accuracy **87.0%** (always `true`: 83.3%); lies caught 118 / 277; ECE 0.027 |
 | Labels on unseen rows given all other practice evidence (`scripts/train_confidence.py`) | 88.7% of 1,858; lies 143 / 277; ECE 0.044 |
 | Weakest band | `false` at 0.5–0.8: about 57% right; `true` at 0.5–0.6: 65% right |
 | `unsure` predicted | never (A's default; a team decision once scoring is known) |
-| Claims | 1,000: 430 compare (dates), 317 change, 247 at_event (at most 60 per event), 4 fact (dates), 2 relation |
-| Claim confidence | measured on unseen rows: 430 at 0.972, 564 at 0.95 (capped), 4 at 0.867, 2 at 0.80; mean 0.959 |
+| Claims | 1,000: 450 compare (dates), 297 change, 247 at_event (at most 60 per event), 4 fact (dates), 2 relation |
+| Claim confidence | measured on unseen rows: 450 at 0.972, 544 at 0.95 (capped), 4 at 0.867, 2 at 0.80; mean 0.959 |
 | Full run time | ~11 s on practice with the controls; 131 s on our **synthetic** 20,000-row input (of 30 min) |
-| Tests | 394 Python tests pass (206 of them every example of `claim-forms.md` and `value-forms.md`) (`.venv/bin/pytest -q`); frontend type-checks, lints and builds; all 4 pages and 5 API routes checked live |
+| Tests | 639 Python tests pass (206 of them every example of `claim-forms.md` and `value-forms.md`) (`.venv/bin/pytest -q`); frontend type-checks, lints and builds; all 4 pages and 5 API routes checked live |
 
 ### Claim backtest (`scripts/backtest_claims.py` → `reports/claims_calibration.json`)
 
@@ -67,9 +67,9 @@ The run can't be adjusted after the freeze, so the system checks itself on the r
 
 | Control | How | On practice (`check.sh`) | On our synthetic 20,000-row input |
 |---|---|---|---|
-| Confidence | A control model (`scripts/train_control.py`) never saw 381 practice rows. In the run it labels them in the context of the real input. Confidence becomes 0.5 + k·(c − 0.5), with k fitted per label on that group: it can only go down. | 298 answers, 86.9% right, said 0.83: k = 1 (nothing lowered) | 369 answers, 84% right; `false` over-stated, so k = 0.6; ECE 0.046 → 0.035 |
-| Distribution | The share of `false` on the input against the control group, logged | 10.0% vs 8.4% | 17.0% vs 14.1% |
-| Claims | Input rows labelled `true` at ≥ 0.9 are added as evidence; a candidate they contradict is vetoed and replaced from the reserve. A group that loses a share v of its candidates gets confidence c × (1 − v); a vetoed claim used only to fill the 1,000 gets 0.5 | 197 rows, 0 vetoed, confidence unchanged | 10,582 rows, 9 vetoed: at_event 0.95 → 0.932, change 0.95 → 0.947, date compares 0.971 |
+| Confidence | A control model (`scripts/train_control.py`) never saw 381 practice rows. In the run it labels them in the context of the real input. Confidence becomes 0.5 + k·(c − 0.5), with k fitted per label on that group: it can only go down. | 298 answers, 88.3% right, said 0.847: k = 1 (nothing lowered) | 369 answers, 84% right; `false` over-stated, so k = 0.6; ECE 0.046 → 0.035 |
+| Distribution | The share of `false` on the input against the control group, logged | 13.4% vs 14.4% | 17.0% vs 14.1% |
+| Claims | Input rows labelled `true` at ≥ 0.9 are added as evidence; a candidate they contradict is vetoed and replaced from the reserve. A group that loses a share v of its candidates gets confidence c × (1 − v); a vetoed claim used only to fill the 1,000 gets 0.5 | 210 rows, 0 vetoed, confidence unchanged | 10,582 rows, 9 vetoed: at_event 0.95 → 0.932, change 0.95 → 0.947, date compares 0.971 |
 
 **The 20,000-row input is synthetic, made by us:** the 1,897 practice rows plus 18,103 copies of practice sentences with new ids, dates shifted by up to ±60 days and empty labels. We do not have the organisers' 18,000 rows. It tests speed, limits and that the controls react to noise; it says nothing about our accuracy on new text, and its 150 vetoes and factor 0.6 react to our artificial noise, not to the real data.
 
@@ -169,6 +169,7 @@ To list them again: load `reports/confidence_oof.json` (records with `gold` and 
 
 | When | What |
 |---|---|
+| 29 Oct | C, from an independent review: renumbered practice ids are matched back by text and date (identical labels); an undated row costs that row, not the batch (the batch and the controls still run); SIGTERM can't be swallowed by a fallback; no claims on max/min/`*_last_quarter` attributes, and names outside the lexicon come last (mix 450 / 297 / 247 / 4 / 2; non-lexicon names 42 → 4; fallback regenerated, referee 0 rejected); frontend `eslint --fix` on `src/`. 639 tests; `check.sh` 340/380, 1,000 claims, lies 33/49. |
 | 29 Oct | C did B's demo-script task: `frontend/docs/demo-script.md` brought up to date with the Lovable app. Start with `scripts/start.sh` (http://localhost:8080), a dry run of the sample before recording, the architecture as the diagram names it (boosted trees + Platt), `s-3`/`s-4` re-checked live (true 95%, false 65%), the honest numbers for "how good we are", including where we're weak (new subjects), and the predicted score filled in: labels ~87%, claims ~95%, calibration within ~3 points. |
 | 29 Oct | C, crash insurance 2/2: **lenient parsing for the batch run.** One bad row in 20,000 used to end the run before any table existed. Now non-UTF-8 bytes are replaced, extra cells ignored, rows with an empty or repeated id dropped (the first row for an id counts; we never invent an id that would appear in `output.csv`), and unknown labels cleared, each repair in the log. The API and the practice file stay strict. 633 tests. |
 | 29 Oct | C, crash insurance 1/2: **the first table is written before the claims**, and a failing claim generator falls back to `data/claims_fallback.csv` (`scripts/claims_fallback.py`: the run's own 1,000 claims on practice; the independent referee rejects 0; it's in the image). Checked: batch run 340/380, 1,000 claims, format checks pass, referee 0 rejected; Docker `check.sh` exit 0. |
