@@ -1,4 +1,4 @@
-import type { Claim, Prediction } from "./types";
+import type { Claim, Prediction } from "./arena";
 
 // The six official output.csv columns, written as arena/io.py writes them:
 // predictions first (no type/text/form), then claims; confidence in 0.5–1,
